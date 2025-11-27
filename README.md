@@ -11,7 +11,7 @@
 
 ## Overview
 
-**Audtheia** is a professional environmental monitoring system that combines **real-time computer vision** (60 FPS video processing) with **AI-powered analysis** to generate research-grade ecological datasets. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring.
+**Audtheia** is a professional environmental monitoring system that combines **real-time computer vision** (60 FPS video processing) with **AI-powered analysis** to generate research-grade ecological datasets and automated daily intelligence reports. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring. Each species observation generates 72 comprehensive data points used for both database storage and automated PDF report generation.
 
 ### Key Innovation
 
@@ -20,9 +20,10 @@ Traditional environmental monitoring systems face a critical trade-off: **proces
 **Audtheia solves this through asynchronous architecture:**
 - **Roboflow RTSP Workflow**: Processes video at 60 FPS with YOLOv11 object detection, ByteTrack multi-object tracking, and live visualization
 - **N8N RTSP Analyst**: Conducts deep AI analysis in parallel using 9 specialized agents, generating 72 data points per species observation
+- **Daily Reporter Workflow**: Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents
 - **Airtable Database**: Stores comprehensive datasets suitable for peer-reviewed research and institutional decision-making
 
-**Result**: Continuous real-time monitoring + PhD-level environmental analysis without compromising either capability.
+**Result**: Continuous real-time monitoring + PhD-level environmental analysis + automated professional reporting without compromising any capability.
 
 ---
 
@@ -39,7 +40,7 @@ The Audtheia ecosystem consists of four integrated components:
 - **Custom Python Blocks**:
   - `Detection_Converter`: Converts predictions to structured data
   - `Add_Webcam_Interface`: Professional video overlay with species ticker
-  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis
+  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis using Claude 3.5 Sonnet
   - `Analyst_Caller`: Sends detections to N8N for deep analysis
 
 **Video Input**: RTSP streams, MP4 files, webcam feeds  
@@ -48,7 +49,7 @@ The Audtheia ecosystem consists of four integrated components:
 ### 2. N8N RTSP Analyst Workflow (Deep AI Analysis)
 **Purpose**: Comprehensive species and environmental intelligence using 9 specialized AI agents
 
-**AI Agents** (powered by Anthropic Claude 3.5 Sonnet):
+**AI Agents** (powered by OpenAI GPT-4o):
 1. **Systematics Phenologist**: Taxonomic classification, phenological analysis, temporal behavior patterns
 2. **GIS Data Manager**: Coordinate validation, geographic context, spatial analysis
 3. **Biodiversity Intelligence**: Conservation status (IUCN), rarity scoring, ecological role assessment
@@ -59,18 +60,31 @@ The Audtheia ecosystem consists of four integrated components:
 8. **Cartography Mapper**: Satellite imagery generation (Mapbox), bathymetric analysis (NOAA), marine enhancements
 9. **Memory Manager**: Spatiotemporal context tracking, observation history, pattern recognition
 
-**Scientific Databases Integrated**:
+**Scientific Databases & Services Integrated**:
 - GBIF (Global Biodiversity Information Facility)
 - iNaturalist
 - IUCN Red List
+- API Ninjas (species characteristics and biodiversity data)
 - Open-Meteo (climate data)
 - NOAA Co-OPS (marine data)
 - Mapbox (satellite imagery)
+- OpenStreetMap (geographic data)
+- OpenTopoData (elevation data)
+- SOILGRIDS (soil data)
+- Open Elevation (bathymetry and elevation)
+- NDVI (vegetation index)
 
 **Output**: 72 data points per species observation → Airtable Database
 
 ### 3. Daily Reporter N8N Workflow (Report Generation)
 **Purpose**: Automated generation of professional environmental intelligence reports
+
+**AI Agents** (powered by OpenAI GPT-4o):
+1. **Species & Biodiversity Analyst**: Synthesizes taxonomic data, conservation status, rarity assessments, and biodiversity metrics into comprehensive species intelligence
+2. **Environmental & Climate Analyst**: Analyzes marine/terrestrial climate conditions, oceanographic data, atmospheric conditions, and environmental trends
+3. **Habitat & Conservation Analyst**: Evaluates habitat quality, ecosystem health, conservation implications, and management recommendations
+4. **Cartography & Spatial Analyst**: Interprets satellite imagery, spatial patterns, geographic context, and creates cartographic assessments
+5. **Report Synthesis Agent**: Integrates all analyst outputs into cohesive publication-quality PDF report with executive dashboard
 
 **Report Sections**:
 - Executive dashboard with key metrics
@@ -106,13 +120,15 @@ Detection Data + Video Frame
     ↓
 [N8N RTSP Analyst Workflow] ← Deep AI Analysis
     ↓
-9 Specialized AI Agents (Claude 3.5 Sonnet)
+9 Specialized AI Agents (GPT-4o)
     ↓
 72 Data Points per Species Observation
     ↓
 [Airtable Database] ← Research-Grade Storage
     ↓
 [Daily Reporter N8N Workflow] ← Report Generation
+    ↓
+5 Specialized Report Agents (GPT-4o)
     ↓
 Professional PDF Intelligence Report
 ```
@@ -167,7 +183,7 @@ cp .env.template .env
 2. Import workflow files from `n8n-workflows/` directory:
    - `rtsp-analyst/RTSP_Analyst_Workflow__GitHub_Template_.json`
    - `daily-reporter/Daily_Reporter__GitHub_Template_.json`
-3. Configure N8N credentials for Anthropic, Airtable, and external APIs
+3. Configure N8N credentials for Anthropic, OpenAI, Airtable, and external APIs
 
 ### Step 5: Configure Roboflow Workflow
 
@@ -184,8 +200,11 @@ cp .env.template .env
 Create a `.env` file based on `.env.template` and add the following credentials:
 
 ```bash
-# Anthropic Claude API
+# Anthropic Claude API (for Roboflow workflow)
 ANTHROPIC_API_KEY=sk-ant-api03-...
+
+# OpenAI API (for N8N workflows)
+OPENAI_API_KEY=sk-...
 
 # Roboflow
 ROBOFLOW_API_KEY=your_roboflow_key
@@ -209,6 +228,7 @@ AIRTABLE_MAPPING_TABLE_ID=tblXXXXXXXXXXXXXX
 GBIF_USERNAME=your_gbif_username
 GBIF_PASSWORD=your_gbif_password
 IUCN_API_KEY=your_iucn_key
+API_NINJAS_KEY=your_api_ninjas_key
 
 # Mapping Services
 MAPBOX_ACCESS_TOKEN=pk.eyJ1...
@@ -224,10 +244,12 @@ VIDEO_RESOLUTION_HEIGHT=1080
 ### How to Obtain API Keys
 
 - **Anthropic Claude**: [Sign up at Anthropic](https://www.anthropic.com/)
+- **OpenAI**: [Sign up at OpenAI](https://openai.com/)
 - **Roboflow**: [Create account at Roboflow](https://roboflow.com/)
 - **N8N**: [Install N8N](https://n8n.io/) or use N8N Cloud
 - **Airtable**: [Create account at Airtable](https://airtable.com/)
 - **GBIF**: [Register at GBIF](https://www.gbif.org/)
+- **API Ninjas**: [Sign up at API Ninjas](https://api-ninjas.com/)
 - **Mapbox**: [Sign up at Mapbox](https://www.mapbox.com/)
 
 ---
@@ -277,7 +299,7 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 
 **Scheduled trigger**: Configure N8N cron schedule for automated daily report generation
 
-**Output**: Professional PDF report with comprehensive environmental intelligence
+**Output**: Professional PDF report with comprehensive environmental intelligence synthesized by 5 specialized AI agents
 
 ---
 
@@ -370,14 +392,8 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 ### Current Status (v1.0) ✅
 - ✅ Roboflow RTSP Workflow (operational)
 - ✅ N8N RTSP Analyst (9 AI agents operational)
-- ✅ Daily Reporter Workflow (operational)
+- ✅ Daily Reporter Workflow (5 AI agents operational)
 - ✅ Airtable Database integration (operational)
-
-### In Development 🚧
-- 🚧 RAVIT Assistant (audio analysis)
-- 🚧 Perplexity Deep Research Workflow
-- 🚧 Taxonomy Classifier Workflow
-- 🚧 Fine-Tuning Manager
 
 ### Future Enhancements 🔮
 - Multi-camera synchronization
@@ -426,16 +442,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Audtheia is built on the shoulders of giants:
 
-- **Anthropic**: Claude 3.5 Sonnet for environmental intelligence analysis
+- **Anthropic**: Claude 3.5 Sonnet for Roboflow workflow environmental analysis
+- **OpenAI**: GPT-4o for N8N workflow AI agent orchestration
 - **Roboflow**: Computer vision infrastructure and YOLOv11 integration
 - **N8N**: Workflow automation and AI agent orchestration
 - **Airtable**: Database management and data organization
 - **GBIF**: Global biodiversity occurrence data
 - **iNaturalist**: Community science observations
 - **IUCN**: Conservation status data
+- **API Ninjas**: Species characteristics and biodiversity data
 - **NOAA**: Marine and climate data
 - **Mapbox**: Satellite imagery and cartographic services
 - **Open-Meteo**: Climate and weather data
+- **OpenStreetMap**: Geographic data
+- **OpenTopoData**: Elevation data
+- **SOILGRIDS**: Soil data
+- **Open Elevation**: Bathymetry and elevation data
 
 Special thanks to the marine biology, conservation, and research communities for their invaluable feedback and support.
 
@@ -444,8 +466,6 @@ Special thanks to the marine biology, conservation, and research communities for
 ## Contact
 
 **Project Lead**: Andy Portalatin  
-**Email**: [contact information]  
-**Project Website**: [website URL]  
 **GitHub Issues**: [https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 
 ---
