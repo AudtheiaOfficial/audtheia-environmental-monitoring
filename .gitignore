@@ -1,6 +1,50 @@
+# Audtheia Environmental Monitoring - .gitignore
+# Comprehensive protection for API keys, credentials, and development artifacts
+
+# ============================================================================
+# CRITICAL: API KEYS AND CREDENTIALS
+# ============================================================================
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.json
+secrets.json
+config/secrets.yaml
+
+# Anthropic API keys
+*anthropic*key*
+*ANTHROPIC*KEY*
+
+# N8N credentials and webhooks
+*webhook*url*
+*.n8n/
+n8n-data/
+n8n-workflows/**/credentials/
+
+# Roboflow API keys and project IDs
+*roboflow*key*
+*ROBOFLOW*KEY*
+
+# Airtable API keys and base IDs
+*airtable*key*
+*AIRTABLE*KEY*
+airtable-credentials.json
+
+# Other API keys
+*api*key*
+*API*KEY*
+*api*token*
+*API*TOKEN*
+
+# ============================================================================
+# PYTHON
+# ============================================================================
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
@@ -20,6 +64,7 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -27,8 +72,6 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -46,10 +89,9 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
 
 # Translations
 *.mo
@@ -72,7 +114,6 @@ instance/
 docs/_build/
 
 # PyBuilder
-.pybuilder/
 target/
 
 # Jupyter Notebook
@@ -83,48 +124,12 @@ profile_default/
 ipython_config.py
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+.python-version
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+Pipfile.lock
 
-# UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#uv.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-#poetry.toml
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
-#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
-
-# pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
-#pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+# PEP 582
 __pypackages__/
 
 # Celery stuff
@@ -136,7 +141,6 @@ celerybeat.pid
 
 # Environments
 .env
-.envrc
 .venv
 env/
 venv/
@@ -162,46 +166,276 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# pytype static type analyzer
-.pytype/
+# ============================================================================
+# NODE.JS / JAVASCRIPT (N8N)
+# ============================================================================
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
-# Cython debug symbols
-cython_debug/
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.test
+
+# parcel-bundler cache
+.cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# VuePress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# ============================================================================
+# COMPUTER VISION / MACHINE LEARNING
+# ============================================================================
+# Model files
+*.h5
+*.hdf5
+*.pb
+*.onnx
+*.pt
+*.pth
+*.weights
+*.ckpt
+*.safetensors
+
+# Large datasets (keep sample data only)
+datasets/full/
+data/raw/
+data/processed/
+*.csv
+*.tsv
+!datasets/sample*.csv
+!examples/**/sample*.csv
+
+# Video files (keep sample videos only)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.webm
+!examples/**/sample*.mp4
+!assets/videos/demo*.mp4
+
+# Image files (keep annotated examples)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.tif
+!assets/**/*.png
+!assets/**/*.jpg
+!examples/**/annotated_*.jpg
+!docs/**/*.png
+
+# Audio files
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.aac
+!examples/**/sample*.wav
+
+# Roboflow cache
+.roboflow/
+roboflow_cache/
+
+# ============================================================================
+# DATABASES
+# ============================================================================
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# PostgreSQL
+*.dump
+
+# MongoDB
+*.bson
+
+# Airtable cache
+airtable_cache/
+.airtable/
+
+# ============================================================================
+# OPERATING SYSTEM FILES
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================================
+# IDEs AND EDITORS
+# ============================================================================
+# VSCode
+.vscode/
+*.code-workspace
 
 # PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+.idea/
+*.iml
+*.iws
 
-# Abstra
-# Abstra is an AI-powered process automation framework.
-# Ignore directories containing user credentials, local state, and settings.
-# Learn more at https://abstra.io/docs
-.abstra/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
 
-# Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
 
-# Ruff stuff:
-.ruff_cache/
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+auto-save-list
+tramp
 
-# PyPI configuration file
-.pypirc
+# ============================================================================
+# DEVELOPMENT ARTIFACTS
+# ============================================================================
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~.nib
 
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
-.cursorignore
-.cursorindexingignore
+# Testing artifacts
+test-results/
+screenshots/
+recordings/
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+# Build artifacts
+build/
+dist/
+*.exe
+*.out
+*.app
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+!assets/example-data.zip
+
+# ============================================================================
+# PROJECT-SPECIFIC
+# ============================================================================
+# Research outputs (keep templates only)
+research-outputs/daily-reports/
+research-outputs/generated-reports/
+!research-outputs/templates/
+
+# Large media files
+assets/videos/recordings/
+assets/screenshots/full-resolution/
+
+# User-specific configurations
+user-config.json
+my-*.yaml
+
+# Cache directories
+.cache/
+cache/
+tmp/
+
+# Logs
+logs/
+*.log
+
+# Development databases
+dev-database/
+test-airtable/
+
+# N8N workflow exports with credentials
+n8n-workflows/**/*-with-credentials.json
+
+# ============================================================================
+# KEEP THESE FILES (Explicitly included)
+# ============================================================================
+!.gitkeep
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!requirements.txt
+!package.json
+!setup.py
+!environment-variables-template.env
+!airtable/schemas/*.json
+!examples/**/README.md
+!docs/**/*.md
