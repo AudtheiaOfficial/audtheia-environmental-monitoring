@@ -1,0 +1,362 @@
+{
+  "tableName": "Environmental Mapping",
+  "description": "Satellite imagery, spatial analysis, and cartographic data linked to species observations",
+  "primaryKey": "Observation ID",
+  "totalColumns": 10,
+  "dataSource": "N8N RTSP Analyst Workflow - Agent 8 (Cartography Mapper)",
+  "updateFrequency": "Real-time (linked to Species Observations)",
+  "columns": [
+    {
+      "name": "Observation ID",
+      "type": "linkedRecord",
+      "description": "Links to Species Observations table (One-to-One relationship)",
+      "required": true,
+      "primaryKey": true,
+      "linkedTable": "Species Observations",
+      "example": "obs-2025-11-27-14-32-15-abc123",
+      "aiAgent": "System Generated",
+      "category": "Relationship"
+    },
+    {
+      "name": "Satellite Imagery Zoom 10",
+      "type": "url",
+      "description": "Mapbox satellite imagery at zoom level 10 (~1:500,000 scale, regional context)",
+      "required": false,
+      "example": "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/-84.567,10.234,10,0/600x400?access_token=pk.eyJ1...",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Satellite Imagery",
+      "zoomLevel": 10,
+      "approximateScale": "1:500,000",
+      "groundResolution": "~152 meters/pixel",
+      "viewArea": "~40km x 40km"
+    },
+    {
+      "name": "Satellite Imagery Zoom 12",
+      "type": "url",
+      "description": "Mapbox satellite imagery at zoom level 12 (~1:125,000 scale, landscape context)",
+      "required": false,
+      "example": "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/-84.567,10.234,12,0/600x400?access_token=pk.eyJ1...",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Satellite Imagery",
+      "zoomLevel": 12,
+      "approximateScale": "1:125,000",
+      "groundResolution": "~38 meters/pixel",
+      "viewArea": "~10km x 10km"
+    },
+    {
+      "name": "Satellite Imagery Zoom 14",
+      "type": "url",
+      "description": "Mapbox satellite imagery at zoom level 14 (~1:32,000 scale, site detail)",
+      "required": false,
+      "example": "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/-84.567,10.234,14,0/600x400?access_token=pk.eyJ1...",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Satellite Imagery",
+      "zoomLevel": 14,
+      "approximateScale": "1:32,000",
+      "groundResolution": "~9.5 meters/pixel",
+      "viewArea": "~2.5km x 2.5km"
+    },
+    {
+      "name": "Marine Enhancement Data",
+      "type": "longText",
+      "description": "JSON data with marine-specific features for coastal observations (NOAA stations, bathymetry, marine zones)",
+      "required": false,
+      "format": "JSON",
+      "example": "{\"noaaStations\": [{\"id\": \"9412110\", \"name\": \"Monterey\", \"distance\": 2.3}], \"bathymetry\": {\"depth\": 45, \"substrate\": \"rocky\"}, \"marineZone\": \"neritic\"}",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Marine Data",
+      "applicability": "Coastal and marine observations only"
+    },
+    {
+      "name": "NOAA Station Data",
+      "type": "longText",
+      "description": "JSON data from nearest NOAA Co-OPS station (tides, currents, water level)",
+      "required": false,
+      "format": "JSON",
+      "example": "{\"stationId\": \"9412110\", \"stationName\": \"Monterey, CA\", \"distance\": 2.3, \"waterLevel\": 1.45, \"currentSpeed\": 0.8, \"currentDirection\": 285}",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Marine Data",
+      "applicability": "Coastal observations only"
+    },
+    {
+      "name": "Bathymetry Data",
+      "type": "longText",
+      "description": "JSON data with depth soundings and underwater topography (marine only)",
+      "required": false,
+      "format": "JSON",
+      "example": "{\"depth\": 45, \"depthSource\": \"NOAA NCEI\", \"underwaterFeatures\": [\"Coral reef structure\", \"Rocky substrate\"], \"bathymetricContours\": [10, 20, 30, 40, 50]}",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Marine Data",
+      "applicability": "Marine observations only"
+    },
+    {
+      "name": "Cartographic Analysis",
+      "type": "longText",
+      "description": "AI-generated interpretation of satellite imagery and spatial features",
+      "required": false,
+      "example": "Dense tropical rainforest canopy visible at all zoom levels. NDVI analysis indicates healthy vegetation (0.85-0.92). No visible degradation or clearing. Riparian corridor visible on eastern boundary connecting to larger forest matrix. Adjacent land use shows small-scale agriculture to the south. Intact forest connectivity to north and west suggests minimal fragmentation risk in core habitat area.",
+      "aiAgent": "Agent 8: Cartography Mapper",
+      "category": "Spatial Analysis"
+    },
+    {
+      "name": "Spatial Context",
+      "type": "longText",
+      "description": "Broader spatial and landscape context description",
+      "required": false,
+      "example": "Observation location situated within continuous lowland tropical rainforest approximately 15km from Pacific coast. Elevation gradient from 200-800m provides diverse microhabitat zones. Location is within Manuel Antonio National Park protected area boundaries. Nearest human settlement is 3.2km to southeast. Regional context shows this area as part of larger Central American biological corridor.",
+      "aiAgent": "Agent 8: Cartography Mapper + Agent 2: GIS Data Manager",
+      "category": "Spatial Analysis"
+    },
+    {
+      "name": "Timestamp",
+      "type": "dateTime",
+      "description": "When cartographic analysis was generated (ISO 8601 UTC)",
+      "required": true,
+      "example": "2025-11-27T14:32:45.678Z",
+      "aiAgent": "System Generated",
+      "category": "Metadata"
+    }
+  ],
+  "columnCategorySummary": {
+    "Relationship": 1,
+    "Satellite Imagery": 3,
+    "Marine Data": 3,
+    "Spatial Analysis": 2,
+    "Metadata": 1
+  },
+  "aiAgentContributions": {
+    "Agent 8: Cartography Mapper": 8,
+    "Agent 2: GIS Data Manager": 1,
+    "System Generated": 2
+  },
+  "relatedTables": [
+    {
+      "tableName": "Species Observations",
+      "relationship": "One-to-One",
+      "linkField": "Observation ID",
+      "description": "Each Environmental Mapping record corresponds to exactly one Species Observation"
+    }
+  ],
+  "satelliteImagerySpecifications": {
+    "provider": "Mapbox",
+    "style": "satellite-v9",
+    "format": "JPEG",
+    "dimensions": "600x400 pixels",
+    "colorSpace": "RGB",
+    "projection": "Web Mercator (EPSG:3857)",
+    "zoomLevels": [
+      {
+        "zoom": 10,
+        "scale": "1:500,000",
+        "groundResolution": "152.87 meters/pixel",
+        "viewArea": "~40km x 40km",
+        "purpose": "Regional context, landscape patterns"
+      },
+      {
+        "zoom": 12,
+        "scale": "1:125,000",
+        "groundResolution": "38.22 meters/pixel",
+        "viewArea": "~10km x 10km",
+        "purpose": "Landscape context, habitat connectivity"
+      },
+      {
+        "zoom": 14,
+        "scale": "1:32,000",
+        "groundResolution": "9.55 meters/pixel",
+        "viewArea": "~2.5km x 2.5km",
+        "purpose": "Site detail, immediate habitat features"
+      }
+    ],
+    "urlStructure": "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/{lon},{lat},{zoom},0/{width}x{height}?access_token={token}",
+    "expirationPolicy": "URLs expire after 30 days for security"
+  },
+  "marineDataSources": {
+    "NOAA_CO-OPS": {
+      "fullName": "NOAA Center for Operational Oceanographic Products and Services",
+      "dataTypes": [
+        "Water levels",
+        "Tides",
+        "Currents",
+        "Meteorological data"
+      ],
+      "stationCoverage": "US coastal waters, Great Lakes, some international",
+      "updateFrequency": "Real-time (6-minute intervals)"
+    },
+    "NOAA_NCEI": {
+      "fullName": "NOAA National Centers for Environmental Information",
+      "dataTypes": [
+        "Bathymetry",
+        "Seafloor mapping",
+        "Historical oceanographic data"
+      ],
+      "coverage": "Global oceans",
+      "resolution": "Variable (1m to 100m grid)"
+    },
+    "OpenElevation": {
+      "fullName": "Open Elevation Service",
+      "dataTypes": [
+        "Bathymetry",
+        "Elevation"
+      ],
+      "coverage": "Global",
+      "source": "SRTM, GEBCO"
+    }
+  },
+  "dataQualityRules": {
+    "required": [
+      "Observation ID",
+      "Timestamp"
+    ],
+    "conditionalRequired": {
+      "marineObservations": [
+        "Marine Enhancement Data",
+        "Bathymetry Data"
+      ],
+      "coastalObservations": [
+        "Marine Enhancement Data",
+        "NOAA Station Data"
+      ]
+    },
+    "validation": {
+      "Observation ID": "Must exist in Species Observations table",
+      "Satellite Imagery URLs": "Must be valid HTTPS URLs starting with https://api.mapbox.com/",
+      "JSON fields": "Must be valid JSON format",
+      "Timestamp": "Must be ISO 8601 format (UTC)"
+    }
+  },
+  "jsonSchemas": {
+    "Marine Enhancement Data": {
+      "type": "object",
+      "properties": {
+        "noaaStations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "name": {"type": "string"},
+              "distance": {"type": "number", "description": "Distance in kilometers"}
+            }
+          }
+        },
+        "bathymetry": {
+          "type": "object",
+          "properties": {
+            "depth": {"type": "number", "description": "Meters"},
+            "substrate": {"type": "string"}
+          }
+        },
+        "marineZone": {
+          "type": "string",
+          "enum": ["neritic", "oceanic", "intertidal", "estuarine"]
+        }
+      }
+    },
+    "NOAA Station Data": {
+      "type": "object",
+      "properties": {
+        "stationId": {"type": "string"},
+        "stationName": {"type": "string"},
+        "distance": {"type": "number", "description": "Kilometers from observation"},
+        "waterLevel": {"type": "number", "description": "Meters above MLLW"},
+        "currentSpeed": {"type": "number", "description": "Knots"},
+        "currentDirection": {"type": "number", "description": "Degrees from true north"}
+      }
+    },
+    "Bathymetry Data": {
+      "type": "object",
+      "properties": {
+        "depth": {"type": "number", "description": "Meters"},
+        "depthSource": {"type": "string"},
+        "underwaterFeatures": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "bathymetricContours": {
+          "type": "array",
+          "items": {"type": "number"},
+          "description": "Depth contours in meters"
+        }
+      }
+    }
+  },
+  "usage": {
+    "primaryPurpose": "Spatial and cartographic context for species observations",
+    "secondaryPurposes": [
+      "Habitat quality assessment via satellite imagery",
+      "Marine environment characterization",
+      "Spatial pattern analysis",
+      "Land use context visualization",
+      "Connectivity assessment"
+    ],
+    "analysisApplications": [
+      "Habitat suitability modeling",
+      "Spatial clustering analysis",
+      "Land use change detection",
+      "Marine protected area planning",
+      "Corridor connectivity assessment"
+    ],
+    "visualizationUses": [
+      "Daily Reporter PDF reports",
+      "Research presentations",
+      "Conservation planning documents",
+      "Institutional reports to NOAA/MBARI"
+    ]
+  },
+  "bestPractices": {
+    "satelliteImagery": [
+      "Generate all 3 zoom levels for complete context",
+      "Verify URLs are accessible before storing",
+      "Re-generate URLs if older than 30 days",
+      "Use HTTPS only for security"
+    ],
+    "marineData": [
+      "Only populate for coastal/marine observations",
+      "Verify NOAA station is within 50km",
+      "Include distance to station in metadata",
+      "Note data timestamp for tide-dependent measurements"
+    ],
+    "cartographicAnalysis": [
+      "Use GPT-4 Vision for imagery interpretation",
+      "Include specific observable features",
+      "Note any degradation indicators",
+      "Assess habitat connectivity",
+      "Identify land use context"
+    ],
+    "spatialContext": [
+      "Include protected area status",
+      "Note distance to human settlements",
+      "Describe regional landscape patterns",
+      "Identify corridor connections",
+      "Assess fragmentation risk"
+    ]
+  },
+  "fairCompliance": {
+    "Findable": "Linked via unique Observation ID to Species Observations",
+    "Accessible": "Airtable API, CSV export, satellite imagery URLs publicly accessible",
+    "Interoperable": "Standard geospatial formats, JSON structure, Web Mercator projection",
+    "Reusable": "MIT License, comprehensive metadata, clear data provenance"
+  },
+  "integrationPoints": {
+    "upstream": {
+      "source": "N8N RTSP Analyst Workflow",
+      "agent": "Agent 8: Cartography Mapper",
+      "trigger": "Species Observation creation",
+      "frequency": "Real-time"
+    },
+    "downstream": {
+      "consumers": [
+        "Daily Reporter N8N Workflow (Agent 4: Cartographic & Spatial Analyst)",
+        "Research data exports",
+        "GIS analysis tools",
+        "Conservation planning software"
+      ]
+    }
+  },
+  "storageConsiderations": {
+    "rowSize": "Typical: ~2-5 KB per record (mostly text URLs and JSON)",
+    "imageStorage": "Images NOT stored in Airtable (URLs only, hosted by Mapbox)",
+    "scalability": "Minimal storage impact, URLs only",
+    "archival": "Export JSON and URLs to long-term storage if Mapbox URLs expire"
+  }
+}

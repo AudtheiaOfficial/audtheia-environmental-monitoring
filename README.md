@@ -1,23 +1,24 @@
-# Audtheia: AI-Powered Environmental Monitoring System
+# Audtheia Environmental Monitoring System
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/blob/main/LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=social)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/AudtheiaOfficial/audtheia-environmental-monitoring?style=social)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/AudtheiaOfficial/audtheia-environmental-monitoring)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
+[![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
 
 **Real-time Computer Vision + Deep AI Analysis for Research-Grade Ecological Datasets**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Anthropic Claude](https://img.shields.io/badge/AI-Claude%203.5%20Sonnet-orange.svg)](https://www.anthropic.com/claude)
-[![Status](https://img.shields.io/badge/status-operational-brightgreen.svg)]()
+Audtheia is a professional environmental monitoring system that combines real-time computer vision (60 FPS video processing) with AI-powered analysis to generate research-grade ecological datasets and automated daily intelligence reports. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring. Each species observation generates 72 comprehensive data points used for both database storage and automated PDF report generation.
 
 ---
 
-## Overview
+## The Problem Audtheia Solves
 
-**Audtheia** is a professional environmental monitoring system that combines **real-time computer vision** (60 FPS video processing) with **AI-powered analysis** to generate research-grade ecological datasets and automated daily intelligence reports. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring. Each species observation generates 72 comprehensive data points used for both database storage and automated PDF report generation.
+Traditional environmental monitoring systems face a critical trade-off: **processing speed versus analytical depth**. Real-time systems can track species movements but lack detailed ecological analysis. Deep analysis systems provide rich data but cannot process video in real-time.
 
-### Key Innovation
+**Audtheia solves this through asynchronous architecture**:
 
-Traditional environmental monitoring systems face a critical trade-off: **processing speed** versus **analytical depth**. Real-time systems can track species movements but lack detailed ecological analysis. Deep analysis systems provide rich data but cannot process video in real-time.
-
-**Audtheia solves this through asynchronous architecture:**
 - **Roboflow RTSP Workflow**: Processes video at 60 FPS with YOLOv11 object detection, ByteTrack multi-object tracking, and live visualization
 - **N8N RTSP Analyst**: Conducts deep AI analysis in parallel using 9 specialized agents, generating 72 data points per species observation
 - **Daily Reporter Workflow**: Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents
@@ -31,7 +32,8 @@ Traditional environmental monitoring systems face a critical trade-off: **proces
 
 The Audtheia ecosystem consists of four integrated components:
 
-### 1. Roboflow RTSP Workflow (Real-Time Processing)
+### 1. Roboflow RTSP Workflow (Real-time Video Processing)
+
 **Purpose**: 60 FPS video processing with object detection and tracking
 
 **Components**:
@@ -40,16 +42,17 @@ The Audtheia ecosystem consists of four integrated components:
 - **Custom Python Blocks**:
   - `Detection_Converter`: Converts predictions to structured data
   - `Add_Webcam_Interface`: Professional video overlay with species ticker
-  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis using Claude 3.5 Sonnet
+  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis using **Claude 3.5 Sonnet**
   - `Analyst_Caller`: Sends detections to N8N for deep analysis
 
 **Video Input**: RTSP streams, MP4 files, webcam feeds  
 **Output**: Annotated video stream + detection data → N8N RTSP Analyst
 
 ### 2. N8N RTSP Analyst Workflow (Deep AI Analysis)
+
 **Purpose**: Comprehensive species and environmental intelligence using 9 specialized AI agents
 
-**AI Agents** (powered by OpenAI GPT-4o):
+**AI Agents (powered by OpenAI GPT-4o)**:
 1. **Systematics Phenologist**: Taxonomic classification, phenological analysis, temporal behavior patterns
 2. **GIS Data Manager**: Coordinate validation, geographic context, spatial analysis
 3. **Biodiversity Intelligence**: Conservation status (IUCN), rarity scoring, ecological role assessment
@@ -76,10 +79,11 @@ The Audtheia ecosystem consists of four integrated components:
 
 **Output**: 72 data points per species observation → Airtable Database
 
-### 3. Daily Reporter N8N Workflow (Report Generation)
+### 3. Daily Reporter N8N Workflow (Automated Report Generation)
+
 **Purpose**: Automated generation of professional environmental intelligence reports
 
-**AI Agents** (powered by OpenAI GPT-4o):
+**AI Agents (powered by OpenAI GPT-4o)**:
 1. **Species & Biodiversity Analyst**: Synthesizes taxonomic data, conservation status, rarity assessments, and biodiversity metrics into comprehensive species intelligence
 2. **Environmental & Climate Analyst**: Analyzes marine/terrestrial climate conditions, oceanographic data, atmospheric conditions, and environmental trends
 3. **Habitat & Conservation Analyst**: Evaluates habitat quality, ecosystem health, conservation implications, and management recommendations
@@ -96,7 +100,8 @@ The Audtheia ecosystem consists of four integrated components:
 
 **Output**: Publication-quality PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations)
 
-### 4. Airtable Database (Central Data Repository)
+### 4. Airtable Database (Research-Grade Data Storage)
+
 **Purpose**: Structured storage of all observation data for research and analysis
 
 **Database Tables**:
@@ -107,7 +112,7 @@ The Audtheia ecosystem consists of four integrated components:
 
 ---
 
-## System Workflow
+## Data Flow
 
 ```
 Video Input (RTSP/MP4/Webcam)
@@ -142,18 +147,15 @@ Professional PDF Intelligence Report
 - **Python**: 3.8 or higher
 - **Operating System**: Windows, macOS, or Linux
 - **GPU**: CUDA-compatible GPU recommended for real-time processing
-- **API Keys**: Anthropic, Roboflow, Airtable, GBIF, Mapbox (see Configuration)
+- **API Keys**: Anthropic, OpenAI, Roboflow, Airtable, GBIF, Mapbox (see [Configuration](#configuration))
 
-### Step 1: Clone Repository
+### Quick Start
 
 ```bash
+# Clone repository
 git clone https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring.git
 cd audtheia-environmental-monitoring
-```
 
-### Step 2: Install Dependencies
-
-```bash
 # Create virtual environment (recommended)
 python -m venv venv
 
@@ -167,17 +169,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 3: Configure Environment Variables
-
-```bash
-# Copy environment template
-cp .env.template .env
-
-# Edit .env file with your API keys
-# See Configuration section below for required credentials
-```
-
-### Step 4: Import N8N Workflows
+### N8N Workflow Setup
 
 1. Install [N8N](https://n8n.io/) locally or use N8N Cloud
 2. Import workflow files from `n8n-workflows/` directory:
@@ -185,17 +177,17 @@ cp .env.template .env
    - `daily-reporter/Daily_Reporter__GitHub_Template_.json`
 3. Configure N8N credentials for Anthropic, OpenAI, Airtable, and external APIs
 
-### Step 5: Configure Roboflow Workflow
+### Roboflow Configuration
 
 1. Upload `roboflow/workflows/Roboflow_Anthropic_Integration_Workflow__GitHub_Template_.py` to your Roboflow workspace
 2. Configure custom Python blocks with your API credentials
 3. Set RTSP stream URL or video file path
 
+For detailed installation instructions, see [`docs/installation.md`](docs/installation.md).
+
 ---
 
 ## Configuration
-
-### Required API Keys
 
 Create a `.env` file based on `.env.template` and add the following credentials:
 
@@ -232,7 +224,7 @@ API_NINJAS_KEY=your_api_ninjas_key
 
 # Mapping Services
 MAPBOX_ACCESS_TOKEN=pk.eyJ1...
-OPEN_METEO_API_KEY=your_openmeteo_key (if required)
+OPEN_METEO_API_KEY=your_openmeteo_key  # if required
 
 # Video Processing
 RTSP_CAMERA_URL=rtsp://your-camera-url
@@ -241,7 +233,7 @@ VIDEO_RESOLUTION_WIDTH=1920
 VIDEO_RESOLUTION_HEIGHT=1080
 ```
 
-### How to Obtain API Keys
+### API Key Acquisition
 
 - **Anthropic Claude**: [Sign up at Anthropic](https://www.anthropic.com/)
 - **OpenAI**: [Sign up at OpenAI](https://openai.com/)
@@ -256,29 +248,28 @@ VIDEO_RESOLUTION_HEIGHT=1080
 
 ## Usage
 
-### Running Real-Time Video Processing
+### Running the Roboflow RTSP Workflow
 
 ```bash
 # Activate virtual environment
 source venv/bin/activate  # macOS/Linux
 # or
-venv\Scripts\activate     # Windows
+venv\Scripts\activate  # Windows
 
 # Run Roboflow RTSP Workflow
 python roboflow/workflows/Deploy_Roboflow_Anthropic_Pipeline.py
 ```
 
 The system will:
-1. Connect to RTSP stream or video file
-2. Process video at 60 FPS with object detection
-3. Track species with ByteTrack
-4. Send detection data to N8N RTSP Analyst every 15 seconds
-5. Display annotated video with species ticker
+- Connect to RTSP stream or video file
+- Process video at 60 FPS with object detection
+- Track species with ByteTrack
+- Send detection data to N8N RTSP Analyst every 15 seconds
+- Display annotated video with species ticker
 
-### Triggering Deep AI Analysis
+### Running N8N Workflows
 
 The N8N RTSP Analyst workflow automatically processes detection data sent from Roboflow. Each species observation generates:
-
 - Taxonomic classification and phenology
 - Geographic and spatial context
 - Biodiversity and conservation metrics
@@ -303,9 +294,9 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 
 ---
 
-## Data Output
+## Data Structure
 
-### Species Observations Table (62 columns)
+### Species Observations Table (62 Columns)
 
 **Taxonomic Data**:
 - Species Name, Common Name, Scientific Classification
@@ -339,7 +330,7 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 - Ocean Current, Wave Height
 - Substrate Type, Land Cover Type
 
-### Environmental Mapping Table (10 columns)
+### Environmental Mapping Table (10 Columns)
 
 - Observation ID (links to Species Observations)
 - Satellite Imagery URLs (3 zoom levels)
@@ -347,21 +338,25 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 - Cartographic Analysis
 - Timestamp
 
+For complete schema details, see:
+- [`airtable-schemas/species-observations-schema.json`](airtable-schemas/species-observations-schema.json)
+- [`airtable-schemas/environmental-mapping-schema.json`](airtable-schemas/environmental-mapping-schema.json)
+
 ---
 
 ## Use Cases
 
-### Marine Research
+### Marine Ecosystems
 - **Coral reef monitoring**: Real-time species detection with comprehensive habitat assessment
 - **Sea turtle tracking**: Migration pattern analysis with oceanographic data integration
 - **Fish population surveys**: Automated counting with biodiversity intelligence
 
-### Terrestrial Conservation
+### Terrestrial Ecosystems
 - **Wildlife surveys**: Continuous monitoring with automated species identification
 - **Bird migration studies**: Temporal tracking with phenological analysis
 - **Endangered species monitoring**: Conservation status tracking with IUCN integration
 
-### Institutional Applications
+### Target Institutions
 - **NOAA**: Marine ecosystem monitoring and climate impact assessment
 - **MBARI**: Deep-sea research with automated species cataloging
 - **The Nature Conservancy**: Conservation planning with research-grade datasets
@@ -371,31 +366,30 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 
 ## System Requirements
 
-### Minimum Requirements
-- **CPU**: Intel Core i5 or equivalent
-- **RAM**: 16 GB
-- **Storage**: 50 GB available space
-- **GPU**: NVIDIA GTX 1060 or equivalent (for real-time processing)
-- **Network**: Stable internet connection for API calls
+### Minimum
+- CPU: Intel Core i5 or equivalent
+- RAM: 16 GB
+- Storage: 50 GB available space
+- GPU: NVIDIA GTX 1060 or equivalent (for real-time processing)
+- Network: Stable internet connection for API calls
 
-### Recommended Requirements
-- **CPU**: Intel Core i7 or AMD Ryzen 7
-- **RAM**: 32 GB
-- **Storage**: 100 GB SSD
-- **GPU**: NVIDIA RTX 3060 or higher
-- **Network**: High-speed internet (50+ Mbps)
+### Recommended
+- CPU: Intel Core i7 or AMD Ryzen 7
+- RAM: 32 GB
+- Storage: 100 GB SSD
+- GPU: NVIDIA RTX 3060 or higher
+- Network: High-speed internet (50+ Mbps)
 
 ---
 
-## Development Roadmap
+## Current Status
 
-### Current Status (v1.0) ✅
 - ✅ Roboflow RTSP Workflow (operational)
 - ✅ N8N RTSP Analyst (9 AI agents operational)
 - ✅ Daily Reporter Workflow (5 AI agents operational)
 - ✅ Airtable Database integration (operational)
 
-### Future Enhancements 🔮
+### In Development
 - Multi-camera synchronization
 - Edge deployment for remote locations
 - Mobile application for field researchers
@@ -407,7 +401,6 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 ## Contributing
 
 We welcome contributions from the research community! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-
 - Bug reports and feature requests
 - Code contributions
 - Dataset contributions
@@ -442,15 +435,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Audtheia is built on the shoulders of giants:
 
+**AI & ML**:
 - **Anthropic**: Claude 3.5 Sonnet for Roboflow workflow environmental analysis
 - **OpenAI**: GPT-4o for N8N workflow AI agent orchestration
 - **Roboflow**: Computer vision infrastructure and YOLOv11 integration
+
+**Infrastructure**:
 - **N8N**: Workflow automation and AI agent orchestration
 - **Airtable**: Database management and data organization
+
+**Scientific Data**:
 - **GBIF**: Global biodiversity occurrence data
 - **iNaturalist**: Community science observations
 - **IUCN**: Conservation status data
 - **API Ninjas**: Species characteristics and biodiversity data
+
+**Geospatial Services**:
 - **NOAA**: Marine and climate data
 - **Mapbox**: Satellite imagery and cartographic services
 - **Open-Meteo**: Climate and weather data
