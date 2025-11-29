@@ -12,16 +12,14 @@ Webhook Trigger (Detection Data)
     ↓
 Parallel Agent Execution (9 agents)
     ├─ Agent 1: Systematics Phenologist
-    ├─ Agent 2: GIS Data Manager
-    ├─ Agent 3: Biodiversity Intelligence
-    ├─ Agent 4: EnviroStatus Manager
-    ├─ Agent 5: Marine Climate Search
-    ├─ Agent 6: Terrestrial Climate Search
-    ├─ Agent 7: Habitat Assessment
-    └─ Agent 8: Cartography Mapper
-    ↓
-Sequential Execution:
-    └─ Agent 9: Memory Manager
+    ├─ Agent 2: Memory Manager
+    ├─ Agent 3: GIS Data Manager
+    ├─ Agent 4: Biodiversity Intelligence
+    ├─ Agent 5: EnviroStatus Manager
+    ├─ Agent 6: Marine Climate Search
+    ├─ Agent 7: Terrestrial Climate Search
+    ├─ Agent 8: Habitat Assessment
+    └─ Agent 9: Cartography Mapper
     ↓
 Data Aggregation (72 data points)
     ↓
@@ -70,7 +68,52 @@ Webhook Response
 
 ---
 
-### Agent 2: GIS Data Manager
+### Agent 2: Memory Manager
+
+**Purpose**: Spatiotemporal context and pattern recognition
+
+**Input**:
+- Historical observations from Airtable
+
+**Data Sources**:
+- Airtable (Species Observations table)
+
+**Output** (5 data points):
+- Spatiotemporal context (text)
+- Pattern recognition (text)
+- Anomaly detection (text)
+- Observation history summary
+- Trend analysis
+
+**Analysis Process**:
+1. Query Airtable for past observations in area
+2. Analyze temporal patterns (seasonal, daily)
+3. Identify spatial patterns (clustering, migration)
+4. Detect anomalies (unusual species, times, locations)
+5. Generate contextual summary
+6. Provide trend analysis
+
+**Example Output**:
+```
+Spatiotemporal Context:
+"This Rufous-tailed Hummingbird observation is the 18th recorded
+in this tropical rainforest location over the past 30 days. The
+species shows consistent diurnal activity patterns with peak
+observations between 0900-1500 local time."
+
+Pattern Recognition:
+"Observations cluster within 500m radius, suggesting established
+territory. Frequency aligns with known breeding season (March-July)
+in this biogeographic region."
+
+Anomaly Detection:
+"No significant anomalies detected. Observation consistent with
+historical patterns for species and location."
+```
+
+---
+
+### Agent 3: GIS Data Manager
 
 **Purpose**: Geographic validation and spatial context
 
@@ -108,7 +151,7 @@ Webhook Response
 
 ---
 
-### Agent 3: Biodiversity Intelligence
+### Agent 4: Biodiversity Intelligence
 
 **Purpose**: Conservation status and biodiversity metrics
 
@@ -159,7 +202,7 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 ---
 
-### Agent 4: EnviroStatus Manager
+### Agent 5: EnviroStatus Manager
 
 **Purpose**: Habitat assessment and ecosystem classification
 
@@ -194,7 +237,7 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 ---
 
-### Agent 5: Marine Climate Search
+### Agent 6: Marine Climate Search
 
 **Purpose**: Marine environmental data analysis (activated for coastal/marine observations)
 
@@ -231,7 +274,7 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 ---
 
-### Agent 6: Terrestrial Climate Search
+### Agent 7: Terrestrial Climate Search
 
 **Purpose**: Terrestrial climate and soil data (activated for land-based observations)
 
@@ -268,7 +311,7 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 ---
 
-### Agent 7: Habitat Assessment
+### Agent 8: Habitat Assessment
 
 **Purpose**: Ecosystem health and vegetation analysis
 
@@ -318,7 +361,7 @@ Result: 0 (degraded) to 100 (pristine)
 
 ---
 
-### Agent 8: Cartography Mapper
+### Agent 9: Cartography Mapper
 
 **Purpose**: Satellite imagery generation and spatial analysis
 
@@ -363,52 +406,6 @@ https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/
 Example:
 https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/
 -84.567,10.234,10,0/600x400?access_token=pk.eyJ1...
-```
-
----
-
-### Agent 9: Memory Manager
-
-**Purpose**: Spatiotemporal context and pattern recognition
-
-**Input**:
-- All outputs from Agents 1-8
-- Historical observations from Airtable
-
-**Data Sources**:
-- Airtable (Species Observations table)
-
-**Output** (5 data points):
-- Spatiotemporal context (text)
-- Pattern recognition (text)
-- Anomaly detection (text)
-- Observation history summary
-- Trend analysis
-
-**Analysis Process**:
-1. Query Airtable for past observations in area
-2. Analyze temporal patterns (seasonal, daily)
-3. Identify spatial patterns (clustering, migration)
-4. Detect anomalies (unusual species, times, locations)
-5. Generate contextual summary
-6. Provide trend analysis
-
-**Example Output**:
-```
-Spatiotemporal Context:
-"This Rufous-tailed Hummingbird observation is the 18th recorded
-in this tropical rainforest location over the past 30 days. The
-species shows consistent diurnal activity patterns with peak
-observations between 0900-1500 local time."
-
-Pattern Recognition:
-"Observations cluster within 500m radius, suggesting established
-territory. Frequency aligns with known breeding season (March-July)
-in this biogeographic region."
-
-Anomaly Detection:
-"No significant anomalies detected. Observation consistent with
-historical patterns for species and location."
 ```
 
 ---
