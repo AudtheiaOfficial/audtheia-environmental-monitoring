@@ -1,12 +1,20 @@
 # Roboflow Workflows
-
 Real-time video processing with object detection, tracking, and AI-powered environmental analysis at 60 FPS.
 
 ## Overview
-
 The Roboflow RTSP Workflow processes video streams in real-time using YOLOv11 object detection and ByteTrack multi-object tracking. Custom Python blocks add environmental analysis (Claude 3.5 Sonnet) and send detection data to N8N for deep analysis. The workflow maintains 60 FPS processing speed while conducting comprehensive ecological assessments every 15 seconds.
 
+---
+
 ## Workflow Architecture
+
+![Roboflow Anthropic Integration Workflow](images/roboflow-anthropic-integration-workflow.png)
+
+**Figure 1: Roboflow Anthropic Integration Workflow** - Complete system architecture showing YOLOv11 object detection, ByteTrack multi-object tracking, custom Python blocks (Detection_Converter, Add_Webcam_Interface, Anthropic_Environmental_Analyzer, Analyst_Caller), and N8N integration for deep ecological analysis.
+
+---
+
+### Data Flow
 
 ```
 Video Source (RTSP/MP4/Webcam)
@@ -32,13 +40,15 @@ Analyst_Caller (Custom Block)
 HTTP POST → N8N RTSP Analyst Workflow
 ```
 
+---
+
 ## Custom Python Blocks
 
 ### Block 1: Detection_Converter
+**Purpose:** Convert YOLOv11 predictions to structured JSON format
 
-**Purpose**: Convert YOLOv11 predictions to structured JSON format
+**Input:** Raw YOLO detection object
 
-**Input**: Raw YOLO detection object
 ```python
 {
     'boxes': tensor([[120.5, 340.2, 180.8, 420.1]]),
@@ -48,7 +58,8 @@ HTTP POST → N8N RTSP Analyst Workflow
 }
 ```
 
-**Code**:
+**Code:**
+
 ```python
 def convert_detections(predictions):
     """
@@ -82,7 +93,8 @@ def convert_detections(predictions):
     return detections
 ```
 
-**Output**:
+**Output:**
+
 ```json
 [
     {
@@ -95,19 +107,19 @@ def convert_detections(predictions):
 ]
 ```
 
-**Integration**: Place after YOLOv11 inference node, before ByteTrack
+**Integration:** Place after YOLOv11 inference node, before ByteTrack
 
 ---
 
 ### Block 2: Add_Webcam_Interface
+**Purpose:** Add professional video overlay with species ticker and bounding boxes
 
-**Purpose**: Add professional video overlay with species ticker and bounding boxes
-
-**Input**:
+**Input:**
 - Video frame (numpy array)
 - Detections with track IDs
 
-**Code**:
+**Code:**
+
 ```python
 import cv2
 import numpy as np
@@ -216,28 +228,28 @@ def add_webcam_interface(frame, detections):
     return final
 ```
 
-**Output**: Annotated video frame with professional overlay
+**Output:** Annotated video frame with professional overlay
 
-**Visual Elements**:
-- **Top Bar**: Audtheia branding + species ticker (top 3 species counts)
-- **Bounding Boxes**: Color-coded by confidence (green/yellow/red)
-- **Labels**: Species name, track ID, confidence score
-- **Bottom Bar**: FPS, detection count, timestamp
+**Visual Elements:**
+- **Top Bar:** Audtheia branding + species ticker (top 3 species counts)
+- **Bounding Boxes:** Color-coded by confidence (green/yellow/red)
+- **Labels:** Species name, track ID, confidence score
+- **Bottom Bar:** FPS, detection count, timestamp
 
-**Integration**: Place after ByteTrack, before video display
+**Integration:** Place after ByteTrack, before video display
 
 ---
 
 ### Block 3: Anthropic_Environmental_Analyzer
+**Purpose:** Comprehensive environmental analysis every 15 seconds using Claude 3.5 Sonnet
 
-**Purpose**: Comprehensive environmental analysis every 15 seconds using Claude 3.5 Sonnet
-
-**Input**:
+**Input:**
 - Detection summary (last 15 seconds)
 - Video frame context
 - Location metadata
 
-**Code**:
+**Code:**
+
 ```python
 import anthropic
 import os
@@ -322,7 +334,8 @@ Be specific and scientific, but concise (200-300 words)."""
     }
 ```
 
-**Output**:
+**Output:**
+
 ```json
 {
     "timestamp": "2025-11-27T14:32:15.123Z",
@@ -336,25 +349,25 @@ Be specific and scientific, but concise (200-300 words)."""
 }
 ```
 
-**API Requirements**:
+**API Requirements:**
 - Anthropic API key (set as environment variable)
 - Model: claude-3-5-sonnet-20241022
 - Vision capability required
 
-**Integration**: Runs every 15 seconds (configurable), analyzes accumulated detections
+**Integration:** Runs every 15 seconds (configurable), analyzes accumulated detections
 
 ---
 
 ### Block 4: Analyst_Caller
+**Purpose:** Send detection batch to N8N RTSP Analyst workflow for deep analysis
 
-**Purpose**: Send detection batch to N8N RTSP Analyst workflow for deep analysis
-
-**Input**:
+**Input:**
 - Detection batch (15 seconds)
 - Environmental analysis from Claude
 - Location metadata
 
-**Code**:
+**Code:**
+
 ```python
 import requests
 import os
@@ -418,7 +431,8 @@ def send_to_analyst(detections, environmental_analysis, location=None):
         }
 ```
 
-**Output**:
+**Output:**
+
 ```json
 {
     "success": true,
@@ -432,21 +446,18 @@ def send_to_analyst(detections, environmental_analysis, location=None):
 }
 ```
 
-**Environment Variables Required**:
-```bash
-N8N_WEBHOOK_BASE_URL=https://your-n8n-instance.app.n8n.cloud
-N8N_RTSP_ANALYST_WEBHOOK=/webhook/rtsp-analyst
-```
+**Environment Variables Required:**
+- `N8N_WEBHOOK_BASE_URL=https://your-n8n-instance.app.n8n.cloud`
+- `N8N_RTSP_ANALYST_WEBHOOK=/webhook/rtsp-analyst`
 
-**Integration**: Runs after Anthropic_Environmental_Analyzer, sends data to N8N
+**Integration:** Runs after Anthropic_Environmental_Analyzer, sends data to N8N
 
 ---
 
 ## Deployment Scripts
 
 ### Deploy_Roboflow_Anthropic_Pipeline.py
-
-**Purpose**: Main deployment script for running the complete Roboflow workflow
+**Purpose:** Main deployment script for running the complete Roboflow workflow
 
 ```python
 #!/usr/bin/env python3
@@ -560,7 +571,8 @@ cv2.destroyAllWindows()
 print("✅ Pipeline shutdown complete")
 ```
 
-**Run Command**:
+**Run Command:**
+
 ```bash
 python roboflow/workflows/Deploy_Roboflow_Anthropic_Pipeline.py
 ```
@@ -570,7 +582,6 @@ python roboflow/workflows/Deploy_Roboflow_Anthropic_Pipeline.py
 ## Configuration
 
 ### Environment Variables
-
 Create `.env` file:
 
 ```bash
@@ -604,24 +615,29 @@ LATITUDE=10.234
 LONGITUDE=-84.567
 ```
 
-### System Requirements
+---
 
-**Minimum**:
+## System Requirements
+
+**Minimum:**
 - GPU: NVIDIA GTX 1060 (4GB VRAM)
 - RAM: 16GB
 - CPU: Intel Core i5
 - Storage: 50GB
 
-**Recommended**:
+**Recommended:**
 - GPU: NVIDIA RTX 3060 (12GB VRAM)
 - RAM: 32GB
 - CPU: Intel Core i7 or AMD Ryzen 7
 - Storage: 100GB SSD
 
-### Dependencies
+---
+
+## Dependencies
 
 Install via `requirements.txt`:
-```bash
+
+```
 roboflow>=1.1.0
 anthropic>=0.18.0
 opencv-python>=4.8.0
@@ -635,8 +651,8 @@ numpy>=1.24.0
 ## Performance Optimization
 
 ### GPU Acceleration
-
 Enable CUDA:
+
 ```python
 import torch
 print(f"CUDA Available: {torch.cuda.is_available()}")
@@ -644,8 +660,8 @@ print(f"GPU: {torch.cuda.get_device_name(0)}")
 ```
 
 ### Batch Processing
-
 For higher throughput:
+
 ```python
 # Process frames in batches
 batch_size = 4
@@ -660,8 +676,8 @@ predictions = model.predict(frames_batch)
 ```
 
 ### Resolution Scaling
-
 For lower-end hardware:
+
 ```python
 # Reduce resolution
 frame = cv2.resize(frame, (1280, 720))  # Instead of 1920×1080
@@ -671,29 +687,29 @@ frame = cv2.resize(frame, (1280, 720))  # Instead of 1920×1080
 
 ## Troubleshooting
 
-### Issue: Low FPS (<60)
-**Solutions**:
+**Issue: Low FPS (<60)**  
+Solutions:
 - Enable GPU acceleration
 - Reduce video resolution
 - Lower detection confidence threshold (fewer boxes to draw)
 - Disable video display (headless mode)
 
-### Issue: RTSP connection fails
-**Solutions**:
+**Issue: RTSP connection fails**  
+Solutions:
 - Verify RTSP URL format
 - Check network connectivity
 - Test with VLC player first
 - Add authentication credentials
 
-### Issue: Anthropic API timeout
-**Solutions**:
+**Issue: Anthropic API timeout**  
+Solutions:
 - Increase timeout in requests (default: 30s)
 - Reduce frame resolution for vision analysis
 - Check API key validity
 - Monitor API rate limits
 
-### Issue: N8N webhook not receiving data
-**Solutions**:
+**Issue: N8N webhook not receiving data**  
+Solutions:
 - Verify webhook URL is correct
 - Check N8N workflow is activated
 - Test webhook with curl
@@ -704,7 +720,6 @@ frame = cv2.resize(frame, (1280, 720))  # Instead of 1920×1080
 ## Monitoring
 
 ### Real-Time Metrics
-
 Console output shows:
 - FPS (actual vs. target)
 - Detection count per frame
@@ -712,8 +727,8 @@ Console output shows:
 - N8N send status
 
 ### Logging
-
 Enable detailed logging:
+
 ```python
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -735,25 +750,25 @@ logging.basicConfig(level=logging.DEBUG)
 ## Integration Points
 
 ### → N8N RTSP Analyst
-- Sends: Detection batches every 15 seconds
-- Receives: Acknowledgment + observation IDs
-- Protocol: HTTP POST (JSON)
+- **Sends:** Detection batches every 15 seconds
+- **Receives:** Acknowledgment + observation IDs
+- **Protocol:** HTTP POST (JSON)
 
 ### → Airtable (via N8N)
-- Data flow: Roboflow → N8N → Airtable
-- Storage: 72 data points per species
-- Frequency: Real-time (15-second batches)
+- **Data flow:** Roboflow → N8N → Airtable
+- **Storage:** 72 data points per species
+- **Frequency:** Real-time (15-second batches)
 
 ---
 
 ## Support
 
-**Issues**: https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues  
-**Documentation**: See main README.md  
-**Custom Blocks**: Modify Python code in workflow  
+- **Issues:** https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues
+- **Documentation:** See main README.md
+- **Custom Blocks:** Modify Python code in workflow
 
 ---
 
-**Maintained by**: Andy Portalatin  
-**Last Updated**: November 27, 2025  
-**Version**: 1.0
+**Maintained by:** Andy Portalatin  
+**Last Updated:** November 27, 2025  
+**Version:** 1.0
