@@ -1,12 +1,20 @@
 # Daily Reporter N8N Workflow
-
 Automated generation of publication-quality environmental intelligence reports using 5 specialized AI agents powered by OpenAI GPT-4o.
 
 ## Overview
-
 The Daily Reporter Workflow synthesizes species observation data from the past 24 hours into comprehensive PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations). The workflow employs 5 specialized AI agents that analyze different domains, then integrates their findings into a cohesive narrative with professional formatting, embedded imagery, and FAIR data compliance.
 
+---
+
 ## Workflow Architecture
+
+![Daily Reporter Workflow](images/daily-reporter-workflow.png)
+
+**Figure 1: Daily Reporter N8N Workflow** - Automated environmental intelligence report generation using 5 specialized AI agents for species biodiversity analysis, environmental/climate assessment, habitat/conservation evaluation, cartography/spatial analysis, and report synthesis with professional PDF generation.
+
+---
+
+### Data Flow
 
 ```
 Daily Trigger (Midnight UTC)
@@ -38,13 +46,15 @@ Save to Airtable (Daily Reports table)
 Success Notification
 ```
 
+---
+
 ## AI Agents
 
 ### Agent 1: Species & Biodiversity Analyst
+**Purpose:** Comprehensive species-level analysis and biodiversity metrics
 
-**Purpose**: Comprehensive species-level analysis and biodiversity metrics
+**Input:**
 
-**Input**:
 ```json
 {
   "speciesObservations": [...],  // All observations from last 24h
@@ -56,11 +66,11 @@ Success Notification
 }
 ```
 
-**AI Model**: OpenAI GPT-4o  
-**Temperature**: 0.3 (factual, precise)  
-**Max Tokens**: 16,000
+**AI Model:** OpenAI GPT-4o  
+**Temperature:** 0.3 (factual, precise)  
+**Max Tokens:** 16,000
 
-**Analysis Performed**:
+**Analysis Performed:**
 - Species diversity metrics (Shannon index, Simpson index)
 - Taxonomic composition analysis
 - Conservation status distribution
@@ -70,7 +80,8 @@ Success Notification
 - Temporal activity patterns
 - Comparative analysis (day-over-day trends)
 
-**Output Structure**:
+**Output Structure:**
+
 ```json
 {
   "speciesAnalyses": [
@@ -99,7 +110,7 @@ Success Notification
 }
 ```
 
-**Key Insights Generated**:
+**Key Insights Generated:**
 - Which species are most/least common
 - Conservation priorities
 - Biodiversity health indicators
@@ -109,10 +120,10 @@ Success Notification
 ---
 
 ### Agent 2: Environmental & Climate Analyst
+**Purpose:** Environmental conditions and climate pattern analysis
 
-**Purpose**: Environmental conditions and climate pattern analysis
+**Input:**
 
-**Input**:
 ```json
 {
   "environmentalData": [...],  // All environmental records
@@ -121,11 +132,11 @@ Success Notification
 }
 ```
 
-**AI Model**: OpenAI GPT-4o  
-**Temperature**: 0.3  
-**Max Tokens**: 12,000
+**AI Model:** OpenAI GPT-4o  
+**Temperature:** 0.3  
+**Max Tokens:** 12,000
 
-**Analysis Performed**:
+**Analysis Performed:**
 - Marine climate trends (SST, currents, wave height)
 - Terrestrial climate trends (temperature, precipitation, humidity)
 - Atmospheric conditions analysis
@@ -134,7 +145,8 @@ Success Notification
 - Environmental anomaly detection
 - Seasonal pattern analysis
 
-**Output Structure**:
+**Output Structure:**
+
 ```json
 {
   "climateAnalysis": {
@@ -161,7 +173,7 @@ Success Notification
 }
 ```
 
-**Key Insights Generated**:
+**Key Insights Generated:**
 - Environmental conditions summary
 - Climate anomalies and their significance
 - Potential impacts on observed species
@@ -171,10 +183,10 @@ Success Notification
 ---
 
 ### Agent 3: Habitat & Conservation Analyst
+**Purpose:** Habitat assessment and conservation recommendations
 
-**Purpose**: Habitat assessment and conservation recommendations
+**Input:**
 
-**Input**:
 ```json
 {
   "habitatData": [...],
@@ -183,11 +195,11 @@ Success Notification
 }
 ```
 
-**AI Model**: OpenAI GPT-4o  
-**Temperature**: 0.4 (allows for nuanced recommendations)  
-**Max Tokens**: 14,000
+**AI Model:** OpenAI GPT-4o  
+**Temperature:** 0.4 (allows for nuanced recommendations)  
+**Max Tokens:** 14,000
 
-**Analysis Performed**:
+**Analysis Performed:**
 - Habitat type distribution
 - Ecosystem health scores
 - Conservation status analysis
@@ -197,7 +209,8 @@ Success Notification
 - Management recommendations
 - Priority conservation areas
 
-**Output Structure**:
+**Output Structure:**
+
 ```json
 {
   "habitatAssessment": {
@@ -240,7 +253,7 @@ Success Notification
 }
 ```
 
-**Key Insights Generated**:
+**Key Insights Generated:**
 - Habitat quality assessment
 - Conservation urgency levels
 - Specific management recommendations
@@ -250,10 +263,10 @@ Success Notification
 ---
 
 ### Agent 4: Cartography & Spatial Analyst [VISION]
+**Purpose:** Spatial pattern analysis and satellite imagery interpretation using GPT-4 Vision
 
-**Purpose**: Spatial pattern analysis and satellite imagery interpretation using GPT-4 Vision
+**Input:**
 
-**Input**:
 ```json
 {
   "satelliteImages": [...],  // Base64 encoded images (3 zoom levels per observation)
@@ -262,11 +275,11 @@ Success Notification
 }
 ```
 
-**AI Model**: OpenAI GPT-4o with Vision  
-**Temperature**: 0.3  
-**Max Tokens**: 20,000 (largest allocation for image analysis)
+**AI Model:** OpenAI GPT-4o with Vision  
+**Temperature:** 0.3  
+**Max Tokens:** 20,000 (largest allocation for image analysis)
 
-**Analysis Performed**:
+**Analysis Performed:**
 - Satellite imagery interpretation (3 zoom levels: 10, 12, 14)
 - Spatial distribution patterns
 - Geographic clustering analysis
@@ -276,7 +289,8 @@ Success Notification
 - Land use/cover interpretation
 - Marine enhancement features (for coastal areas)
 
-**Output Structure**:
+**Output Structure:**
+
 ```json
 {
   "spatialAnalysis": {
@@ -328,15 +342,14 @@ Success Notification
 }
 ```
 
-**Key Insights Generated**:
+**Key Insights Generated:**
 - Spatial patterns in species observations
 - Habitat quality from satellite imagery
 - Connectivity and fragmentation assessment
 - Land use context
 - Marine/terrestrial feature identification
 
-**VISION Capability**:
-This agent is unique because it uses GPT-4 Vision to analyze satellite imagery directly. It can identify:
+**VISION Capability:** This agent is unique because it uses GPT-4 Vision to analyze satellite imagery directly. It can identify:
 - Forest health from canopy structure
 - Water quality from color/clarity
 - Human impacts (roads, clearings, development)
@@ -346,44 +359,43 @@ This agent is unique because it uses GPT-4 Vision to analyze satellite imagery d
 ---
 
 ### Agent 5: Report Synthesis & Generation
+**Purpose:** Integrate all agent analyses into cohesive narrative and generate publication-ready HTML
 
-**Purpose**: Integrate all agent analyses into cohesive narrative and generate publication-ready HTML
-
-**Input**:
+**Input:**
 - Complete outputs from Agents 1-4
 - Original structured data
 - Cross-domain patterns
 
-**AI Model**: OpenAI GPT-4o  
-**Temperature**: 0.5 (allows creative narrative while maintaining accuracy)  
-**Max Tokens**: 32,000 (LARGEST - generates complete report)
+**AI Model:** OpenAI GPT-4o  
+**Temperature:** 0.5 (allows creative narrative while maintaining accuracy)  
+**Max Tokens:** 32,000 (LARGEST - generates complete report)
 
-**Synthesis Tasks**:
-1. **Executive Summary**: High-level overview for decision-makers
-2. **Species-by-Species Analysis**: Detailed sections for each observed species (2-3 pages each)
-3. **Environmental Context**: Integrate climate and habitat findings
-4. **Geographic Distribution**: Synthesize spatial patterns
-5. **Cross-Domain Insights**: Identify relationships between domains
-6. **Conservation Recommendations**: Actionable management strategies
-7. **Data Quality Assessment**: Transparency about limitations
-8. **FAIR Compliance**: Document adherence to FAIR principles
+**Synthesis Tasks:**
+- **Executive Summary:** High-level overview for decision-makers
+- **Species-by-Species Analysis:** Detailed sections for each observed species (2-3 pages each)
+- **Environmental Context:** Integrate climate and habitat findings
+- **Geographic Distribution:** Synthesize spatial patterns
+- **Cross-Domain Insights:** Identify relationships between domains
+- **Conservation Recommendations:** Actionable management strategies
+- **Data Quality Assessment:** Transparency about limitations
+- **FAIR Compliance:** Document adherence to FAIR principles
 
-**HTML Generation**:
-The agent generates complete HTML with:
+**HTML Generation:** The agent generates complete HTML with:
 
-**Color Scheme**:
-- Teal (#008B8B): Primary headers, key metrics, branding
-- Ocean Blue (#1E90FF): Section headers, accents
-- Forest Green (#228B22): Conservation sections, FAIR badges
-- Off-white (#F5F5F5): Background
+**Color Scheme:**
+- **Teal (#008B8B):** Primary headers, key metrics, branding
+- **Ocean Blue (#1E90FF):** Section headers, accents
+- **Forest Green (#228B22):** Conservation sections, FAIR badges
+- **Off-white (#F5F5F5):** Background
 
-**Typography**:
-- Headers: Arial Bold (18-24pt)
-- Body: Georgia (11pt) - journal standard
-- Tables: Calibri (10pt)
+**Typography:**
+- **Headers:** Arial Bold (18-24pt)
+- **Body:** Georgia (11pt) - journal standard
+- **Tables:** Calibri (10pt)
 
-**Report Sections**:
-```html
+**Report Sections:**
+
+```
 1. Cover Page
    - Audtheia branding
    - Report date
@@ -455,7 +467,8 @@ The agent generates complete HTML with:
     - Citation information
 ```
 
-**Output Structure**:
+**Output Structure:**
+
 ```json
 {
   "htmlContent": "<html>...</html>",  // Complete HTML document
@@ -470,36 +483,35 @@ The agent generates complete HTML with:
 }
 ```
 
+---
+
 ## Workflow Configuration
 
 ### 1. Import Workflow
-
 1. Access N8N instance
 2. Navigate to **Workflows** → **Import**
 3. Upload `Daily_Reporter__GitHub_Template_.json`
 4. Workflow appears in workflows list
 
 ### 2. Configure Credentials
-
 **Settings → Credentials → Add Credential**
 
-1. **OpenAI API**:
-   - Name: `OpenAI GPT-4o Reporter`
-   - API Key: Your OpenAI API key
-   - Used by: All 6 AI agents
+**OpenAI API:**
+- Name: `OpenAI GPT-4o Reporter`
+- API Key: Your OpenAI API key
+- Used by: All 6 AI agents
 
-2. **Airtable**:
-   - Name: `Airtable Audtheia`
-   - Personal Access Token: Your Airtable token
-   - Used by: Data fetch nodes, report save node
+**Airtable:**
+- Name: `Airtable Audtheia`
+- Personal Access Token: Your Airtable token
+- Used by: Data fetch nodes, report save node
 
-3. **PDFShift API** (for PDF generation):
-   - Name: `PDFShift`
-   - API Key: Your PDFShift API key (get free tier at https://pdfshift.io)
-   - Used by: PDF generation node
+**PDFShift API (for PDF generation):**
+- Name: `PDFShift`
+- API Key: Your PDFShift API key (get free tier at https://pdfshift.io)
+- Used by: PDF generation node
 
 ### 3. Configure Environment Variables
-
 Set in N8N or `.env`:
 
 ```bash
@@ -514,40 +526,36 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 ```
 
 ### 4. Create Daily Reports Table in Airtable
+**Table Name:** `Daily Reports`
 
-**Table Name**: `Daily Reports`
-
-**Columns**:
-1. Report Name (Single line text) - Primary
-2. Report Date (Date)
-3. PDF Attachment (Attachment)
-4. Species Count (Number)
-5. Total Observations (Number)
-6. Data Completeness (Number, 0-100)
-7. Processing Time (Date & time)
-8. Generated By (Single line text) - Default: "Audtheia AI Pipeline"
+**Columns:**
+- Report Name (Single line text) - Primary
+- Report Date (Date)
+- PDF Attachment (Attachment)
+- Species Count (Number)
+- Total Observations (Number)
+- Data Completeness (Number, 0-100)
+- Processing Time (Date & time)
+- Generated By (Single line text) - Default: "Audtheia AI Pipeline"
 
 ### 5. Set Up Schedule Trigger
-
 1. Open workflow
 2. Click **Daily Trigger (Midnight)** node
 3. Configure schedule:
-   - Cron Expression: `0 0 * * *` (midnight UTC)
+   - **Cron Expression:** `0 0 * * *` (midnight UTC)
    - Or use visual scheduler
 
 ### 6. Test Workflow
-
-**Manual Test**:
+**Manual Test:**
 1. Click **Execute Workflow** button
 2. Monitor execution in **Executions** tab
 3. Check for errors in each node
 4. Verify PDF generated correctly
 5. Confirm record created in Airtable
 
-**Expected Execution Time**: 2-5 minutes (depends on data volume and image analysis)
+**Expected Execution Time:** 2-5 minutes (depends on data volume and image analysis)
 
 ### 7. Activate Workflow
-
 1. Click **Active** toggle (top-right)
 2. Workflow will run daily at midnight UTC
 3. Monitor **Executions** for automated runs
@@ -558,7 +566,8 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 
 ### Input Data Structure
 
-**From Species Observations Table**:
+**From Species Observations Table:**
+
 ```json
 {
   "observationId": "uuid-12345",
@@ -576,7 +585,8 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 }
 ```
 
-**From Environmental Mapping Table**:
+**From Environmental Mapping Table:**
+
 ```json
 {
   "observationId": "uuid-12345",
@@ -592,6 +602,7 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 ### Intermediate Processing
 
 **Data Structuring Engine** organizes data into:
+
 ```json
 {
   "reportDate": "2025-11-27",
@@ -612,43 +623,43 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 
 ### Output: PDF Report
 
-**File Format**: PDF (Letter size, 8.5" × 11")  
-**File Size**: Typically 5-15 MB (with embedded images)  
-**Page Count**: 20-40 pages (depends on species count)
+**File Format:** PDF (Letter size, 8.5" × 11")  
+**File Size:** Typically 5-15 MB (with embedded images)  
+**Page Count:** 20-40 pages (depends on species count)
 
-**Delivered To**:
-1. Airtable Daily Reports table (PDF attachment)
-2. Optional: Email notification with download link
-3. Optional: Cloud storage (S3, Google Drive)
+**Delivered To:**
+- Airtable Daily Reports table (PDF attachment)
+- Optional: Email notification with download link
+- Optional: Cloud storage (S3, Google Drive)
 
 ---
 
 ## Performance
 
-**Execution Metrics**:
-- **Data Fetch**: 5-10 seconds (depends on record count)
-- **Agent 1 (Species)**: 30-45 seconds
-- **Agent 2 (Climate)**: 25-35 seconds
-- **Agent 3 (Habitat)**: 30-40 seconds
-- **Agent 4 (Spatial/Vision)**: 60-90 seconds (longest - image analysis)
-- **Agent 5 (Synthesis)**: 45-60 seconds (generates HTML)
-- **PDF Generation**: 10-15 seconds
-- **Airtable Write**: 3-5 seconds
-- **Total**: 3-5 minutes
+### Execution Metrics:
+- **Data Fetch:** 5-10 seconds (depends on record count)
+- **Agent 1 (Species):** 30-45 seconds
+- **Agent 2 (Climate):** 25-35 seconds
+- **Agent 3 (Habitat):** 30-40 seconds
+- **Agent 4 (Spatial/Vision):** 60-90 seconds (longest - image analysis)
+- **Agent 5 (Synthesis):** 45-60 seconds (generates HTML)
+- **PDF Generation:** 10-15 seconds
+- **Airtable Write:** 3-5 seconds
+- **Total:** 3-5 minutes
 
-**Token Usage** (per report):
-- Agent 1: ~12,000 tokens
-- Agent 2: ~10,000 tokens
-- Agent 3: ~11,000 tokens
-- Agent 4: ~18,000 tokens (includes image encoding)
-- Agent 5: ~28,000 tokens
-- **Total**: ~85,000 tokens per daily report
+### Token Usage (per report):
+- **Agent 1:** ~12,000 tokens
+- **Agent 2:** ~10,000 tokens
+- **Agent 3:** ~11,000 tokens
+- **Agent 4:** ~18,000 tokens (includes image encoding)
+- **Agent 5:** ~28,000 tokens
+- **Total:** ~85,000 tokens per daily report
 
-**Cost Estimate** (OpenAI GPT-4o pricing):
-- Input tokens: ~40,000 × $0.0025/1K = $0.10
-- Output tokens: ~45,000 × $0.010/1K = $0.45
-- **Total per report**: ~$0.55
-- **Monthly cost** (30 reports): ~$16.50
+### Cost Estimate (OpenAI GPT-4o pricing):
+- **Input tokens:** ~40,000 × $0.0025/1K = $0.10
+- **Output tokens:** ~45,000 × $0.010/1K = $0.45
+- **Total per report:** ~$0.55
+- **Monthly cost (30 reports):** ~$16.50
 
 ---
 
@@ -656,31 +667,31 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 
 ### Common Issues
 
-**Issue: No observations in last 24h**
-**Solution**: Workflow detects empty dataset and sends notification instead of generating report
+**Issue: No observations in last 24h**  
+**Solution:** Workflow detects empty dataset and sends notification instead of generating report
 
-**Issue: Agent timeout**
-**Solution**: 
+**Issue: Agent timeout**  
+**Solution:**
 - Increase timeout in N8N settings (default: 120s)
-- Reduce max_tokens if needed
+- Reduce `max_tokens` if needed
 - Split large datasets into batches
 
-**Issue: PDF generation fails**
-**Solution**:
+**Issue: PDF generation fails**  
+**Solution:**
 - Verify PDFShift API key
 - Check HTML validity
 - Ensure images are properly Base64 encoded
 - Try reducing image count/size
 
-**Issue: Validation fails (Agent 6 returns FAIL)**
-**Solution**:
+**Issue: Validation fails (Agent 6 returns FAIL)**  
+**Solution:**
 - Review validation output for specific errors
 - Check data quality in Airtable
 - Investigate agent outputs for contradictions
 - Re-run RTSP Analyst if data quality < 70%
 
-**Issue: Airtable write fails**
-**Solution**:
+**Issue: Airtable write fails**  
+**Solution:**
 - Verify Daily Reports table exists
 - Check column names match exactly
 - Ensure Personal Access Token has write permissions
@@ -691,15 +702,13 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 ## Monitoring
 
 ### Key Metrics to Track
-
-1. **Execution Success Rate**: Target >95%
-2. **Average Processing Time**: Target <5 minutes
-4. **Data Completeness**: Target >85%
-5. **Report Word Count**: Typical 7,000-10,000 words
-6. **PDF File Size**: Typical 5-15 MB
+- **Execution Success Rate:** Target >95%
+- **Average Processing Time:** Target <5 minutes
+- **Data Completeness:** Target >85%
+- **Report Word Count:** Typical 7,000-10,000 words
+- **PDF File Size:** Typical 5-15 MB
 
 ### N8N Monitoring
-
 1. Navigate to **Executions**
 2. Filter by workflow: "Daily Reporter"
 3. Review success/failure status
@@ -707,7 +716,6 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 5. Investigate errors in failed nodes
 
 ### Quality Monitoring
-
 Track in Airtable:
 - Validation Status distribution over time
 - Data Completeness trend
@@ -720,26 +728,20 @@ Track in Airtable:
 
 ### Adjusting Agent Behavior
 
-**Change Analysis Depth**:
-Edit system prompts in each agent node:
-```
-Temperature: 0.3 (factual) → 0.5 (more interpretive)
-Max Tokens: 16,000 → 20,000 (more detailed)
-```
+**Change Analysis Depth:** Edit system prompts in each agent node:
+- **Temperature:** 0.3 (factual) → 0.5 (more interpretive)
+- **Max Tokens:** 16,000 → 20,000 (more detailed)
 
-**Modify Color Scheme**:
-Edit `Format Report for PDF` node:
+**Modify Color Scheme:** Edit **Format Report for PDF** node:
 ```javascript
 const tealColor = '#008B8B';  // Change to your brand color
 const blueColor = '#1E90FF';
 const greenColor = '#228B22';
 ```
 
-**Add/Remove Report Sections**:
-Edit Agent 5 system prompt to include/exclude sections
+**Add/Remove Report Sections:** Edit Agent 5 system prompt to include/exclude sections
 
 ### Adding New Agents
-
 1. Create new AI Agent node
 2. Configure GPT-4o model
 3. Design system prompt
@@ -748,25 +750,23 @@ Edit Agent 5 system prompt to include/exclude sections
 
 ### Changing Schedule
 
-Options:
-- **Hourly**: `0 * * * *`
-- **Every 6 hours**: `0 */6 * * *`
-- **Weekly (Mondays)**: `0 0 * * 1`
-- **Custom**: Use cron expression generator
+**Options:**
+- **Hourly:** `0 * * * *`
+- **Every 6 hours:** `0 */6 * * *`
+- **Weekly (Mondays):** `0 0 * * 1`
+- **Custom:** Use cron expression generator
 
 ---
 
 ## Troubleshooting
 
 ### Debug Mode
-
 Enable detailed logging:
-1. N8N Settings → Workflows → Enable Debug Mode
+1. **N8N Settings** → **Workflows** → Enable **Debug Mode**
 2. Re-run workflow
 3. Check execution logs for detailed error messages
 
 ### Agent Output Inspection
-
 To see what each agent produced:
 1. Run workflow manually
 2. Click on each agent node
@@ -774,10 +774,9 @@ To see what each agent produced:
 4. Inspect JSON structure
 
 ### PDF Preview
-
 Before full PDF generation:
-1. Copy HTML from `Format Report for PDF` output
-2. Save as .html file locally
+1. Copy HTML from **Format Report for PDF** output
+2. Save as `.html` file locally
 3. Open in browser to preview
 4. Adjust styling as needed
 
@@ -786,28 +785,24 @@ Before full PDF generation:
 ## Best Practices
 
 ### Data Quality
-
 - Ensure RTSP Analyst workflow generates complete records
 - Monitor data completeness scores
 - Investigate validation warnings
 - Review failed reports manually
 
 ### Report Quality
-
 - Review first few generated reports manually
 - Collect feedback from target audience
 - Adjust agent prompts based on feedback
 - Maintain consistent tone and formatting
 
 ### Performance Optimization
-
 - Reduce image count if processing time too long
 - Batch process if >100 observations per day
 - Cache satellite imagery where possible
 - Use lower resolution images for faster processing
 
 ### Security
-
 - Never commit API keys to Git
 - Use N8N credential vault
 - Rotate API keys periodically
@@ -818,14 +813,12 @@ Before full PDF generation:
 ## Integration with Other Workflows
 
 ### RTSP Analyst → Daily Reporter
-
-Daily Reporter **depends on** RTSP Analyst:
+Daily Reporter depends on RTSP Analyst:
 - RTSP Analyst populates Species Observations table
 - Daily Reporter reads from these tables
 - Data quality in RTSP Analyst affects Daily Reporter quality
 
 ### Daily Reporter → Research Tools
-
 Export data for analysis:
 - Airtable → CSV export
 - PDF → Research repository
@@ -835,13 +828,13 @@ Export data for analysis:
 
 ## Support
 
-**For Issues**:
-- GitHub Issues: https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues
+**For Issues:**
+- **GitHub Issues:** https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues
 - Check N8N execution logs
 - Review error messages in Airtable
 - Inspect agent outputs for inconsistencies
 
-**For Customization**:
+**For Customization:**
 - Modify agent system prompts
 - Adjust HTML templates
 - Change color schemes
