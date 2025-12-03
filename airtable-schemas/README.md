@@ -53,7 +53,7 @@ The **Environmental Data Management** Airtable base consists of three interconne
 |--------|------|-------------|----------------|
 | **Location** | Short Text | Specific location name | "Magueyes Island Marine Sciences Research Station, Lajas Municipality, Puerto Rico" |
 | **Region** | Short Text | Geographic region | "Northwestern Caribbean", "Central Pacific" |
-| **Country** | Short Text | Country name | "United States", "Costa Rica" |
+| **Country** | Short Text | Country name | "United States", "Puerto Rico" |
 | **Geographic Confidence** | Single Select | Accuracy of geographic data | High, Medium, Low, Unknown |
 | **GIS Analysis** | Long Text | Comprehensive geographic analysis | Biogeographic province, conservation area proximity, habitat fragmentation metrics, climate refugia potential |
 
