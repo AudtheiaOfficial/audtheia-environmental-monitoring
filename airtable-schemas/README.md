@@ -55,7 +55,7 @@ The **Environmental Data Management** Airtable base consists of three interconne
 | **Region** | Short Text | Geographic region | "Northwestern Caribbean", "Central Pacific" |
 | **Country** | Short Text | Country name | "United States", "Puerto Rico" |
 | **Geographic Confidence** | Single Select | Accuracy of geographic data | High, Medium, Low, Unknown |
-| **GIS Analysis** | Long Text | Comprehensive geographic analysis | Biogeographic province, conservation area proximity, habitat fragmentation metrics, climate refugia potential |
+| **GIS Analysis** | Long Text | Comprehensive geographic analysis | Biogeographic: Northwestern Caribbean Marine Province (MEOW #11) within Tropical Atlantic biodiversity hotspot, coral diversity index 0.89. Conservation: 1.8km from Luis Peña Channel Natural Reserve (IUCN-IV), connectivity index 0.76 via continuous reef corridor. Fragmentation: Patch coherence 0.84, anthropogenic edge effects <15% of core habitat. Infrastructure: Human footprint index 28/100, coastal development density 0.3 structures/km². Climate: High thermal refugia potential (depth gradient 0-40m), climate velocity 0.7km/decade eastward, thermal buffering capacity strong (±0.8°C seasonal variation). |
 
 ---
 
@@ -64,8 +64,8 @@ The **Environmental Data Management** Airtable base consists of three interconne
 
 | Column | Type | Description | Example Values |
 |--------|------|-------------|----------------|
-| **Environmental Conditions** | Long Text | Overall environmental assessment | Water clarity, substrate composition, ecosystem stability indicators |
-| **Weather Conditions** | Long Text | Current weather observations | Temperature trends, precipitation patterns, atmospheric conditions |
+| **Environmental Conditions** | Long Text | Water clarity and substrate composition indicate stable ecosystem parameters. Current environmental indicators suggest suitable habitat conditions for marine life sustainability. Visual environmental cues include clear water column and diverse substrate composition |
+| **Weather Conditions** | Long Text | Current weather observations | The region experiences a tropical marine climate, characterized by warm sea temperatures averaging 30.2°C with minimal turbulence. Wave heights are stable at around 0.5m, and current velocities are low with an average of 0.3 km/h. Favorable conditions for marine biodiversity are observed with a stable weather pattern allowing for extensive photosynthetic activity in surrounding coral habitats |
 | **Habitat Type Classification** | Single Select | Primary habitat category | Marine, Freshwater, Estuarine, Terrestrial, Mixed, Unknown |
 
 ---
