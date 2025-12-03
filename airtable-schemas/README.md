@@ -64,7 +64,7 @@ The **Environmental Data Management** Airtable base consists of three interconne
 
 | Column | Type | Description | Example Values |
 |--------|------|-------------|----------------|
-| **Environmental Conditions** | Long Text | Water clarity and substrate composition indicate stable ecosystem parameters. Current environmental indicators suggest suitable habitat conditions for marine life sustainability. Visual environmental cues include clear water column and diverse substrate composition |
+| **Environmental Conditions** | Long Text | Overall environmental assessment | Water clarity and substrate composition indicate stable ecosystem parameters. Current environmental indicators suggest suitable habitat conditions for marine life sustainability. Visual environmental cues include clear water column and diverse substrate composition |
 | **Weather Conditions** | Long Text | Current weather observations | The region experiences a tropical marine climate, characterized by warm sea temperatures averaging 30.2°C with minimal turbulence. Wave heights are stable at around 0.5m, and current velocities are low with an average of 0.3 km/h. Favorable conditions for marine biodiversity are observed with a stable weather pattern allowing for extensive photosynthetic activity in surrounding coral habitats |
 | **Habitat Type Classification** | Single Select | Primary habitat category | Marine, Freshwater, Estuarine, Terrestrial, Mixed, Unknown |
 
