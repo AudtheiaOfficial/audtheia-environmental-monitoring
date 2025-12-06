@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/blob/main/LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17842738.svg)](https://doi.org/10.5281/zenodo.17842738)
 [![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/AudtheiaOfficial/audtheia-environmental-monitoring)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
@@ -418,8 +419,9 @@ If you use Audtheia in your research, please cite:
   author = {Portalatin, Andy},
   title = {Audtheia: AI-Powered Environmental Monitoring System},
   year = {2025},
-  url = {https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring},
-  note = {Real-time computer vision with deep AI analysis for research-grade ecological datasets}
+  version = {1.0.0},
+  doi = {10.5281/zenodo.17842738},
+  url = {https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring}
 }
 ```
 
