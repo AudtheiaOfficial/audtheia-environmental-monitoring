@@ -12,6 +12,10 @@
 
 Audtheia is a professional environmental monitoring system that combines real-time computer vision (60 FPS video processing) with AI-powered analysis to generate research-grade ecological datasets and automated daily intelligence reports. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring. Each species observation generates 72 comprehensive data points used for both database storage and automated PDF report generation.
 
+<div align="center">
+  <img src="assets/audtheia-species-detection.gif" width="900" alt="Multi-species detection across ecosystems">
+  <p><em>Real-time species detection: Zebra, Acorn Woodpecker, Xestospongia muta (barrel sponge), Northern Cardinal, and Giraffe detected using YOLOv11 and custom-trained classifiers at 60 FPS</em></p>
+</div>
 ---
 
 ## The Problem Audtheia Solves
