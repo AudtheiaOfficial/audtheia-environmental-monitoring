@@ -6,7 +6,7 @@ The RTSP Analyst Workflow receives detection data from the Roboflow RTSP Workflo
 
 <div align="center">
   <img src="assets/rtsp-analyst-workflow.gif" width="900" alt="RTSP Analyst workflow">
-  <p><em>Deep AI analysis pipeline: 9 specialized GPT-4o agents processing species detections to generate 72 comprehensive data points per observation, integrating GBIF, iNaturalist, IUCN, NOAA, Mapbox, and climate databases</em></p>
+  <p><em>Deep AI analysis pipeline: 9 specialized AI agents processing species detections to generate 72 comprehensive data points per observation, integrating GBIF, iNaturalist, IUCN, NOAA, Mapbox, and climate databases</em></p>
 </div>
 
 ---
