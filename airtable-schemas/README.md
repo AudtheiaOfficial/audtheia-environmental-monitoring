@@ -1,6 +1,11 @@
 # Airtable Database Schemas
 Complete documentation for the Environmental Data Management Airtable database structure used by Audtheia's AI-powered environmental monitoring system.
 
+<div align="center">
+  <img src="assets/airtable-database.gif" width="900" alt="Airtable database structure">
+  <p><em>Research-grade data storage: Species Observations table (62 columns) and Environmental Mapping table (10 columns) with comprehensive taxonomic, geographic, and environmental data for academic research</em></p>
+</div>
+
 ---
 
 ## Database Overview
