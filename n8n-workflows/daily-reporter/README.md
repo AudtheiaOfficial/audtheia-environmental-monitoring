@@ -4,6 +4,11 @@ Automated generation of publication-quality environmental intelligence reports u
 ## Overview
 The Daily Reporter Workflow synthesizes species observation data from the past 24 hours into comprehensive PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations). The workflow employs 5 specialized AI agents that analyze different domains, then integrates their findings into a cohesive narrative with professional formatting, embedded imagery, and FAIR data compliance.
 
+<div align="center">
+  <img src="assets/report-generator.gif" width="900" alt="Daily Reporter workflow">
+  <p><em>Automated report generation: 5 specialized AI agents synthesizing observation data into publication-quality PDF reports with species analysis, environmental assessment, habitat evaluation, cartography, and executive dashboard</em></p>
+</div>
+
 ---
 
 ## Workflow Architecture
