@@ -2,11 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/blob/main/LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17842738.svg)](https://doi.org/10.5281/zenodo.17842738)
 [![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/AudtheiaOfficial/audtheia-environmental-monitoring)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17842738-blue)](https://doi.org/10.5281/zenodo.17842738)
 
 **Real-time Computer Vision + Deep AI Analysis for Research-Grade Ecological Datasets**
 
