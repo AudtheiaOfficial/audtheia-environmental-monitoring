@@ -1,10 +1,10 @@
 # RTSP Analyst Workflow
 Deep AI-powered ecological analysis using 9 specialized agents to generate 72 comprehensive data points per species observation.
-<div align="center">
-  <img src="assets/report-generator.gif" width="900" alt="Daily Reporter workflow">
-  <p><em>Automated report generation: 5 specialized AI agents synthesizing observation data into publication-quality PDF reports with species analysis, environmental assessment, habitat evaluation, cartography, and executive dashboard</em></p>
-</div>
 
+<div align="center">
+  <img src="assets/rtsp-analyst-workflow.gif" width="900" alt="RTSP Analyst workflow">
+  <p><em>Deep AI analysis pipeline: 9 specialized GPT-4o agents processing species detections to generate 72 comprehensive data points per observation, integrating GBIF, iNaturalist, IUCN, NOAA, Mapbox, and climate databases</em></p>
+</div>
 
 ## Overview
 The RTSP Analyst Workflow receives detection data from the Roboflow RTSP Workflow and performs comprehensive environmental analysis using 9 specialized AI agents powered by OpenAI GPT-4o. Each agent focuses on a specific domain (taxonomy, geography, biodiversity, climate, habitat, cartography) and integrates with scientific databases to produce research-grade ecological datasets.
