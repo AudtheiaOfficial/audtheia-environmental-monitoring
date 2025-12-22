@@ -4,6 +4,11 @@ Real-time video processing with object detection, tracking, and AI-powered envir
 ## Overview
 The Roboflow RTSP Workflow processes video streams in real-time using YOLOv11 object detection and ByteTrack multi-object tracking. Custom Python blocks add environmental analysis (Claude 3.5 Sonnet) and send detection data to N8N for deep analysis. The workflow maintains 60 FPS processing speed while conducting comprehensive ecological assessments every 15 seconds.
 
+<div align="center">
+  <img src="assets/roboflow-workflow.gif" width="900" alt="Roboflow RTSP workflow processing">
+  <p><em>Real-time video processing pipeline: Object detection with custom trained model for marine sponges (<a href="https://universe.roboflow.com/marine-sciences-research-station/official-porifera-classifier-ju8er">Official Porifera Classifier</a>), ByteTrack multi-object tracking, and python blocks for asynchronous Claude 3.5 Sonnet environmental analysis at 60 FPS</em></p>
+</div>
+
 ---
 
 ## Workflow Architecture
