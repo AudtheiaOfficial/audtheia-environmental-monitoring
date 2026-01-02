@@ -22,9 +22,9 @@ The Daily Reporter Workflow synthesizes species observation data from the past 2
 ### Data Flow
 
 ```
-Daily Trigger (Midnight UTC)
+Daily Trigger (Midnight UTC or Custom)
     ↓
-Fetch Data from Airtable (Last 24h)
+Fetch Data from Airtable (Last 24h or Custom)
     ├─ Species Observations table
     └─ Environmental Mapping table
     ↓
@@ -71,10 +71,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o  
-**Temperature:** 0.3 (factual, precise)  
-**Max Tokens:** 16,000
-
+**AI Model:** OpenAI GPT-4o or other custom model
 **Analysis Performed:**
 - Species diversity metrics (Shannon index, Simpson index)
 - Taxonomic composition analysis
@@ -137,10 +134,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o  
-**Temperature:** 0.3  
-**Max Tokens:** 12,000
-
+**AI Model:** OpenAI GPT-4o or other custom model
 **Analysis Performed:**
 - Marine climate trends (SST, currents, wave height)
 - Terrestrial climate trends (temperature, precipitation, humidity)
@@ -200,10 +194,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o  
-**Temperature:** 0.4 (allows for nuanced recommendations)  
-**Max Tokens:** 14,000
-
+**AI Model:** OpenAI GPT-4o or other custom model
 **Analysis Performed:**
 - Habitat type distribution
 - Ecosystem health scores
@@ -280,12 +271,9 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o with Vision  
-**Temperature:** 0.3  
-**Max Tokens:** 20,000 (largest allocation for image analysis)
-
+**AI Model:** OpenAI GPT-4o with Vision or other custom model
 **Analysis Performed:**
-- Satellite imagery interpretation (3 zoom levels: 10, 12, 14)
+- Satellite imagery interpretation (3 zoom levels: 10, 13, 15)
 - Spatial distribution patterns
 - Geographic clustering analysis
 - Habitat connectivity assessment
@@ -371,10 +359,7 @@ Success Notification
 - Original structured data
 - Cross-domain patterns
 
-**AI Model:** OpenAI GPT-4o  
-**Temperature:** 0.5 (allows creative narrative while maintaining accuracy)  
-**Max Tokens:** 32,000 (LARGEST - generates complete report)
-
+**AI Model:** OpenAI GPT-4o or other custom model
 **Synthesis Tasks:**
 - **Executive Summary:** High-level overview for decision-makers
 - **Species-by-Species Analysis:** Detailed sections for each observed species (2-3 pages each)
@@ -562,7 +547,7 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 
 ### 7. Activate Workflow
 1. Click **Active** toggle (top-right)
-2. Workflow will run daily at midnight UTC
+2. Workflow will run daily at midnight UTC unless other time is specified
 3. Monitor **Executions** for automated runs
 
 ---
@@ -629,42 +614,13 @@ PDFSHIFT_API_KEY=your_pdfshift_key
 ### Output: PDF Report
 
 **File Format:** PDF (Letter size, 8.5" × 11")  
-**File Size:** Typically 5-15 MB (with embedded images)  
-**Page Count:** 20-40 pages (depends on species count)
+**File Size:** Typically 1-10 MB (with embedded images)  
+**Page Count:** 5-20 pages (depends on species count)
 
 **Delivered To:**
 - Airtable Daily Reports table (PDF attachment)
 - Optional: Email notification with download link
 - Optional: Cloud storage (S3, Google Drive)
-
----
-
-## Performance
-
-### Execution Metrics:
-- **Data Fetch:** 5-10 seconds (depends on record count)
-- **Agent 1 (Species):** 30-45 seconds
-- **Agent 2 (Climate):** 25-35 seconds
-- **Agent 3 (Habitat):** 30-40 seconds
-- **Agent 4 (Spatial/Vision):** 60-90 seconds (longest - image analysis)
-- **Agent 5 (Synthesis):** 45-60 seconds (generates HTML)
-- **PDF Generation:** 10-15 seconds
-- **Airtable Write:** 3-5 seconds
-- **Total:** 3-5 minutes
-
-### Token Usage (per report):
-- **Agent 1:** ~12,000 tokens
-- **Agent 2:** ~10,000 tokens
-- **Agent 3:** ~11,000 tokens
-- **Agent 4:** ~18,000 tokens (includes image encoding)
-- **Agent 5:** ~28,000 tokens
-- **Total:** ~85,000 tokens per daily report
-
-### Cost Estimate (OpenAI GPT-4o pricing):
-- **Input tokens:** ~40,000 × $0.0025/1K = $0.10
-- **Output tokens:** ~45,000 × $0.010/1K = $0.45
-- **Total per report:** ~$0.55
-- **Monthly cost (30 reports):** ~$16.50
 
 ---
 
