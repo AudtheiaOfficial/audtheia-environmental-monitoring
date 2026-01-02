@@ -33,7 +33,7 @@ Parallel Agent Execution (9 agents)
     ├─ Agent 6: Marine Climate Search
     ├─ Agent 7: Terrestrial Climate Search
     ├─ Agent 8: Habitat Assessment
-    └─ Agent 9: Cartography Mapper
+    └─ Agent 9: Cartography Mapper (If satellite imagery is needed)
     ↓
 Data Aggregation (72 data points)
     ↓
@@ -62,6 +62,7 @@ Webhook Response
 **Data Sources:**
 - GBIF (Global Biodiversity Information Facility)
 - iNaturalist
+- API Ninjas Animal Database
 
 **Output (15 data points):**
 - Taxonomic classification (Kingdom → Species)
@@ -181,8 +182,9 @@ historical patterns for species and location."
 ```
 
 **Data Sources:**
-- IUCN Red List
-- GBIF
+- GBIF (IUCN Conservation Status)
+- GBIF (Species Biodiversity)
+- GBIF (Species Descriptions)
 - iNaturalist
 - API Ninjas
 
@@ -233,8 +235,10 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 ```
 
 **Data Sources:**
-- API Ninjas (species characteristics)
-- Open-Meteo (current conditions)
+- Open-Meteo (Air quality)
+- Open-Meteo (Environment conservation status)
+- Open-Meteo (Marine conditions)
+- Open-Meteo (Forecast conditions)
 
 **Output (6 data points):**
 - Habitat type (rainforest, wetland, etc.)
@@ -269,7 +273,9 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 **Data Sources:**
 - NOAA Co-OPS (Tides and Currents)
-- Open-Meteo Marine API
+- NOAA (Global marine forecast)
+- Open-Meteo Marine API (Bouy elevation)
+- Open Elevation (Bathymetry)
 
 **Output (8 data points, marine only):**
 - Marine zone (neritic, oceanic, intertidal, etc.)
@@ -305,8 +311,9 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 ```
 
 **Data Sources:**
-- Open-Meteo Weather API
+- Open-Meteo Weather API (Terrestrial climate)
 - SOILGRIDS
+- Open elevation (Terrain data)
 
 **Output (8 data points, terrestrial only):**
 - Biome classification
@@ -343,8 +350,8 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 
 **Data Sources:**
 - NDVI (Normalized Difference Vegetation Index)
-- Land Cover APIs
-- Open-Meteo
+- Open elevation (Landscape analysis)
+- Open-Meteo (Quality & disturbance)
 
 **Output (7 data points):**
 - Vegetation density (NDVI score)
@@ -362,6 +369,11 @@ Result: 0.0 (common) to 1.0 (extremely rare)
 4. Assess ecosystem health
 5. Identify degradation indicators
 6. Evaluate water quality (if applicable)
+
+**Workflow Advice for Cartography Mapper**
+- The Cartography Mapper AI agent should be use only when satelite imagery data is needed for research or application purposes to conserve token consumption.
+- When this AI agent is active, the worflow will run this AI Agent after the Memory Manager AI agent, making it third in the workflow execution process.
+- If your camera or recording device does not provide coordinates, you can simply add the specific coordinates for the study site in the "Set Static Location" node found on the "Static Location" segment found at the left side of the RTSP Analyst workflow.
 
 **Ecosystem Health Score Calculation:**
 
@@ -393,13 +405,12 @@ Result: 0 (degraded) to 100 (pristine)
 
 **Data Sources:**
 - Mapbox Static Images API
-- NOAA (for marine enhancements)
-- OpenStreetMap
+- NOAA (Research stations & Bathymetry data)
 
 **Output (10 data points):**
 - Satellite imagery URL (zoom 10)
-- Satellite imagery URL (zoom 12)
-- Satellite imagery URL (zoom 14)
+- Satellite imagery URL (zoom 13)
+- Satellite imagery URL (zoom 15)
 - Marine enhancement data (JSON, if coastal)
 - NOAA station data (JSON, if coastal)
 - Bathymetric chart data (JSON, if marine)
@@ -583,26 +594,6 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/rtsp-analyst \
 - **Invalid coordinates:** Log warning, use approximate location
 - **Invalid species name:** Attempt fuzzy matching, fallback to "Unknown"
 - **API timeout:** Use cached data if available, otherwise defaults
-
----
-
-## Performance
-
-### Execution Time (per observation):
-- **Parallel agent execution:** 5-10 seconds
-- **Memory Manager (sequential):** 2-3 seconds
-- **Airtable write:** 1-2 seconds
-- **Total:** 8-15 seconds per observation
-
-### Resource Usage:
-- **N8N workers:** 1-2 per workflow execution
-- **API calls:** ~15 per observation
-- **Database writes:** 2 per observation
-
-### Scalability:
-- **Concurrent executions:** Up to 10 (configurable in N8N)
-- **Throughput:** ~40-60 observations/minute
-- **For higher loads:** Increase N8N workers, implement queue
 
 ---
 
