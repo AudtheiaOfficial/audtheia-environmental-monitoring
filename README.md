@@ -8,56 +8,55 @@
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17842738-blue)](https://doi.org/10.5281/zenodo.17842738)
 
-**Real-time Computer Vision + Deep AI Analysis for Research-Grade Ecological Datasets**
+**Automated Environmental Intelligence for Marine and Terrestrial Ecosystem Monitoring, Biodiversity Assessment, and Conservation Research**
 
-Audtheia is a professional environmental monitoring system that combines real-time computer vision (60 FPS video processing) with AI-powered analysis to generate research-grade ecological datasets and automated daily intelligence reports. The system processes stereo-video recordings from marine and terrestrial environments, using specialized AI agents to identify species and analyze environmental conditions while maintaining the speed required for continuous monitoring. Each species observation generates 72 comprehensive data points used for both database storage and automated PDF report generation.
+Audtheia is an open-source environmental monitoring system designed for researchers, conservation organizations, and government agencies managing marine and terrestrial ecosystems. The system processes video streams in real time while specialized AI agents perform deep ecological analysis in parallel, generating 72 comprehensive data points per species observation. Results are stored in a structured research-grade database and automatically summarized into professional PDF reports. Audtheia is built to support Marine Protected Area (MPA) monitoring, academic research, biodiversity documentation, habitat health assessment, and compliance with international conservation frameworks.
 
 <div align="center">
   <img src="assets/audtheia-species-detection.gif" width="900" alt="Multi-species detection across ecosystems">
   <p><em>Real-time species detection: Zebra, Acorn Woodpecker, Xestospongia muta (barrel sponge), Northern Cardinal, and Giraffe detected using YOLOv11 and custom-trained classifiers at 60 FPS</em></p>
 </div>
----
-
-## The Problem Audtheia Solves
-
-Traditional environmental monitoring systems face a critical trade-off: **processing speed versus analytical depth**. Real-time systems can track species movements but lack detailed ecological analysis. Deep analysis systems provide rich data but cannot process video in real-time.
-
-**Audtheia solves this through asynchronous architecture**:
-
-- **Roboflow RTSP Workflow**: Processes video at 60 FPS with YOLOv11 object detection, ByteTrack multi-object tracking, and live visualization
-- **N8N RTSP Analyst**: Conducts deep AI analysis in parallel using 9 specialized agents, generating 72 data points per species observation
-- **Daily Reporter Workflow**: Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents
-- **Airtable Database**: Stores comprehensive datasets suitable for peer-reviewed research and institutional decision-making
-
-**Result**: Continuous real-time monitoring + PhD-level environmental analysis + automated professional reporting without compromising any capability.
 
 ---
 
-## System Architecture
+## The Problem Audtheia Solves 🔍
+
+Continuous ecosystem monitoring has become increasingly significant as biodiversity loss and climate-driven habitat change accelerate globally. For conservationists and researchers, the core challenge is not observation alone but the time and resources required to transform large volumes of video footage into structured, actionable ecological data. Audtheia addresses this by automating the full analysis pipeline:
+
+- **Roboflow RTSP Workflow**: The "Eyes" of the system. Processes video in real time using a configurable object detection model and multi-object tracking, with live species visualization
+- **N8N RTSP Analyst**: The "Brain" of the system. Conducts deep AI analysis concurrently using 9 specialized agents, generating 72 data points per species observation
+- **Daily Reporter Workflow**: The "Communicator" of the system. Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents
+- **Airtable Database**: The "Memory" of the system. Stores structured, research-grade datasets suitable for peer-reviewed publication, conservation planning, and compliance reporting
+
+**Result**: Continuous real-time monitoring + comprehensive ecological analysis + automated professional reporting, without compromising any capability.
+
+---
+
+## System Architecture 🏗️
 
 The Audtheia ecosystem consists of four integrated components:
 
-### 1. Roboflow RTSP Workflow (Real-time Video Processing)
+### 1. Roboflow RTSP Workflow (Real-time Video Processing) 🎥
 
 **Purpose**: 60 FPS video processing with object detection and tracking
 
 **Components**:
-- **Object Detection Model**: YOLOv11-based detection (bird-species-kdlph-uavcv/1)
+- **Object Detection Model**: Configurable; the system ships with a custom-trained marine sponge (official-porifera-classifier-ju8er/12) classifier developed for Audtheia as a reference implementation. Users can substitute any Roboflow-compatible detection model suited to their target species or ecosystem.
 - **ByteTrack**: Multi-object tracking with 60 FPS buffer
 - **Custom Python Blocks**:
   - `Detection_Converter`: Converts predictions to structured data
   - `Add_Webcam_Interface`: Professional video overlay with species ticker
-  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis using **Claude 3.5 Sonnet**
+  - `Anthropic_Environmental_Analyzer`: 15-second interval comprehensive environmental analysis. Time interval is customizable
   - `Analyst_Caller`: Sends detections to N8N for deep analysis
 
 **Video Input**: RTSP streams, MP4 files, webcam feeds  
 **Output**: Annotated video stream + detection data → N8N RTSP Analyst
 
-### 2. N8N RTSP Analyst Workflow (Deep AI Analysis)
+### 2. N8N RTSP Analyst Workflow (Deep AI Analysis) 🧠
 
 **Purpose**: Comprehensive species and environmental intelligence using 9 specialized AI agents
 
-**AI Agents (powered by OpenAI GPT-4o)**:
+**AI Agents**:
 1. **Systematics Phenologist**: Taxonomic classification, phenological analysis, temporal behavior patterns
 2. **GIS Data Manager**: Coordinate validation, geographic context, spatial analysis
 3. **Biodiversity Intelligence**: Conservation status (IUCN), rarity scoring, ecological role assessment
@@ -84,11 +83,11 @@ The Audtheia ecosystem consists of four integrated components:
 
 **Output**: 72 data points per species observation → Airtable Database
 
-### 3. Daily Reporter N8N Workflow (Automated Report Generation)
+### 3. Daily Reporter N8N Workflow (Automated Report Generation) 📄
 
 **Purpose**: Automated generation of professional environmental intelligence reports
 
-**AI Agents (powered by OpenAI GPT-4o)**:
+**AI Agents**:
 1. **Species & Biodiversity Analyst**: Synthesizes taxonomic data, conservation status, rarity assessments, and biodiversity metrics into comprehensive species intelligence
 2. **Environmental & Climate Analyst**: Analyzes marine/terrestrial climate conditions, oceanographic data, atmospheric conditions, and environmental trends
 3. **Habitat & Conservation Analyst**: Evaluates habitat quality, ecosystem health, conservation implications, and management recommendations
@@ -105,7 +104,7 @@ The Audtheia ecosystem consists of four integrated components:
 
 **Output**: Publication-quality PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations)
 
-### 4. Airtable Database (Research-Grade Data Storage)
+### 4. Airtable Database (Research-Grade Data Storage) 🗄️
 
 **Purpose**: Structured storage of all observation data for research and analysis
 
@@ -117,20 +116,20 @@ The Audtheia ecosystem consists of four integrated components:
 
 ---
 
-## Data Flow
+## Data Flow 🔄
 
 ```
 Video Input (RTSP/MP4/Webcam)
     ↓
 [Roboflow RTSP Workflow] ← 60 FPS Processing
     ↓
-Object Detection (YOLOv11) → ByteTrack Multi-Object Tracking
+Object Detection (Configurable Model) → ByteTrack Multi-Object Tracking
     ↓
 Detection Data + Video Frame
     ↓
 [N8N RTSP Analyst Workflow] ← Deep AI Analysis
     ↓
-9 Specialized AI Agents (GPT-4o)
+9 Specialized AI Agents
     ↓
 72 Data Points per Species Observation
     ↓
@@ -138,14 +137,14 @@ Detection Data + Video Frame
     ↓
 [Daily Reporter N8N Workflow] ← Report Generation
     ↓
-5 Specialized Report Agents (GPT-4o)
+5 Specialized Report Agents
     ↓
 Professional PDF Intelligence Report
 ```
 
 ---
 
-## Installation
+## Installation ⚙️
 
 ### Prerequisites
 
@@ -192,7 +191,7 @@ For detailed installation instructions, see [`docs/installation.md`](docs/instal
 
 ---
 
-## Configuration
+## Configuration 🔧
 
 Create a `.env` file based on `.env.template` and add the following credentials:
 
@@ -251,7 +250,7 @@ VIDEO_RESOLUTION_HEIGHT=1080
 
 ---
 
-## Usage
+## Usage 🧰
 
 ### Running the Roboflow RTSP Workflow
 
@@ -269,7 +268,7 @@ The system will:
 - Connect to RTSP stream or video file
 - Process video at 60 FPS with object detection
 - Track species with ByteTrack
-- Send detection data to N8N RTSP Analyst every 15 seconds
+- Send detection data to N8N RTSP Analyst every 15 seconds (customizable)
 - Display annotated video with species ticker
 
 ### Running N8N Workflows
@@ -299,7 +298,7 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/daily-reporter
 
 ---
 
-## Data Structure
+## Data Structure 📊
 
 ### Species Observations Table (62 Columns)
 
@@ -349,23 +348,45 @@ For complete schema details, see:
 
 ---
 
-## Use Cases
+## Use Cases 🌍
 
-### Marine Ecosystems
-- **Coral reef monitoring**: Real-time species detection with comprehensive habitat assessment
-- **Sea turtle tracking**: Migration pattern analysis with oceanographic data integration
-- **Fish population surveys**: Automated counting with biodiversity intelligence
+Audtheia supports the full lifecycle of ecosystem monitoring and conservation management, from establishing scientific baselines to institutional reporting.
 
-### Terrestrial Ecosystems
-- **Wildlife surveys**: Continuous monitoring with automated species identification
-- **Bird migration studies**: Temporal tracking with phenological analysis
-- **Endangered species monitoring**: Conservation status tracking with IUCN integration
+### Marine Protected Area (MPA) Monitoring
+Provides continuous species-level observation data for MPA management and evaluation, including biodiversity baselines, species presence and abundance tracking, and measurable assessments of protection outcomes.
+
+### Species Inventory and Population Baselines
+Automates species inventories at scale by continuously logging taxonomic data, IUCN conservation status, rarity scores, ecological roles, and occurrence records from GBIF and iNaturalist. These baselines enable detection of population change and early warning signals of ecological stress.
+
+### Biodiversity Assessment and Protection
+Generates structured biodiversity metrics per observation, including endemism flags, rarity scores, and ecological role classifications, supporting conservation planning, environmental impact evaluations, and protected area designation.
+
+### Habitat and Ecosystem Health Assessment
+Pairs each observation with habitat type, substrate classification, and ecosystem health indicators. Longitudinal datasets reveal how habitat conditions change over time and inform restoration and management decisions.
+
+### Climate and Ecosystem Resilience
+Integrates real-time climate data, including sea surface temperature, ocean current patterns, and terrestrial biome metrics, with each species observation to support research into ecosystem responses to climate change.
+
+### Compliance with International Conservation Standards
+Datasets are structured to support reporting under the Convention on Biological Diversity, the Kunming-Montreal Global Biodiversity Framework, and regional agreements such as OSPAR. Every daily report includes a FAIR data compliance checklist.
+
+### Community and Stakeholder Engagement
+Automated daily PDF reports translate ecological data into professional documents accessible to government agencies, conservation NGOs, local communities, and funding bodies.
+
+### Research Applications
+- **Coral reef monitoring**: Continuous species detection with habitat condition tracking and oceanographic data integration
+- **Marine megafauna tracking**: Behavioral analysis with spatial and temporal pattern recognition
+- **Fish and invertebrate surveys**: Automated counting and biodiversity intelligence at survey-grade resolution
+- **Bird migration and phenology studies**: Temporal tracking correlated with climate and habitat data
+- **Endangered species monitoring**: Real-time IUCN status alerts with rarity scoring and ecological context
+- **Terrestrial wildlife surveys**: Continuous automated monitoring across large or remote landscapes
 
 ### Target Institutions
-- **NOAA**: Marine ecosystem monitoring and climate impact assessment
-- **MBARI**: Deep-sea research with automated species cataloging
-- **The Nature Conservancy**: Conservation planning with research-grade datasets
-- **Academic Research**: Publication-quality data for peer-reviewed studies
+- **NOAA**: Marine ecosystem monitoring, MPA management support, and climate impact assessment
+- **MBARI**: Deep-sea and coastal research with automated species cataloging
+- **The Nature Conservancy**: Conservation planning, habitat assessment, and stakeholder reporting
+- **Government Environmental Agencies**: Compliance reporting, MPA evaluation, and biodiversity policy support
+- **Academic Research**: Publication-quality datasets for peer-reviewed ecological and conservation studies
 
 ---
 
@@ -395,15 +416,13 @@ For complete schema details, see:
 - ✅ Airtable Database integration (operational)
 
 ### In Development
-- Multi-camera synchronization
-- Edge deployment for remote locations
-- Mobile application for field researchers
+- Acoustic object detection pipeline
+- Website and mobile application for field researchers
 - Integration with additional scientific databases
-- Real-time alert system for rare species detection
-
+- Case study collaborations
 ---
 
-## Contributing
+## Contributing 🤝
 
 We welcome contributions from the research community! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 - Bug reports and feature requests
@@ -414,7 +433,7 @@ We welcome contributions from the research community! Please see [CONTRIBUTING.m
 
 ---
 
-## Citation
+## Citation 📖
 
 If you use Audtheia in your research, please cite:
 
@@ -431,13 +450,13 @@ If you use Audtheia in your research, please cite:
 
 ---
 
-## License
+## License 📜
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## Acknowledgments
+## Acknowledgments 💚
 
 Audtheia is built on the shoulders of giants:
 
@@ -469,17 +488,17 @@ Special thanks to the marine biology, conservation, and research communities for
 
 ---
 
-## Contact
+## Contact 📬
 
 **Project Lead**: Andy Portalatin  
 **GitHub Issues**: [https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 
 ---
 
-## Disclaimer
+## Disclaimer ⚠️
 
 Audtheia is designed for research and conservation purposes. While the system generates research-grade data, all results should be validated by qualified researchers before use in critical decision-making. Species identifications and environmental assessments are AI-generated and may require expert verification.
 
 ---
 
-**Built with ❤️ for the global research and conservation community**
+**Built with genuine ❤️ for the global research and conservation community**
