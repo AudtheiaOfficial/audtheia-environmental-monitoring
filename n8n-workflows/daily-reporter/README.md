@@ -1,8 +1,8 @@
 # Daily Reporter N8N Workflow
-Automated generation of publication-quality environmental intelligence reports using 5 specialized AI agents powered by OpenAI GPT-4o.
+Automated generation of publication-quality environmental intelligence reports using 5 specialized AI agents.
 
 ## Overview
-The Daily Reporter Workflow synthesizes species observation data from the past 24 hours into comprehensive PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations). The workflow employs 5 specialized AI agents that analyze different domains, then integrates their findings into a cohesive narrative with professional formatting, embedded imagery, and FAIR data compliance.
+The Daily Reporter Workflow synthesizes species observation data from the past 24 hours into comprehensive PDF reports suitable for institutional audiences (NOAA, MBARI, conservation organizations). Time interval of automated reports can be customized to user preference. The workflow employs 5 specialized AI agents that analyze different domains, then integrates their findings into a cohesive narrative with professional formatting, embedded imagery, and FAIR data compliance.
 
 <div align="center">
   <img src="assets/report-generator.gif" width="900" alt="Daily Reporter workflow">
@@ -71,7 +71,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o or other custom model
+**AI Model:** Configurable; any compatible large language model
 **Analysis Performed:**
 - Species diversity metrics (Shannon index, Simpson index)
 - Taxonomic composition analysis
@@ -134,7 +134,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o or other custom model
+**AI Model:** Configurable; any compatible large language model
 **Analysis Performed:**
 - Marine climate trends (SST, currents, wave height)
 - Terrestrial climate trends (temperature, precipitation, humidity)
@@ -194,7 +194,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o or other custom model
+**AI Model:** Configurable; any compatible large language model
 **Analysis Performed:**
 - Habitat type distribution
 - Ecosystem health scores
@@ -259,7 +259,7 @@ Success Notification
 ---
 
 ### Agent 4: Cartography & Spatial Analyst [VISION]
-**Purpose:** Spatial pattern analysis and satellite imagery interpretation using GPT-4 Vision
+**Purpose:** Spatial pattern analysis and satellite imagery interpretation using vision-capable AI models
 
 **Input:**
 
@@ -271,7 +271,7 @@ Success Notification
 }
 ```
 
-**AI Model:** OpenAI GPT-4o with Vision or other custom model
+**AI Model:** Configurable; any compatible large language model with vision capability
 **Analysis Performed:**
 - Satellite imagery interpretation (3 zoom levels: 10, 13, 15)
 - Spatial distribution patterns
@@ -342,7 +342,7 @@ Success Notification
 - Land use context
 - Marine/terrestrial feature identification
 
-**VISION Capability:** This agent is unique because it uses GPT-4 Vision to analyze satellite imagery directly. It can identify:
+**VISION Capability:** This agent uses a vision-capable AI model to analyze satellite imagery directly. It can identify:
 - Forest health from canopy structure
 - Water quality from color/clarity
 - Human impacts (roads, clearings, development)
@@ -359,7 +359,7 @@ Success Notification
 - Original structured data
 - Cross-domain patterns
 
-**AI Model:** OpenAI GPT-4o or other custom model
+**AI Model:** Configurable; any compatible large language model
 **Synthesis Tasks:**
 - **Executive Summary:** High-level overview for decision-makers
 - **Species-by-Species Analysis:** Detailed sections for each observed species (2-3 pages each)
@@ -486,10 +486,10 @@ Success Notification
 ### 2. Configure Credentials
 **Settings → Credentials → Add Credential**
 
-**OpenAI API:**
-- Name: `OpenAI GPT-4o Reporter`
-- API Key: Your OpenAI API key
-- Used by: All 6 AI agents
+**AI Model API:**
+- Name: Your preferred AI model credential name
+- API Key: Your AI model API key
+- Used by: All 5 AI agents
 
 **Airtable:**
 - Name: `Airtable Audtheia`
@@ -704,7 +704,7 @@ const greenColor = '#228B22';
 
 ### Adding New Agents
 1. Create new AI Agent node
-2. Configure GPT-4o model
+2. Configure your preferred AI model
 3. Design system prompt
 4. Add to parallel execution
 5. Update integration node to include new agent output
