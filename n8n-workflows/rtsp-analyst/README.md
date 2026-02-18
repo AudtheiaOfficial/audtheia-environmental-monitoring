@@ -2,7 +2,7 @@
 Deep AI-powered ecological analysis using 9 specialized agents to generate 72 comprehensive data points per species observation.
 
 ## Overview
-The RTSP Analyst Workflow receives detection data from the Roboflow RTSP Workflow and performs comprehensive environmental analysis using 9 specialized AI agents powered by OpenAI GPT-4o. Each agent focuses on a specific domain (taxonomy, geography, biodiversity, climate, habitat, cartography) and integrates with scientific databases to produce research-grade ecological datasets.
+The RTSP Analyst Workflow receives detection data from the Roboflow RTSP Workflow and performs comprehensive environmental analysis using 9 specialized AI agents. Each agent focuses on a specific domain (taxonomy, geography, biodiversity, climate, habitat, cartography) and integrates with scientific databases to produce research-grade ecological datasets. Users can configure any compatible large language model for agent execution.
 
 <div align="center">
   <img src="assets/rtsp-analyst-workflow.gif" width="900" alt="RTSP Analyst workflow">
@@ -453,9 +453,9 @@ Before activating, configure these credentials in N8N:
 
 **Settings → Credentials → Add Credential**
 
-**OpenAI API:**
-- Name: `OpenAI GPT-4o`
-- API Key: Your OpenAI API key
+**AI Model API:**
+- Name: Your preferred AI model credential name
+- API Key: Your AI model API key
 - Used by: All 9 AI agents
 
 **Airtable:**
@@ -642,7 +642,7 @@ curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/rtsp-analyst \
 
 ### Adding New Agents
 1. **Create Agent Node** in N8N
-2. **Configure AI Model:** Set GPT-4o with appropriate temperature
+2. **Configure AI Model:** Select and configure your preferred large language model with appropriate temperature settings
 3. **Design System Prompt:** Define agent's role and data sources
 4. **Add API Integrations:** Connect to required databases
 5. **Update Data Aggregation:** Add agent output to final payload
