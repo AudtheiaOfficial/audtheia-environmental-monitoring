@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/blob/main/LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=social)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/AudtheiaOfficial/audtheia-environmental-monitoring)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
@@ -23,10 +23,10 @@ Audtheia is an open-source environmental monitoring system designed for research
 
 Continuous ecosystem monitoring has become increasingly significant as biodiversity loss and climate-driven habitat change accelerate globally. For conservationists and researchers, the core challenge is not observation alone but the time and resources required to transform large volumes of video footage into structured, actionable ecological data. Audtheia addresses this by automating the full analysis pipeline:
 
-- **Roboflow RTSP Workflow**: The "Eyes" of the system. Processes video in real time using a configurable object detection model and multi-object tracking, with live species visualization
-- **N8N RTSP Analyst**: The "Brain" of the system. Conducts deep AI analysis concurrently using 9 specialized agents, generating 72 data points per species observation
-- **Daily Reporter Workflow**: The "Communicator" of the system. Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents
-- **Airtable Database**: The "Memory" of the system. Stores structured, research-grade datasets suitable for peer-reviewed publication, conservation planning, and compliance reporting
+- **Roboflow RTSP Workflow**: The "Eyes" of the system. Processes video in real time using a configurable object detection model and multi-object tracking, with live species visualization.
+- **N8N RTSP Analyst**: The "Brain" of the system. Conducts deep AI analysis concurrently using 9 specialized agents, generating 72 data points per species observation.
+- **Daily Reporter Workflow**: The "Communicator" of the system. Synthesizes observation data into publication-quality PDF reports using 5 specialized AI agents.
+- **Airtable Database**: The "Memory" of the system. Stores structured, research-grade datasets suitable for peer-reviewed publication, conservation planning, and compliance reporting.
 
 **Result**: Continuous real-time monitoring + comprehensive ecological analysis + automated professional reporting, without compromising any capability.
 
