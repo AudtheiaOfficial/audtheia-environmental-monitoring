@@ -501,4 +501,4 @@ Audtheia is designed for research and conservation purposes. While the system ge
 
 ---
 
-**Built with genuine ❤️ for the global research and conservation community**
+**Built with ❤️ for the global research and conservation community**
