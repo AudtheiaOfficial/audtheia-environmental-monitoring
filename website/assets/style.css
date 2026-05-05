@@ -1132,3 +1132,43 @@ code,
   }
 }
 
+
+/* ── PATCH: Edit 5 — Pipeline node sub-text legibility ────────────────── */
+/* Override the default --color-text-muted with --color-text-2, which is   */
+/* readable against the dark node background without being overly bright.  */
+
+.pipeline-node-sub {
+  color: var(--color-text-2);
+}
+
+/* ── PATCH: Edit 6 — Platform ID: replace scrollbar with ellipsis ──────── */
+/* Removes the horizontal scrollbar. Full text is accessible via the        */
+/* native browser tooltip triggered by the title attribute on each element. */
+
+.platform-id {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── PATCH: Edit 11 — Institution items as anchor elements ─────────────── */
+/* The .institution-item elements are now <a> tags. Reset link decoration   */
+/* so they inherit the existing hover and border styles without underlines.  */
+
+a.institution-item {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  transition: border-top-color var(--transition-fast),
+              background var(--transition-fast);
+}
+
+a.institution-item:hover {
+  border-top-color: var(--color-teal);
+  background: rgba(0, 201, 167, 0.025);
+}
+
