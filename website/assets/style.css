@@ -1172,3 +1172,192 @@ a.institution-item:hover {
   background: rgba(0, 201, 167, 0.025);
 }
 
+
+/* ── PATCH 2a: Platform ID — override previous patch, enable expand toggle ── */
+/* The previous patch set text-overflow on the .platform-id container.       */
+/* This patch restructures it to use an inner wrapper so the toggle button   */
+/* stays visible outside the scrollable area.                                */
+
+.platform-id {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  /* Reset text-overflow from previous patch — now handled by .platform-id-inner */
+  text-overflow: initial;
+  white-space: initial;
+}
+
+/* Inner wrapper injected by landing.js around each <code> element */
+.platform-id-inner {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  transition: overflow 0s;
+}
+
+.platform-id-inner code {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Inherit font/color from .platform-id code base rule */
+}
+
+/* Expanded state — switch inner wrapper to scrollable */
+.platform-id.expanded .platform-id-inner {
+  overflow-x: auto;
+  /* Hide scrollbar visually — scrolled via user drag */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.platform-id.expanded .platform-id-inner code {
+  overflow: initial;
+  text-overflow: initial;
+}
+
+/* Toggle button — injected by landing.js */
+.platform-id-toggle {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--color-teal);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 var(--space-2);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.platform-id:hover .platform-id-toggle,
+.platform-id.expanded .platform-id-toggle {
+  opacity: 1;
+}
+
+/* ── PATCH 2b: Platform scroll carousel ────────────────────────────────── */
+
+.psc-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-10);
+}
+
+/* Track — overflow hidden so no native scrollbar appears; JS scrolls it */
+.psc-track {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  flex: 1;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* Hide scrollbar across browsers */
+  scrollbar-width: none;
+}
+
+.psc-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual platform card */
+.psc-card {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  transition: border-color var(--transition-fast);
+}
+
+.psc-card:hover {
+  border-color: var(--color-teal);
+}
+
+/* Badge — API key / Account / Free */
+.psc-badge {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.07em;
+}
+
+.psc-badge--key     { color: var(--color-teal); }
+.psc-badge--account { color: var(--color-teal); }
+.psc-badge--free    { color: var(--color-text-muted); }
+
+/* Platform name — serif */
+.psc-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* Description — sans, grows to fill remaining card height */
+.psc-desc {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* Link — pushed to bottom of card */
+.psc-link {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  margin-top: auto;
+  transition: color var(--transition-fast);
+}
+
+.psc-link:hover {
+  color: var(--color-teal);
+}
+
+/* Arrow buttons — left / right scroll controls */
+.psc-arrow {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-2);
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.psc-arrow:hover {
+  border-color: var(--color-teal);
+  color: var(--color-teal);
+}
+
+/* Native [hidden] attribute support */
+.psc-arrow[hidden] {
+  display: none;
+}
+
+/* ── PATCH 2c: Responsive — carousel on small screens ──────────────────── */
+
+@media (max-width: 600px) {
+  .psc-card {
+    flex: 0 0 180px;
+  }
+}
+

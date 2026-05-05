@@ -248,36 +248,112 @@
 
 
   <!-- ═══════════════════════════════════════════════════
-       SECTION 3 — TARGET INSTITUTIONS
+       SECTION 3 — REQUIRED PLATFORMS
   ════════════════════════════════════════════════════ -->
-  <section class="section-sm" id="institutions">
+  <section class="section-sm" id="platforms">
     <div class="container">
 
-      <span class="section-label">Designed for institutional research</span>
-      <h2>Built for the workflows of marine and environmental science institutions</h2>
-      <p class="section-intro">Audtheia operates on a bring-your-own-account model. Institutional researchers maintain complete ownership of their observational data within their own Roboflow, N8N, and Airtable environments, with no data passing through Audtheia infrastructure. All required platforms offer free tiers sufficient for field research deployment. Audtheia is suitable for deployment by any research institution, university laboratory, or independent field researcher with access to compatible camera infrastructure.</p>
+      <span class="section-label">Required platforms</span>
+      <h2>Bring your own accounts and API keys</h2>
+      <p class="section-intro">Audtheia connects to each of these platforms using credentials you configure. Your accounts, your data. No information passes through Audtheia infrastructure. Core platforms require API keys set up during the initial configuration. Data integration sources are queried automatically during detection and analysis.</p>
 
-      <div class="institution-grid">
-        <a href="https://www.noaa.gov" target="_blank" rel="noopener noreferrer" class="institution-item">
-          <span class="institution-name">NOAA</span>
-          <span class="institution-full">National Oceanic and Atmospheric Administration</span>
-        </a>
-        <a href="https://www.mbari.org" target="_blank" rel="noopener noreferrer" class="institution-item">
-          <span class="institution-name">MBARI</span>
-          <span class="institution-full">Monterey Bay Aquarium Research Institute</span>
-        </a>
-        <a href="https://www.nature.org" target="_blank" rel="noopener noreferrer" class="institution-item">
-          <span class="institution-name">The Nature Conservancy</span>
-          <span class="institution-full">Global conservation research and management</span>
-        </a>
-        <a href="https://www.nasa.gov" target="_blank" rel="noopener noreferrer" class="institution-item">
-          <span class="institution-name">NASA</span>
-          <span class="institution-full">Earth science and remote sensing</span>
-        </a>
-        <a href="https://coralx.ai" target="_blank" rel="noopener noreferrer" class="institution-item">
-          <span class="institution-name">Coral X</span>
-          <span class="institution-full">Coral reef restoration and field monitoring</span>
-        </a>
+      <div class="psc-wrapper">
+        <button class="psc-arrow psc-arrow--left" id="psc-left" aria-label="Scroll left" hidden>←</button>
+        <div class="psc-track" id="psc-track">
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">Roboflow</span>
+            <span class="psc-desc">Computer vision platform for training and deploying custom detection and classification models</span>
+            <a href="https://roboflow.com" target="_blank" rel="noopener noreferrer" class="psc-link">roboflow.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--account">Account</span>
+            <span class="psc-name">N8N</span>
+            <span class="psc-desc">Open-source workflow automation platform for building multi-agent AI analysis pipelines</span>
+            <a href="https://n8n.io" target="_blank" rel="noopener noreferrer" class="psc-link">n8n.io →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">Airtable</span>
+            <span class="psc-desc">Cloud database for storing structured species observation and environmental mapping records</span>
+            <a href="https://airtable.com" target="_blank" rel="noopener noreferrer" class="psc-link">airtable.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">Anthropic</span>
+            <span class="psc-desc">Claude API for ecological reasoning and contextual analysis within Roboflow Workflows</span>
+            <a href="https://anthropic.com" target="_blank" rel="noopener noreferrer" class="psc-link">anthropic.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">OpenAI</span>
+            <span class="psc-desc">Language model for N8N agent workflows — any compatible LLM provider can be substituted</span>
+            <a href="https://platform.openai.com" target="_blank" rel="noopener noreferrer" class="psc-link">platform.openai.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--free">Free tier</span>
+            <span class="psc-name">Render</span>
+            <span class="psc-desc">Cloud hosting for the Audtheia proxy server that routes browser detection requests to Roboflow</span>
+            <a href="https://render.com" target="_blank" rel="noopener noreferrer" class="psc-link">render.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">Mapbox</span>
+            <span class="psc-desc">Satellite imagery API for geospatial observation context at 10×, 13×, and 15× zoom</span>
+            <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" class="psc-link">mapbox.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">API Template</span>
+            <span class="psc-desc">Automated PDF generation service for daily intelligence reports produced by the Daily Reporter Workflow</span>
+            <a href="https://apitemplate.io" target="_blank" rel="noopener noreferrer" class="psc-link">apitemplate.io →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">GBIF</span>
+            <span class="psc-desc">Global Biodiversity Information Facility — species occurrence records and taxonomic reference data</span>
+            <a href="https://www.gbif.org" target="_blank" rel="noopener noreferrer" class="psc-link">gbif.org →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">iNaturalist</span>
+            <span class="psc-desc">Community-sourced biodiversity database with species observations from researchers worldwide</span>
+            <a href="https://www.inaturalist.org" target="_blank" rel="noopener noreferrer" class="psc-link">inaturalist.org →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--key">API key</span>
+            <span class="psc-name">IUCN Red List</span>
+            <span class="psc-desc">Global conservation status and population trend data for species risk and threat assessment</span>
+            <a href="https://www.iucnredlist.org" target="_blank" rel="noopener noreferrer" class="psc-link">iucnredlist.org →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">NOAA</span>
+            <span class="psc-desc">Oceanographic, atmospheric, and climate datasets for environmental observation context</span>
+            <a href="https://www.noaa.gov" target="_blank" rel="noopener noreferrer" class="psc-link">noaa.gov →</a>
+          </div>
+
+          <div class="psc-card">
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">Open-Meteo</span>
+            <span class="psc-desc">Open-source weather and atmospheric data API — no registration or API key required</span>
+            <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" class="psc-link">open-meteo.com →</a>
+          </div>
+
+        </div>
+        <button class="psc-arrow psc-arrow--right" id="psc-right" aria-label="Scroll right">→</button>
       </div>
 
     </div>
@@ -373,5 +449,6 @@
 
 
   <script src="assets/nav.js"></script>
+  <script src="assets/landing.js"></script>
 </body>
 </html>
