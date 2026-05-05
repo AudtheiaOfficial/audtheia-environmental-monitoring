@@ -457,3 +457,678 @@ code,
   h1 { font-size: var(--text-3xl); }
   h2 { font-size: var(--text-2xl); }
 }
+
+/* ── 9. BUTTONS ────────────────────────────────────────────────────────── */
+/* Shared component — used across all pages                                */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--color-teal);
+  color: var(--color-bg);
+  border-color: var(--color-teal);
+}
+
+.btn-primary:hover {
+  background: var(--color-teal-dim);
+  border-color: var(--color-teal-dim);
+  color: var(--color-bg);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text-2);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
+}
+
+/* ── 10. SECTION UTILITIES ─────────────────────────────────────────────── */
+/* Reusable label and intro text shared across all page sections           */
+
+.section-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-teal);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.section-intro {
+  color: var(--color-text-2);
+  font-size: var(--text-lg);
+  max-width: 72ch;
+  margin-top: var(--space-4);
+  line-height: 1.7;
+}
+
+/* ── 11. HERO ──────────────────────────────────────────────────────────── */
+
+/* Keyframe definitions */
+@keyframes audtheia-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes audtheia-glowPulse {
+  0%, 100% { opacity: 0.85; }
+  50%       { opacity: 0.4;  }
+}
+
+/* Hero section */
+.hero {
+  position: relative;
+  padding-top: calc(var(--nav-height) + var(--space-20));
+  padding-bottom: var(--space-20);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* Subtle scientific grid — uses color-border-subtle (#0d1629) against
+     the near-black background (#07090f). Almost invisible; adds depth. */
+  background-image:
+    linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+  background-size: var(--space-8) var(--space-8);
+}
+
+/* Teal gradient line at the bottom of the hero — like a sonar sweep */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-teal) 50%,
+    transparent 100%
+  );
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* Two-column grid: text left, GIF right */
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+/* Text column — stacked flex with gap */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Staggered entrance — each element fades up in sequence */
+.hero-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-teal);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: audtheia-fadeInUp 0.5s ease both;
+  animation-delay: 0.1s;
+}
+
+.hero-headline {
+  font-size: var(--text-5xl);
+  line-height: 1.14;
+  color: var(--color-text);
+  animation: audtheia-fadeInUp 0.6s ease both;
+  animation-delay: 0.25s;
+}
+
+.hero-body {
+  font-size: var(--text-lg);
+  line-height: 1.75;
+  color: var(--color-text-2);
+  max-width: 54ch;
+  animation: audtheia-fadeInUp 0.6s ease both;
+  animation-delay: 0.4s;
+}
+
+/* Four-column stat row */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  animation: audtheia-fadeInUp 0.6s ease both;
+  animation-delay: 0.55s;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  color: var(--color-teal);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* CTA button group */
+.hero-ctas {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  flex-wrap: wrap;
+  animation: audtheia-fadeInUp 0.6s ease both;
+  animation-delay: 0.7s;
+}
+
+/* GIF column — slides in slightly slower */
+.hero-media {
+  animation: audtheia-fadeInUp 0.8s ease both;
+  animation-delay: 0.2s;
+}
+
+/* Detection GIF frame */
+.gif-frame {
+  display: flex;
+  flex-direction: column;
+}
+
+.gif-wrap {
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
+  background: var(--color-surface);
+  /* Bioluminescent teal glow — marine monitoring aesthetic */
+  box-shadow:
+    0 0 0 1px var(--color-border-subtle),
+    0 0 60px var(--color-glow-teal),
+    0 0 120px rgba(0, 201, 167, 0.04);
+}
+
+/* Pulsing teal top bar — active monitoring / recording indicator */
+.gif-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-teal);
+  opacity: 0.85;
+  z-index: 1;
+  pointer-events: none;
+  animation: audtheia-glowPulse 3s ease-in-out infinite;
+}
+
+.gif-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gif-caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.gif-caption .mono {
+  font-size: var(--text-xs);
+}
+
+.gif-caption-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── 12. ARCHITECTURE ──────────────────────────────────────────────────── */
+
+/* Pipeline flow diagram */
+.pipeline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-12) 0;
+  overflow-x: auto;
+  padding: var(--space-6) 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.pipeline-node {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4) var(--space-5);
+  flex-shrink: 0;
+  min-width: 130px;
+  transition: border-color var(--transition-fast);
+}
+
+.pipeline-node:hover {
+  border-color: var(--color-teal);
+}
+
+/* Input/output nodes use a dashed border to distinguish from platform nodes */
+.pipeline-node--io {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--color-border);
+}
+
+.pipeline-node-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-teal);
+  letter-spacing: 0.08em;
+}
+
+.pipeline-node-name {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.pipeline-node-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.pipeline-connector {
+  font-size: var(--text-xl);
+  color: var(--color-teal);
+  opacity: 0.35;
+  flex-shrink: 0;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Platform detail cards — 4-column grid, collapsing responsively */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+
+.platform-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: border-color var(--transition-fast);
+}
+
+.platform-card:hover {
+  border-color: var(--color-teal);
+}
+
+.platform-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.platform-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-teal);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+/* Platform name inherits serif from h3 base rule */
+.platform-name {
+  font-size: var(--text-2xl);
+  line-height: 1;
+  margin: 0;
+}
+
+/* Model ID / endpoint display — styled as a code block */
+.platform-id {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* Override base code color — these IDs are metadata, not interactive data */
+.platform-id code {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--color-text-muted);
+}
+
+/* Body paragraph inside card — override base max-width */
+.platform-card > p {
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  line-height: 1.65;
+  max-width: none;
+}
+
+/* Specification list */
+.platform-specs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.platform-specs li {
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  padding-left: var(--space-4);
+  position: relative;
+  line-height: 1.5;
+}
+
+.platform-specs li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--color-teal);
+  opacity: 0.45;
+}
+
+/* code elements in specs inherit teal from base rule — correct */
+.platform-specs code {
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+}
+
+/* Tag row — pushed to bottom of card by flex + margin-top: auto */
+.platform-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.platform-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ── 13. INSTITUTIONS ──────────────────────────────────────────────────── */
+
+/* Flex-wrap layout — items grow to fill available width */
+.institution-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: var(--space-10);
+}
+
+.institution-item {
+  flex: 1 1 180px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  transition: border-top-color var(--transition-fast),
+              background var(--transition-fast);
+}
+
+.institution-item:hover {
+  border-top-color: var(--color-teal);
+  background: rgba(0, 201, 167, 0.025);
+}
+
+.institution-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.institution-full {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  display: block;
+}
+
+/* ── 14. PUBLICATION ───────────────────────────────────────────────────── */
+
+.pub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-10);
+}
+
+.pub-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.pub-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-teal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.doi-link {
+  display: inline-block;
+  transition: opacity var(--transition-fast);
+}
+
+.doi-link:hover {
+  opacity: 0.72;
+}
+
+.doi-badge {
+  height: 20px;
+  width: auto;
+  display: inline-block;
+}
+
+.pub-doi-string {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  margin-top: auto;
+}
+
+/* Manuscript topic — serif italic, non-hyperlinked */
+.pub-manuscript-topic {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.pub-journal {
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  display: block;
+  margin-top: auto;
+}
+
+/* Override base max-width inside pub cards */
+.pub-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  line-height: 1.65;
+  max-width: none;
+}
+
+/* GitHub repository link */
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  word-break: break-all;
+}
+
+.github-link:hover {
+  color: var(--color-teal);
+}
+
+.github-link svg {
+  flex-shrink: 0;
+}
+
+/* ── 15. RESPONSIVE — LANDING PAGE ────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  /* Collapse to single column, GIF moves above text */
+  .hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-height) + var(--space-12));
+    padding-bottom: var(--space-12);
+    align-items: flex-start;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
+  }
+
+  .hero-media {
+    order: -1; /* GIF appears above text column on narrow layouts */
+  }
+
+  .hero-headline {
+    font-size: var(--text-4xl);
+  }
+
+  /* Collapse stats to 2x2 */
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-headline {
+    font-size: var(--text-3xl);
+  }
+
+  /* Stack CTAs vertically on small screens */
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-ctas .btn {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Keep institutions in 2 columns on small screens */
+  .institution-item {
+    flex: 1 1 140px;
+  }
+
+  .pub-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .platform-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Respect user motion preferences — disable all landing page animations */
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow,
+  .hero-headline,
+  .hero-body,
+  .hero-stats,
+  .hero-ctas,
+  .hero-media {
+    animation: none;
+  }
+
+  .gif-wrap::before {
+    animation: none;
+    opacity: 0.85;
+  }
+}
+
