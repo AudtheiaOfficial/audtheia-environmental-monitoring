@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Run the official Audtheia Porifera classifier on any image. No account required — drag and drop to detect marine sponge species in seconds.">
+
+  <title>Demo — Audtheia</title>
+
+  <!-- IBM Plex font family — required by the Audtheia design system -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">AUDTHEIA</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main content ───────────────────────────────────────────────────── -->
+  <main>
+    <section class="section" style="padding-top: calc(var(--nav-height) + var(--space-16));">
+      <div class="container">
+        <div class="demo-content">
+
+          <!-- Page intro -->
+          <div class="demo-intro">
+            <span class="section-label">Species Detection</span>
+            <h1 class="demo-heading">Try the Porifera classifier</h1>
+            <p class="section-intro">
+              Upload any image to run it through
+              <code>official-porifera-classifier-ju8er/12</code>,
+              a custom classifier trained on 16,915 labeled images across 126 marine sponge species
+              using RF-DETR&nbsp;(Medium). Detections render as bounding boxes directly on your image.
+              No account or setup required.
+            </p>
+          </div>
+
+          <!-- Drop zone -->
+          <div
+            class="demo-drop-zone"
+            id="demo-drop-zone"
+            role="button"
+            tabindex="0"
+            aria-label="Upload an image for species detection. Click or drag and drop."
+          >
+            <!-- Hidden file input — triggered by the drop zone click handler -->
+            <input
+              type="file"
+              id="demo-file-input"
+              accept="image/jpeg,image/png,image/webp,image/gif,image/bmp"
+              aria-hidden="true"
+              tabindex="-1"
+              hidden
+            >
+
+            <!-- Upload icon -->
+            <svg
+              class="demo-drop-icon"
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <line x1="24" y1="10" x2="24" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <polyline points="16,18 24,10 32,18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M10 36 L10 40 L38 40 L38 36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+
+            <span class="demo-drop-headline">Drag an image here, or click to browse</span>
+            <span class="demo-drop-sub">JPEG &middot; PNG &middot; WebP &middot; GIF &middot; BMP &middot; max&nbsp;10&nbsp;MB</span>
+          </div>
+
+          <!-- Preview section — hidden until a file is selected -->
+          <div id="demo-preview-section" class="demo-preview-section" hidden>
+            <!-- Image frame — canvas is absolutely positioned over the img -->
+            <div class="demo-image-frame">
+              <img
+                id="demo-preview-img"
+                class="demo-preview-img"
+                alt="Uploaded image awaiting species detection"
+              >
+              <!--
+                Canvas bitmap size and display size are both set by syncCanvas()
+                in demo.js. No CSS width/height on this element — JS has full
+                control to keep coordinate math correct.
+                pointer-events: none keeps the canvas non-interactive.
+              -->
+              <canvas id="demo-canvas" aria-hidden="true"></canvas>
+            </div>
+          </div>
+
+          <!-- Action buttons — hidden until a file is selected -->
+          <div id="demo-actions" class="demo-actions" hidden>
+            <button id="demo-submit" class="btn btn-primary">Run detection</button>
+            <button id="demo-reset"  class="btn btn-secondary">Clear</button>
+          </div>
+
+          <!-- Status message — updated by demo.js; hidden when idle -->
+          <div
+            id="demo-status"
+            class="demo-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            hidden
+          ></div>
+
+          <!-- Detection results — hidden until a successful detection -->
+          <section id="demo-results-section" aria-label="Detection results" hidden>
+            <div class="demo-results-header">
+              <span class="section-label">Detections</span>
+            </div>
+            <ul id="demo-results-list" class="demo-results-list" aria-label="Detected species list"></ul>
+          </section>
+
+          <!-- Proxy information callout -->
+          <div class="demo-callout" aria-label="Demo information">
+            <span class="demo-callout-marker" aria-hidden="true"></span>
+            <p class="demo-callout-text">
+              Detection runs through a shared proxy server hosted on Render.com&rsquo;s free tier.
+              The first request after a period of inactivity may take 30&ndash;50&nbsp;seconds while
+              the server starts. The demo is rate-limited to 5&nbsp;detections per&nbsp;IP per&nbsp;hour.
+              To run detections without these constraints,
+              <a href="setup.html">set up your own Roboflow workspace</a>
+              using the Audtheia setup guide.
+            </p>
+          </div>
+
+        </div><!-- /.demo-content -->
+      </div><!-- /.container -->
+    </section>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AUDTHEIA</span>
+      <nav class="footer-links" aria-label="Site navigation">
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+        <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <span class="footer-meta">DOI&nbsp;10.5281/zenodo.17842738 &middot; MIT License</span>
+    </div>
+  </footer>
+
+  <!-- No inline JavaScript. Navigation behaviour is in nav.js.
+       All demo logic is in demo.js.                              -->
+  <script src="assets/nav.js"></script>
+  <script src="assets/demo.js"></script>
+
+</body>
+</html>

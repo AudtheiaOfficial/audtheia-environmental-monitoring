@@ -1361,3 +1361,374 @@ a.institution-item:hover {
   }
 }
 
+
+/* ── 16. DEMO PAGE ─────────────────────────────────────────────────────── */
+
+/* Page-level heading override — tool pages are more restrained than hero  */
+.demo-heading {
+  font-size: var(--text-4xl);
+  line-height: 1.18;
+}
+
+/* Intro block — limits line width for readability                          */
+.demo-intro {
+  margin-bottom: var(--space-10);
+}
+
+.demo-intro .section-intro {
+  margin-top: var(--space-4);
+}
+
+/* Demo content — narrower max-width than the container, keeps tool focused */
+.demo-content {
+  max-width: 800px;
+}
+
+/* ── Drop zone ────────────────────────────────────────────────────────── */
+
+.demo-drop-zone {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-16) var(--space-8);
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  transition:
+    border-color var(--transition-base),
+    background  var(--transition-base),
+    box-shadow  var(--transition-base);
+}
+
+.demo-drop-zone:hover,
+.demo-drop-zone:focus-visible {
+  border-color: var(--color-teal);
+  background: var(--color-glow-teal);
+  outline: none;
+}
+
+.demo-drop-zone.drag-over {
+  border-color: var(--color-teal);
+  background: var(--color-glow-teal);
+  box-shadow: 0 0 0 1px var(--color-teal) inset;
+}
+
+.demo-drop-icon {
+  color: var(--color-teal);
+  opacity: 0.45;
+  transition: opacity var(--transition-fast);
+}
+
+.demo-drop-zone:hover .demo-drop-icon,
+.demo-drop-zone:focus-visible .demo-drop-icon,
+.demo-drop-zone.drag-over .demo-drop-icon {
+  opacity: 1;
+}
+
+.demo-drop-headline {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.demo-drop-sub {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Preview section ──────────────────────────────────────────────────── */
+
+.demo-preview-section {
+  margin-top: var(--space-8);
+}
+
+/* Wrapper that stacks the image and canvas overlay */
+.demo-image-frame {
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-surface);
+  /* teal glow echoes the hero GIF frame */
+  box-shadow:
+    0 0 0 1px var(--color-border-subtle),
+    0 0 40px rgba(0, 201, 167, 0.07);
+  /* Remove inline-block gap under the img */
+  line-height: 0;
+}
+
+.demo-preview-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Canvas lives in the same stacking context — pointer-events: none so the
+   user can still interact with elements below it.
+   Width and height are set exclusively by syncCanvas() in demo.js —
+   no CSS dimensions here to avoid conflicting with the bitmap attributes.  */
+#demo-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* ── Action buttons ───────────────────────────────────────────────────── */
+
+.demo-actions {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-6);
+  flex-wrap: wrap;
+}
+
+/* ── Status messages ──────────────────────────────────────────────────── */
+
+.demo-status {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-text-2);
+}
+
+.demo-status a {
+  color: var(--color-teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition-fast);
+}
+
+.demo-status a:hover {
+  opacity: 0.75;
+}
+
+/* Loading — neutral, spinner-aligned                                       */
+.demo-status--loading {
+  align-items: center;
+  border-color: var(--color-border);
+  color: var(--color-text-2);
+}
+
+/* Error — warm red tint                                                    */
+.demo-status--error {
+  border-color: rgba(248, 113, 113, 0.28);
+  background: rgba(248, 113, 113, 0.05);
+  color: #f87171;
+}
+
+.demo-status--error a {
+  color: #f87171;
+}
+
+/* Info — cool blue tint                                                    */
+.demo-status--info {
+  border-color: rgba(56, 189, 248, 0.22);
+  background: rgba(56, 189, 248, 0.04);
+  color: var(--color-text-2);
+}
+
+.demo-status-text {
+  flex: 1;
+}
+
+/* ── Spinner ──────────────────────────────────────────────────────────── */
+
+.demo-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-teal);
+  border-radius: 50%;
+  animation: demo-spin 0.65s linear infinite;
+}
+
+@keyframes demo-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Results section ──────────────────────────────────────────────────── */
+
+.demo-results-section {
+  margin-top: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+}
+
+.demo-results-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.demo-results-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.demo-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Each detection row: index | species name | confidence                    */
+.demo-result-item {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.demo-result-item:hover {
+  border-color: var(--color-teal);
+}
+
+.demo-result-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Scientific name rendered in serif italic — matches Audtheia's data tone  */
+.demo-result-species {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.demo-result-confidence {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-teal);
+  letter-spacing: 0.02em;
+}
+
+/* ── Info callout ─────────────────────────────────────────────────────── */
+
+.demo-callout {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.demo-callout-marker {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  flex-shrink: 0;
+  opacity: 0.45;
+  margin-top: 5px;
+}
+
+.demo-callout-text {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  max-width: none;
+}
+
+.demo-callout-text a {
+  color: var(--color-text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.demo-callout-text a:hover {
+  color: var(--color-teal);
+}
+
+/* ── Responsive — Demo page ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .demo-heading {
+    font-size: var(--text-3xl);
+  }
+
+  .demo-drop-zone {
+    padding: var(--space-12) var(--space-6);
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-drop-zone {
+    padding: var(--space-10) var(--space-4);
+    min-height: 180px;
+    gap: var(--space-3);
+  }
+
+  .demo-drop-headline {
+    font-size: var(--text-base);
+  }
+
+  /* Stack action buttons vertically on very small screens */
+  .demo-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .demo-actions .btn {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Result rows: 2-column on narrow screens — index + species on line 1,
+     confidence on line 2 beneath species                                   */
+  .demo-result-item {
+    grid-template-columns: 2rem 1fr;
+    grid-template-rows: auto auto;
+    row-gap: var(--space-1);
+  }
+
+  .demo-result-confidence {
+    grid-column: 2;
+  }
+}
+
+/* Respect reduced-motion preference — disable spinner animation             */
+@media (prefers-reduced-motion: reduce) {
+  .demo-spinner {
+    animation: none;
+    border-top-color: var(--color-teal);
+    opacity: 0.6;
+  }
+}
