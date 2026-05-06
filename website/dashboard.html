@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Researcher dashboard for viewing Airtable species observation records, environmental mapping data, and daily PDF intelligence reports from your Audtheia deployment.">
+
+  <title>Dashboard &mdash; Audtheia</title>
+
+  <!-- IBM Plex font family &mdash; required by the Audtheia design system -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">AUDTHEIA</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main content ───────────────────────────────────────────────────── -->
+  <main>
+
+    <!-- ── Settings section ─────────────────────────────────────────────── -->
+    <section class="section dash-settings-section" id="dash-settings">
+      <div class="container">
+
+        <div class="dash-section-intro">
+          <span class="section-label">Configuration</span>
+          <h2 class="dash-section-heading">Settings</h2>
+          <p class="section-intro">
+            Connect the dashboard to your Airtable base by entering your credentials below.
+            All values are stored in your browser&rsquo;s local storage only and are never
+            sent to any Audtheia server.
+          </p>
+        </div>
+
+        <!-- Privacy notice -->
+        <div class="settings-privacy" role="note" aria-label="Data privacy notice">
+          <svg
+            class="settings-privacy-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <p>
+            Your API credentials are stored only in your browser&rsquo;s local storage on
+            this device. They are never transmitted to or stored on any Audtheia server.
+            Do not use this website on shared or public computers.
+          </p>
+        </div>
+
+        <!-- Credentials form -->
+        <div class="settings-form">
+
+          <!-- Airtable credentials group -->
+          <div class="settings-group">
+            <span class="settings-group-label">Airtable credentials</span>
+
+            <div class="settings-field">
+              <label class="settings-label" for="settings-pat">Personal Access Token</label>
+              <input
+                type="password"
+                id="settings-pat"
+                class="settings-input"
+                placeholder="patXXXXXXXXXXXXXXXXXXXX.XXXXXXXXXX"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              >
+              <span class="settings-hint">
+                Found in your Airtable account under Developer Hub &rarr; Personal access tokens.
+                Requires <code>data.records:read</code> scope on your base.
+              </span>
+            </div>
+
+            <div class="settings-field">
+              <label class="settings-label" for="settings-base-id">Base ID</label>
+              <input
+                type="text"
+                id="settings-base-id"
+                class="settings-input"
+                placeholder="appXXXXXXXXXXXXXX"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+              >
+              <span class="settings-hint">
+                Visible in the URL of your Airtable base:
+                <code>airtable.com/{Base&nbsp;ID}/{Table&nbsp;ID}</code>.
+                Begins with <code>app</code>.
+              </span>
+            </div>
+          </div>
+
+          <!-- Table IDs group -->
+          <div class="settings-group">
+            <span class="settings-group-label">Table IDs</span>
+
+            <div class="settings-field">
+              <label class="settings-label" for="settings-table-species">Species Observations</label>
+              <input
+                type="text"
+                id="settings-table-species"
+                class="settings-input"
+                placeholder="tblXXXXXXXXXXXXXX"
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <span class="settings-hint">
+                62-column table storing per-detection observation records generated by the
+                RTSP Analyst Workflow.
+              </span>
+            </div>
+
+            <div class="settings-field">
+              <label class="settings-label" for="settings-table-mapping">Environmental Mapping</label>
+              <input
+                type="text"
+                id="settings-table-mapping"
+                class="settings-input"
+                placeholder="tblXXXXXXXXXXXXXX"
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <span class="settings-hint">
+                10-column table containing Mapbox satellite imagery URLs at
+                10&times;, 13&times;, and 15&times;&nbsp;zoom, generated by the N8N pipeline.
+              </span>
+            </div>
+
+            <div class="settings-field">
+              <label class="settings-label" for="settings-table-reports">Daily Reports</label>
+              <input
+                type="text"
+                id="settings-table-reports"
+                class="settings-input"
+                placeholder="tblXXXXXXXXXXXXXX"
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <span class="settings-hint">
+                3-column table containing finalized PDF intelligence report records from the
+                Daily Reporter Workflow.
+              </span>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="settings-actions">
+            <button class="btn btn-primary" id="settings-save">Save credentials</button>
+            <button class="btn btn-secondary" id="settings-clear">Clear</button>
+          </div>
+
+          <!-- Inline confirmation -->
+          <div
+            id="settings-msg"
+            class="settings-msg"
+            hidden
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></div>
+
+        </div><!-- /.settings-form -->
+      </div><!-- /.container -->
+    </section>
+
+    <!-- ── Visual separator ──────────────────────────────────────────────── -->
+    <div class="dash-separator" aria-hidden="true"></div>
+
+    <!-- ── Dashboard section ────────────────────────────────────────────── -->
+    <section class="section dash-data-section" id="dash-data">
+      <div class="container">
+
+        <div class="dash-section-intro">
+          <span class="section-label">Research Data</span>
+          <h2 class="dash-section-heading">Dashboard</h2>
+        </div>
+
+        <!-- No-credentials state -->
+        <div id="dash-no-creds" class="dash-no-creds" hidden>
+          <div class="dash-no-creds-inner">
+            <span class="dash-no-creds-label">No credentials configured</span>
+            <p>
+              Enter your Airtable Personal Access Token and Base ID in the Settings section
+              above to load your species observation records, satellite imagery, and daily reports.
+            </p>
+            <a href="#dash-settings" class="btn btn-primary">Configure Settings</a>
+          </div>
+        </div>
+
+        <!-- Dashboard content — only rendered when credentials are present -->
+        <div id="dash-content" hidden>
+
+          <!-- Tab bar -->
+          <div class="dash-tabs" role="tablist" aria-label="Dashboard data views">
+            <button
+              class="dash-tab active"
+              data-tab="species"
+              id="tab-species"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-species"
+            >Species Observations</button>
+            <button
+              class="dash-tab"
+              data-tab="mapping"
+              id="tab-mapping"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-mapping"
+            >Environmental Mapping</button>
+            <button
+              class="dash-tab"
+              data-tab="reports"
+              id="tab-reports"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-reports"
+            >Daily Reports</button>
+          </div>
+
+          <!-- Species Observations panel -->
+          <div
+            class="dash-panel"
+            id="panel-species"
+            role="tabpanel"
+            aria-labelledby="tab-species"
+          >
+            <div
+              id="species-grid"
+              class="obs-grid"
+              aria-live="polite"
+              aria-atomic="false"
+            ></div>
+            <div id="species-load-more" class="dash-load-more" hidden>
+              <button class="btn btn-secondary" id="btn-load-more">Load more records</button>
+            </div>
+          </div>
+
+          <!-- Environmental Mapping panel -->
+          <div
+            class="dash-panel"
+            id="panel-mapping"
+            role="tabpanel"
+            aria-labelledby="tab-mapping"
+            hidden
+          >
+            <div
+              id="mapping-grid"
+              class="map-grid"
+              aria-live="polite"
+              aria-atomic="false"
+            ></div>
+          </div>
+
+          <!-- Daily Reports panel -->
+          <div
+            class="dash-panel"
+            id="panel-reports"
+            role="tabpanel"
+            aria-labelledby="tab-reports"
+            hidden
+          >
+            <div
+              id="reports-list"
+              class="reports-list"
+              aria-live="polite"
+              aria-atomic="false"
+            ></div>
+          </div>
+
+        </div><!-- /#dash-content -->
+      </div><!-- /.container -->
+    </section>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AUDTHEIA</span>
+      <nav class="footer-links" aria-label="Site navigation">
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+        <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <span class="footer-meta">DOI&nbsp;10.5281/zenodo.17842738 &middot; MIT License</span>
+    </div>
+  </footer>
+
+  <!-- No inline JavaScript. Navigation behaviour is in nav.js.
+       All dashboard logic is in dashboard.js.                    -->
+  <script src="assets/nav.js"></script>
+  <script src="assets/dashboard.js"></script>
+
+</body>
+</html>
