@@ -14,6 +14,10 @@
   <style>
     /* Platform carousel — service favicon icons */
     .psc-card img { width: 20px; height: 20px; border-radius: 4px; opacity: 0.8; }
+    /* Mobile — reduce pipeline vertical spacing to eliminate blank gap on small screens */
+    @media (max-width: 768px) {
+      .pipeline { margin: var(--space-6) 0; padding: var(--space-4) 0; }
+    }
   </style>
 </head>
 <body>
@@ -367,6 +371,38 @@
             <span class="psc-name">Open-Meteo</span>
             <span class="psc-desc">Open-source weather and atmospheric data API — no registration or API key required</span>
             <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" class="psc-link">open-meteo.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <img src="https://www.google.com/s2/favicons?domain=api-ninjas.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
+            <span class="psc-badge psc-badge--free">Free tier</span>
+            <span class="psc-name">API Ninjas</span>
+            <span class="psc-desc">Species and biodiversity data API with free and paid tiers for ecological cross-referencing</span>
+            <a href="https://api-ninjas.com" target="_blank" rel="noopener noreferrer" class="psc-link">api-ninjas.com →</a>
+          </div>
+
+          <div class="psc-card">
+            <img src="https://www.google.com/s2/favicons?domain=opentopodata.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">OpenTopoData</span>
+            <span class="psc-desc">Open elevation and topographic data API for geospatial habitat characterization</span>
+            <a href="https://opentopodata.org" target="_blank" rel="noopener noreferrer" class="psc-link">opentopodata.org →</a>
+          </div>
+
+          <div class="psc-card">
+            <img src="https://www.google.com/s2/favicons?domain=openstreetmap.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">OpenStreetMap</span>
+            <span class="psc-desc">Open geographic database for habitat context and spatial reference via the Overpass API</span>
+            <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer" class="psc-link">openstreetmap.org →</a>
+          </div>
+
+          <div class="psc-card">
+            <img src="https://www.google.com/s2/favicons?domain=soilgrids.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
+            <span class="psc-badge psc-badge--free">Free, open</span>
+            <span class="psc-name">SoilGrids</span>
+            <span class="psc-desc">Global soil information system by ISRIC — soil composition and property data for terrestrial deployments</span>
+            <a href="https://soilgrids.org" target="_blank" rel="noopener noreferrer" class="psc-link">soilgrids.org →</a>
           </div>
 
         </div>
