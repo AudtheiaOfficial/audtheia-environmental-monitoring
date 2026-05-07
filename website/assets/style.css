@@ -2974,3 +2974,40 @@ a.institution-item:hover {
     border-bottom: none;
   }
 }
+
+/* ── PATCH 17C: Row visibility + stat label truncation ─────────────────── */
+
+/* Fix 1: Rows starting open
+ *
+ * CSS display: flex on .obs-row-body overrides the HTML [hidden] attribute's
+ * implicit display: none. The [hidden] attribute only works when no CSS
+ * display property is set on the element. Adding !important restores the
+ * correct behavior so rows start collapsed.
+ *
+ * The same rule is applied to other JS-controlled hidden elements as a
+ * safeguard against any future display property conflicts.
+ */
+.obs-row-body[hidden],
+.obs-expand-section[hidden],
+#dash-no-creds[hidden],
+#dash-content[hidden],
+#species-load-more[hidden],
+.dash-panel[hidden] {
+  display: none !important;
+}
+
+/* Fix 2: Stat label truncation (ABUNDA... / INVASI...)
+ *
+ * The chips currently use flex: 1 which divides the container evenly and
+ * makes each chip narrower than the longest label. Switching to
+ * flex: 0 0 auto lets each chip size to its own content width so
+ * "ABUNDANCE" and "INVASIVE" display in full without ellipsis.
+ */
+.obs-row .obs-stat {
+  flex: 0 0 auto;
+}
+
+.obs-row .obs-stat-label {
+  overflow: visible;
+  text-overflow: clip;
+}
