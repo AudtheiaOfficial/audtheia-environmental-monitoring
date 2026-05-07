@@ -48,17 +48,8 @@
           </p>
         </div>
 
-        <!-- Privacy notice -->
         <div class="settings-privacy" role="note" aria-label="Data privacy notice">
-          <svg
-            class="settings-privacy-icon"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
+          <svg class="settings-privacy-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
             <path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
@@ -69,10 +60,9 @@
           </p>
         </div>
 
-        <!-- Credentials form -->
         <div class="settings-form">
 
-          <!-- Airtable credentials group -->
+          <!-- Airtable credentials -->
           <div class="settings-group">
             <span class="settings-group-label">Airtable credentials</span>
 
@@ -116,7 +106,7 @@
             </div>
           </div>
 
-          <!-- Table IDs group -->
+          <!-- Table IDs -->
           <div class="settings-group">
             <span class="settings-group-label">Table IDs</span>
 
@@ -169,27 +159,17 @@
             </div>
           </div>
 
-          <!-- Action buttons -->
           <div class="settings-actions">
             <button class="btn btn-primary" id="settings-save">Save credentials</button>
             <button class="btn btn-secondary" id="settings-clear">Clear</button>
           </div>
 
-          <!-- Inline confirmation -->
-          <div
-            id="settings-msg"
-            class="settings-msg"
-            hidden
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-          ></div>
+          <div id="settings-msg" class="settings-msg" hidden role="status" aria-live="polite" aria-atomic="true"></div>
 
         </div><!-- /.settings-form -->
       </div><!-- /.container -->
     </section>
 
-    <!-- ── Visual separator ──────────────────────────────────────────────── -->
     <div class="dash-separator" aria-hidden="true"></div>
 
     <!-- ── Dashboard section ────────────────────────────────────────────── -->
@@ -201,7 +181,6 @@
           <h2 class="dash-section-heading">Dashboard</h2>
         </div>
 
-        <!-- No-credentials state -->
         <div id="dash-no-creds" class="dash-no-creds" hidden>
           <div class="dash-no-creds-inner">
             <span class="dash-no-creds-label">No credentials configured</span>
@@ -213,40 +192,18 @@
           </div>
         </div>
 
-        <!-- Dashboard content -->
         <div id="dash-content" hidden>
 
-          <!-- Tab bar -->
           <div class="dash-tabs" role="tablist" aria-label="Dashboard data views">
-            <button
-              class="dash-tab active"
-              data-tab="species"
-              id="tab-species"
-              role="tab"
-              aria-selected="true"
-              aria-controls="panel-species"
-            >Species Observations</button>
-            <button
-              class="dash-tab"
-              data-tab="mapping"
-              id="tab-mapping"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-mapping"
-            >Environmental Mapping</button>
-            <button
-              class="dash-tab"
-              data-tab="reports"
-              id="tab-reports"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-reports"
-            >Daily Reports</button>
+            <button class="dash-tab active" data-tab="species" id="tab-species" role="tab" aria-selected="true" aria-controls="panel-species">Species Observations</button>
+            <button class="dash-tab" data-tab="mapping" id="tab-mapping" role="tab" aria-selected="false" aria-controls="panel-mapping">Environmental Mapping</button>
+            <button class="dash-tab" data-tab="reports" id="tab-reports" role="tab" aria-selected="false" aria-controls="panel-reports">Daily Reports</button>
           </div>
 
           <!-- Species Observations panel -->
+          <!-- class="obs-list" renders rows as a vertical list, not a card grid -->
           <div class="dash-panel" id="panel-species" role="tabpanel" aria-labelledby="tab-species">
-            <div id="species-grid" class="obs-grid" aria-live="polite" aria-atomic="false"></div>
+            <div id="species-grid" class="obs-list" aria-live="polite" aria-atomic="false"></div>
             <div id="species-load-more" class="dash-load-more" hidden>
               <button class="btn btn-secondary" id="btn-load-more">Load more records</button>
             </div>

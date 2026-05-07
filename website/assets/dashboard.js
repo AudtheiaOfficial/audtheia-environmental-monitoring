@@ -1,7 +1,7 @@
 /* ============================================================
    AUDTHEIA — RESEARCHER DASHBOARD
    website/assets/dashboard.js
-   Session 5 — rev 2 (species card redesign)
+   Session 5 — rev 3 (horizontal list rows)
    ============================================================ */
 
 'use strict';
@@ -89,10 +89,7 @@ elSave.addEventListener('click', function () {
   const baseId = elBaseId.value.trim();
 
   if (!pat || !baseId) {
-    showMsg(
-      'Personal Access Token and Base ID are required to connect to Airtable.',
-      'error'
-    );
+    showMsg('Personal Access Token and Base ID are required to connect to Airtable.', 'error');
     return;
   }
 
@@ -223,27 +220,20 @@ function renderFieldValue(value) {
     if (value.length === 0) return '<span class="field-null">\u2014</span>';
     return value.map(function (v) {
       if (v && typeof v === 'object') {
-        if (v.url) {
-          return '<a href="' + escHtml(v.url) + '" target="_blank" rel="noopener noreferrer" class="field-link">' +
-            escHtml(v.filename || v.url) + '</a>';
-        }
+        if (v.url) return '<a href="' + escHtml(v.url) + '" target="_blank" rel="noopener noreferrer" class="field-link">' + escHtml(v.filename || v.url) + '</a>';
         return '<span class="field-obj">' + escHtml(JSON.stringify(v)) + '</span>';
       }
       return escHtml(String(v));
     }).join('<span class="field-sep">, </span>');
   }
   if (typeof value === 'object') {
-    if (value.url) {
-      return '<a href="' + escHtml(value.url) + '" target="_blank" rel="noopener noreferrer" class="field-link">' +
-        escHtml(value.filename || value.url) + '</a>';
-    }
+    if (value.url) return '<a href="' + escHtml(value.url) + '" target="_blank" rel="noopener noreferrer" class="field-link">' + escHtml(value.filename || value.url) + '</a>';
     return '<span class="field-obj">' + escHtml(JSON.stringify(value)) + '</span>';
   }
   const str = String(value);
   if (/^https?:\/\//.test(str)) {
     const display = str.length > 64 ? str.slice(0, 61) + '\u2026' : str;
-    return '<a href="' + escHtml(str) + '" target="_blank" rel="noopener noreferrer" class="field-link">' +
-      escHtml(display) + '</a>';
+    return '<a href="' + escHtml(str) + '" target="_blank" rel="noopener noreferrer" class="field-link">' + escHtml(display) + '</a>';
   }
   return escHtml(str);
 }
@@ -273,13 +263,11 @@ function sortedFields(fields) {
   });
 }
 
-/* ── Species Observations ───────────────────────────────────────────────── */
-
+/* ── Stat chip definitions ──────────────────────────────────────────────── */
 /*
- * Stat chips: each entry defines one header chip shown on every card.
- * keywords: ALL must appear in the field name (case-insensitive) to match.
- * label:    short display label for the chip header.
- * type:     'num' renders the value in teal monospace; 'txt' uses body text.
+ * Defines the four key metrics shown in every observation row header.
+ * keywords: ALL must appear in the field name (lowercase) to match.
+ * type:     'num' renders in teal monospace; 'txt' uses body text color.
  */
 const STAT_DEFS = [
   { keywords: ['rarity', 'score'], label: 'Rarity',    type: 'num' },
@@ -288,7 +276,6 @@ const STAT_DEFS = [
   { keywords: ['count'],           label: 'Count',     type: 'num' },
 ];
 
-/* Returns the STAT_DEFS index that matches fieldKey, or -1 if none match. */
 function matchStatDef(fieldKey) {
   const lower = fieldKey.toLowerCase();
   for (let i = 0; i < STAT_DEFS.length; i++) {
@@ -302,32 +289,55 @@ function matchStatDef(fieldKey) {
   return -1;
 }
 
-/* Formats an ISO 8601 datetime string into a readable short form. */
+/* Shared stat chip HTML builder — used by buildSpeciesRow */
+function statChipHtml(def, slot) {
+  let valStr, valClass;
+  const raw = slot ? slot.value : null;
+  if (raw === null || raw === undefined || raw === '') {
+    valStr   = '\u2014';
+    valClass = 'obs-stat-value obs-stat-null';
+  } else if (def.type === 'num') {
+    valStr   = escHtml(String(raw));
+    valClass = 'obs-stat-value obs-stat-num';
+  } else {
+    valStr   = escHtml(String(raw));
+    valClass = 'obs-stat-value';
+  }
+  return '<div class="obs-stat">' +
+    '<span class="obs-stat-label">' + escHtml(def.label) + '</span>' +
+    '<span class="' + valClass + '">' + valStr + '</span>' +
+  '</div>';
+}
+
 function formatObsTime(val) {
   if (!val) return null;
   try {
     const d = new Date(String(val));
     if (isNaN(d.getTime())) return String(val);
     return d.toLocaleString('en-US', {
-      year:   'numeric',
-      month:  'short',
-      day:    'numeric',
-      hour:   '2-digit',
-      minute: '2-digit',
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
     });
   } catch (_) {
     return String(val);
   }
 }
 
-function buildSpeciesCard(record) {
+/* ── Species Observations — horizontal list rows ────────────────────────── */
+/*
+ * Each observation renders as a full-width clickable row.
+ * Clicking the row header expands an inline detail section below it.
+ * A Collapse button at the bottom of the detail section closes it again.
+ * No card grid — a single vertical list keeps all content visible and
+ * avoids the empty-column problem of multi-column grids.
+ */
+function buildSpeciesRow(record) {
   const fields = record.fields || {};
   const sorted = sortedFields(fields);
   const total  = sorted.length;
 
   /* ── Named field extraction ─────────────────────────────────────────── */
 
-  /* Species name: prefer field containing both 'species' and 'name' */
   let nameEntry = null;
   for (let n = 0; n < sorted.length; n++) {
     const kl = sorted[n][0].toLowerCase();
@@ -342,7 +352,6 @@ function buildSpeciesCard(record) {
   }
   const speciesName = (nameEntry && nameEntry[1]) ? String(nameEntry[1]) : 'Unknown Species';
 
-  /* Observation time: first field containing 'time' or 'timestamp' */
   let timeEntry = null;
   for (let t = 0; t < sorted.length; t++) {
     const tkl = sorted[t][0].toLowerCase();
@@ -352,7 +361,6 @@ function buildSpeciesCard(record) {
   }
   const obsTime = timeEntry ? formatObsTime(timeEntry[1]) : null;
 
-  /* Stat chips: scan all fields and fill up to 4 STAT_DEFS slots */
   const statSlots = [null, null, null, null];
   for (let s = 0; s < sorted.length; s++) {
     const idx = matchStatDef(sorted[s][0]);
@@ -361,7 +369,6 @@ function buildSpeciesCard(record) {
     }
   }
 
-  /* Build a lookup of keys already shown so they are skipped in expand */
   const usedKeys = {};
   if (nameEntry) usedKeys[nameEntry[0]] = true;
   if (timeEntry) usedKeys[timeEntry[0]] = true;
@@ -369,37 +376,15 @@ function buildSpeciesCard(record) {
     if (statSlots[u]) usedKeys[statSlots[u].key] = true;
   }
 
-  /* Remaining fields go into the collapsible expand list */
   const restFields = sorted.filter(function (p) { return !usedKeys[p[0]]; });
 
-  /* ── HTML assembly ──────────────────────────────────────────────────── */
-
-  function statChipHtml(def, slot) {
-    let valStr, valClass;
-    const raw = slot ? slot.value : null;
-    if (raw === null || raw === undefined || raw === '') {
-      valStr   = '\u2014';
-      valClass = 'obs-stat-value obs-stat-null';
-    } else if (def.type === 'num') {
-      valStr   = escHtml(String(raw));
-      valClass = 'obs-stat-value obs-stat-num';
-    } else {
-      valStr   = escHtml(String(raw));
-      valClass = 'obs-stat-value';
-    }
-    return '<div class="obs-stat">' +
-      '<span class="obs-stat-label">' + escHtml(def.label) + '</span>' +
-      '<span class="' + valClass + '">' + valStr + '</span>' +
-    '</div>';
-  }
-
+  /* ── Stats HTML ─────────────────────────────────────────────────────── */
   let statsHtml = '';
   for (let d = 0; d < STAT_DEFS.length; d++) {
     statsHtml += statChipHtml(STAT_DEFS[d], statSlots[d]);
   }
 
-  /* Expand section: single-column definition list, much more readable for
-     long-text fields like rarity reasoning and full taxonomy strings. */
+  /* ── Expand items HTML ──────────────────────────────────────────────── */
   let expandItemsHtml = '';
   for (let r = 0; r < restFields.length; r++) {
     expandItemsHtml +=
@@ -409,53 +394,83 @@ function buildSpeciesCard(record) {
       '</div>';
   }
 
-  const expandBlock = restFields.length > 0
-    ? '<div class="obs-expand-wrap">' +
-        '<button class="obs-expand-toggle" aria-expanded="false">' +
+  /* ── Build DOM ──────────────────────────────────────────────────────── */
+  const row = document.createElement('article');
+  row.className = 'obs-row';
+
+  /*
+   * Row header — acts as the expand/collapse trigger.
+   * Uses role="button" + tabindex on a <div> to avoid the invalid
+   * button > h3 HTML nesting that <button> would require here.
+   */
+  const header = document.createElement('div');
+  header.className = 'obs-row-header';
+  header.setAttribute('role', 'button');
+  header.setAttribute('tabindex', '0');
+  header.setAttribute('aria-expanded', 'false');
+  header.setAttribute('aria-label', 'Expand record: ' + speciesName);
+
+  header.innerHTML =
+    '<div class="obs-row-info">' +
+      '<h3 class="obs-species-name">' + escHtml(speciesName) + '</h3>' +
+      '<div class="obs-row-meta">' +
+        (obsTime ? '<span class="obs-time">' + escHtml(obsTime) + '</span>' : '') +
+        '<span class="obs-record-id">' + escHtml(record.id) + '</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="obs-row-stats obs-stats-row">' + statsHtml + '</div>' +
+    '<svg class="obs-row-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">' +
+      '<path d="M5 7l4 4 4-4" stroke="currentColor" stroke-width="1.5"' +
+        ' stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
+  /* Row body — hidden until expanded */
+  const body = document.createElement('div');
+  body.className = 'obs-row-body';
+  body.hidden = true;
+
+  if (restFields.length > 0) {
+    body.innerHTML =
+      '<dl class="obs-expand-list">' + expandItemsHtml + '</dl>' +
+      '<div class="obs-row-collapse-wrap">' +
+        '<button class="obs-row-collapse-btn" aria-label="Collapse record: ' + escHtml(speciesName) + '">' +
           '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">' +
-            '<path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5"' +
+            '<path d="M10 8l-4-4-4 4" stroke="currentColor" stroke-width="1.5"' +
               ' stroke-linecap="round" stroke-linejoin="round"/>' +
           '</svg>' +
-          '<span class="obs-expand-label">Show all ' + total + ' fields</span>' +
+          'Collapse' +
         '</button>' +
-        '<div class="obs-expand-section" hidden>' +
-          '<dl class="obs-expand-list">' + expandItemsHtml + '</dl>' +
-        '</div>' +
-      '</div>'
-    : '';
-
-  const card = document.createElement('article');
-  card.className = 'obs-card';
-  card.innerHTML =
-    '<div class="obs-card-header">' +
-      '<div class="obs-card-meta">' +
-        '<span class="obs-record-id">' + escHtml(record.id) + '</span>' +
-        (obsTime ? '<span class="obs-time">' + escHtml(obsTime) + '</span>' : '') +
-      '</div>' +
-      '<h3 class="obs-species-name">' + escHtml(speciesName) + '</h3>' +
-    '</div>' +
-    '<div class="obs-stats-row">' + statsHtml + '</div>' +
-    expandBlock;
-
-  /* Bind expand toggle */
-  const toggle = card.querySelector('.obs-expand-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', function () {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      const section  = card.querySelector('.obs-expand-section');
-      const label    = toggle.querySelector('.obs-expand-label');
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      section.hidden = expanded;
-      toggle.classList.toggle('obs-expand-toggle--open', !expanded);
-      label.textContent = expanded
-        ? 'Show all ' + total + ' fields'
-        : 'Show fewer fields';
-    });
+      '</div>';
+  } else {
+    body.innerHTML = '<p class="dash-empty-label">No additional fields for this record.</p>';
   }
 
-  return card;
+  row.appendChild(header);
+  row.appendChild(body);
+
+  /* ── Toggle logic ───────────────────────────────────────────────────── */
+  function toggle() {
+    const expanded = header.getAttribute('aria-expanded') === 'true';
+    const nowOpen  = !expanded;
+    header.setAttribute('aria-expanded', String(nowOpen));
+    body.hidden = expanded;
+    row.classList.toggle('obs-row--open', nowOpen);
+    header.setAttribute('aria-label',
+      (nowOpen ? 'Collapse' : 'Expand') + ' record: ' + speciesName);
+  }
+
+  header.addEventListener('click', toggle);
+  header.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+
+  const collapseBtn = body.querySelector('.obs-row-collapse-btn');
+  if (collapseBtn) collapseBtn.addEventListener('click', toggle);
+
+  return row;
 }
 
+/* ── Species loading ────────────────────────────────────────────────────── */
 async function loadSpecies(append) {
   const creds = getCredentials();
 
@@ -466,7 +481,7 @@ async function loadSpecies(append) {
   }
 
   if (!append) {
-    showSkeleton(elSpeciesGrid, 4);
+    showSkeleton(elSpeciesGrid, 5);
     elLoadMore.hidden = true;
     speciesOffset = null;
   } else {
@@ -487,7 +502,7 @@ async function loadSpecies(append) {
     }
 
     for (let i = 0; i < records.length; i++) {
-      elSpeciesGrid.appendChild(buildSpeciesCard(records[i]));
+      elSpeciesGrid.appendChild(buildSpeciesRow(records[i]));
     }
 
     speciesOffset = data.offset || null;
@@ -566,16 +581,11 @@ function buildMappingCard(record) {
       imgBlock(closeupUrl,  '15\u00d7 closeup',  String(speciesName)) +
     '</div>' +
     '<div class="map-meta-grid">' +
-      '<div class="obs-field"><span class="obs-field-label">Center Coordinates</span>' +
-        '<span class="obs-field-value field-num">' + escHtml(String(coords)) + '</span></div>' +
-      '<div class="obs-field"><span class="obs-field-label">Map Generation Date</span>' +
-        '<span class="obs-field-value">' + escHtml(String(genDate)) + '</span></div>' +
-      '<div class="obs-field"><span class="obs-field-label">Projection System</span>' +
-        '<span class="obs-field-value field-num">' + escHtml(String(projection)) + '</span></div>' +
-      '<div class="obs-field"><span class="obs-field-label">Bathymetry Available</span>' +
-        '<span class="obs-field-value">' + boolBadge(bathymetry) + '</span></div>' +
-      '<div class="obs-field"><span class="obs-field-label">Research Stations Marked</span>' +
-        '<span class="obs-field-value">' + boolBadge(stations) + '</span></div>' +
+      '<div class="obs-field"><span class="obs-field-label">Center Coordinates</span><span class="obs-field-value field-num">' + escHtml(String(coords)) + '</span></div>' +
+      '<div class="obs-field"><span class="obs-field-label">Map Generation Date</span><span class="obs-field-value">' + escHtml(String(genDate)) + '</span></div>' +
+      '<div class="obs-field"><span class="obs-field-label">Projection System</span><span class="obs-field-value field-num">' + escHtml(String(projection)) + '</span></div>' +
+      '<div class="obs-field"><span class="obs-field-label">Bathymetry Available</span><span class="obs-field-value">' + boolBadge(bathymetry) + '</span></div>' +
+      '<div class="obs-field"><span class="obs-field-label">Research Stations Marked</span><span class="obs-field-value">' + boolBadge(stations) + '</span></div>' +
     '</div>';
 
   return card;
@@ -583,88 +593,46 @@ function buildMappingCard(record) {
 
 async function loadMapping() {
   const creds = getCredentials();
-
-  if (!creds.tableMapping) {
-    showEmpty(elMappingGrid, 'Environmental Mapping \u2014 no Table ID configured');
-    return;
-  }
-
+  if (!creds.tableMapping) { showEmpty(elMappingGrid, 'Environmental Mapping \u2014 no Table ID configured'); return; }
   showSkeleton(elMappingGrid, 3);
 
   try {
     const result = await fetchAllRecords(creds.tableMapping, 10);
     elMappingGrid.innerHTML = '';
-
-    if (result.records.length === 0) {
-      showEmpty(elMappingGrid, 'Environmental Mapping');
-      return;
-    }
-
-    for (let i = 0; i < result.records.length; i++) {
-      elMappingGrid.appendChild(buildMappingCard(result.records[i]));
-    }
-
+    if (result.records.length === 0) { showEmpty(elMappingGrid, 'Environmental Mapping'); return; }
+    for (let i = 0; i < result.records.length; i++) elMappingGrid.appendChild(buildMappingCard(result.records[i]));
     if (result.truncated) {
       const note = document.createElement('p');
-      note.className   = 'dash-truncation-note';
+      note.className = 'dash-truncation-note';
       note.textContent = 'Showing first 1,000 records. Export from Airtable to view the full dataset.';
       elMappingGrid.appendChild(note);
     }
-  } catch (err) {
-    showError(elMappingGrid, err.message);
-  }
+  } catch (err) { showError(elMappingGrid, err.message); }
 }
 
 /* ── Daily Reports ──────────────────────────────────────────────────────── */
 function buildReportRow(record) {
   const f      = record.fields || {};
   const sorted = Object.entries(f);
-
-  let pdfUrl   = null;
-  let titleVal = null;
-  let dateVal  = null;
+  let pdfUrl = null, titleVal = null, dateVal = null;
 
   sorted.forEach(function (pair) {
-    const k   = pair[0];
-    const v   = pair[1];
-    const kl  = k.toLowerCase();
-    const val = v ? String(v) : '';
-
-    if (!pdfUrl && /^https?:\/\//.test(val) &&
-        (kl.indexOf('url') !== -1 || kl.indexOf('pdf') !== -1 ||
-         kl.indexOf('link') !== -1 || kl.indexOf('file') !== -1)) {
-      pdfUrl = val;
-    }
-    if (!dateVal && (kl.indexOf('date') !== -1 || kl.indexOf('time') !== -1 ||
-        kl.indexOf('created') !== -1 || kl.indexOf('generated') !== -1)) {
-      dateVal = { label: k, value: val };
-    }
-    if (!titleVal && (kl.indexOf('name') !== -1 || kl.indexOf('title') !== -1 ||
-        kl.indexOf('report') !== -1 || kl.indexOf('label') !== -1)) {
-      titleVal = { label: k, value: val };
-    }
+    const k = pair[0], v = pair[1], kl = k.toLowerCase(), val = v ? String(v) : '';
+    if (!pdfUrl && /^https?:\/\//.test(val) && (kl.indexOf('url') !== -1 || kl.indexOf('pdf') !== -1 || kl.indexOf('link') !== -1 || kl.indexOf('file') !== -1)) pdfUrl = val;
+    if (!dateVal && (kl.indexOf('date') !== -1 || kl.indexOf('time') !== -1 || kl.indexOf('created') !== -1 || kl.indexOf('generated') !== -1)) dateVal = { label: k, value: val };
+    if (!titleVal && (kl.indexOf('name') !== -1 || kl.indexOf('title') !== -1 || kl.indexOf('report') !== -1 || kl.indexOf('label') !== -1)) titleVal = { label: k, value: val };
   });
 
-  if (!titleVal && sorted.length > 0) {
-    titleVal = { label: sorted[0][0], value: String(sorted[0][1] || '') };
-  }
-  if (!pdfUrl) {
-    sorted.forEach(function (pair) {
-      const val = pair[1] ? String(pair[1]) : '';
-      if (!pdfUrl && /^https?:\/\//.test(val)) pdfUrl = val;
-    });
-  }
+  if (!titleVal && sorted.length > 0) titleVal = { label: sorted[0][0], value: String(sorted[0][1] || '') };
+  if (!pdfUrl) sorted.forEach(function (pair) { const val = pair[1] ? String(pair[1]) : ''; if (!pdfUrl && /^https?:\/\//.test(val)) pdfUrl = val; });
 
   const displayTitle = titleVal ? (titleVal.value || titleVal.label) : record.id;
   const displayDate  = dateVal  ? dateVal.value : null;
 
   const downloadBtn = pdfUrl
-    ? '<a href="' + escHtml(pdfUrl) + '" class="btn btn-secondary report-download"' +
-        ' target="_blank" rel="noopener noreferrer">' +
-        '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">' +
-          '<path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor"' +
-            ' stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-        '</svg>Download PDF</a>'
+    ? '<a href="' + escHtml(pdfUrl) + '" class="btn btn-secondary report-download" target="_blank" rel="noopener noreferrer">' +
+        '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        'Download PDF</a>'
     : '<span class="report-no-url">No PDF URL found</span>';
 
   const row = document.createElement('div');
@@ -673,73 +641,40 @@ function buildReportRow(record) {
     '<div class="report-row-info">' +
       '<span class="report-title">' + escHtml(displayTitle) + '</span>' +
       (displayDate ? '<span class="report-date">' + escHtml(displayDate) + '</span>' : '') +
-    '</div>' +
-    downloadBtn;
+    '</div>' + downloadBtn;
 
   return row;
 }
 
 async function loadReports() {
   const creds = getCredentials();
-
-  if (!creds.tableReports) {
-    showEmpty(elReportsList, 'Daily Reports \u2014 no Table ID configured');
-    return;
-  }
-
-  elReportsList.innerHTML =
-    '<div class="dash-skeleton" aria-hidden="true">' +
-      '<div class="dash-skeleton-line"></div>' +
-      '<div class="dash-skeleton-line dash-skeleton-line--short"></div>' +
-    '</div>';
+  if (!creds.tableReports) { showEmpty(elReportsList, 'Daily Reports \u2014 no Table ID configured'); return; }
+  elReportsList.innerHTML = '<div class="dash-skeleton" aria-hidden="true"><div class="dash-skeleton-line"></div><div class="dash-skeleton-line dash-skeleton-line--short"></div></div>';
 
   try {
     const result = await fetchAllRecords(creds.tableReports, 10);
     elReportsList.innerHTML = '';
-
-    if (result.records.length === 0) {
-      showEmpty(elReportsList, 'Daily Reports');
-      return;
-    }
-
-    for (let i = 0; i < result.records.length; i++) {
-      elReportsList.appendChild(buildReportRow(result.records[i]));
-    }
-
+    if (result.records.length === 0) { showEmpty(elReportsList, 'Daily Reports'); return; }
+    for (let i = 0; i < result.records.length; i++) elReportsList.appendChild(buildReportRow(result.records[i]));
     if (result.truncated) {
       const note = document.createElement('p');
-      note.className   = 'dash-truncation-note';
+      note.className = 'dash-truncation-note';
       note.textContent = 'Showing first 1,000 records. Export from Airtable to view the full dataset.';
       elReportsList.appendChild(note);
     }
-  } catch (err) {
-    showError(elReportsList, err.message);
-  }
+  } catch (err) { showError(elReportsList, err.message); }
 }
 
 /* ── Tab switching ──────────────────────────────────────────────────────── */
 dashTabs.forEach(function (tab) {
   tab.addEventListener('click', function () {
     const target = tab.dataset.tab;
-
-    dashTabs.forEach(function (t) {
-      t.classList.remove('active');
-      t.setAttribute('aria-selected', 'false');
-    });
+    dashTabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
     tab.classList.add('active');
     tab.setAttribute('aria-selected', 'true');
-
-    Object.keys(PANELS).forEach(function (key) {
-      PANELS[key].hidden = key !== target;
-    });
-
-    if (target === 'mapping' && !tabsLoaded.mapping) {
-      tabsLoaded.mapping = true;
-      loadMapping();
-    } else if (target === 'reports' && !tabsLoaded.reports) {
-      tabsLoaded.reports = true;
-      loadReports();
-    }
+    Object.keys(PANELS).forEach(function (key) { PANELS[key].hidden = key !== target; });
+    if (target === 'mapping' && !tabsLoaded.mapping) { tabsLoaded.mapping = true; loadMapping(); }
+    else if (target === 'reports' && !tabsLoaded.reports) { tabsLoaded.reports = true; loadReports(); }
   });
 });
 
@@ -748,26 +683,16 @@ function resetTabs() {
   tabsLoaded.species = false;
   tabsLoaded.mapping = false;
   tabsLoaded.reports = false;
-
-  dashTabs.forEach(function (t, i) {
-    t.classList.toggle('active', i === 0);
-    t.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-  });
-
+  dashTabs.forEach(function (t, i) { t.classList.toggle('active', i === 0); t.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); });
   PANELS.species.hidden = false;
   PANELS.mapping.hidden = true;
   PANELS.reports.hidden = true;
 }
 
 async function initDashboard() {
-  if (!hasCredentials()) {
-    showNoCreds();
-    return;
-  }
-
+  if (!hasCredentials()) { showNoCreds(); return; }
   showContent();
   resetTabs();
-
   tabsLoaded.species = true;
   await loadSpecies(false);
 }
