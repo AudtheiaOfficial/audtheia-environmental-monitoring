@@ -2491,3 +2491,219 @@ a.institution-item:hover {
     opacity: 0.55;
   }
 }
+
+/* ── PATCH 17A: Dashboard UI refinements ──────────────────────────────── */
+
+/* ── Subtle atmospheric teal glow on the data section background ──────── */
+.dash-data-section {
+  background: radial-gradient(
+    ellipse at 55% 0%,
+    rgba(0, 201, 167, 0.045) 0%,
+    transparent 55%
+  );
+}
+
+/* ── Settings form — 2-column side-by-side on desktop ────────────────── */
+/* The two groups (Credentials + Table IDs) sit next to each other.       */
+/* Save button and confirmation message span the full width below them.   */
+@media (min-width: 769px) {
+  .settings-privacy {
+    max-width: 960px;
+  }
+
+  .settings-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 960px;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .settings-actions,
+  .settings-msg {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Card visual depth — subtle shadow + enhanced hover glow ──────────── */
+.obs-card {
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.obs-card:hover {
+  box-shadow:
+    0 4px 28px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 201, 167, 0.2);
+}
+
+/* ── Card header: record ID and observation time on the same line ─────── */
+.obs-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+/* Formatted observation time — top-right of card header */
+.obs-time {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* ── Stat chips row ───────────────────────────────────────────────────── */
+/* Four key values displayed as a compact horizontal block below the       */
+/* species name. The dark bg against the card creates a clear visual step. */
+
+.obs-stats-row {
+  display: flex;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.obs-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-right: 1px solid var(--color-border-subtle);
+  min-width: 0;
+}
+
+.obs-stat:last-child {
+  border-right: none;
+}
+
+.obs-stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-stat-value {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Numeric stat value — teal monospace, slightly larger for emphasis */
+.obs-stat-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--color-teal);
+  font-weight: 500;
+}
+
+/* Null / missing stat value */
+.obs-stat-null {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+/* ── Expand section — single-column definition list ──────────────────── */
+/* Replaces the 2-column .obs-field-grid inside species cards.             */
+/* A key:value list reads far better for long-text fields like taxonomy    */
+/* strings and rarity reasoning paragraphs.                                */
+
+.obs-expand-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.obs-expand-item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+
+.obs-expand-key {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.obs-expand-val {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-2);
+  line-height: 1.7;
+  word-break: break-word;
+  margin: 0; /* reset browser <dd> default margin */
+}
+
+/* Reset browser defaults on dl/dt/dd within the list */
+.obs-expand-list dt,
+.obs-expand-list dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Responsive — new species card components ─────────────────────────── */
+
+/* Stat chips: 2×2 grid on small screens */
+@media (max-width: 480px) {
+  .obs-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .obs-stat {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  /* Right column chips get a left border */
+  .obs-stat:nth-child(even) {
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  /* Remove bottom border from the last row (chips 3 and 4) */
+  .obs-stat:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  /* Expand list: stack key above value on very narrow screens */
+  .obs-expand-item {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+/* Restore settings form to single column on mobile */
+@media (max-width: 768px) {
+  .settings-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    gap: var(--space-8);
+  }
+
+  .settings-privacy {
+    max-width: 720px;
+  }
+}
