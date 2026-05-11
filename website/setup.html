@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Guide &mdash; Audtheia Environmental Monitoring</title>
+  <meta name="description" content="Step-by-step deployment guide for Audtheia: configure Roboflow species detection, N8N ecological analysis workflows, Airtable research database, and the researcher dashboard.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">AUDTHEIA</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html" aria-current="page">Setup</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+  <section class="setup-hero section">
+    <div class="container">
+      <span class="section-label">Deployment Guide</span>
+      <h1>Deploy Your Own Audtheia Instance</h1>
+      <p class="section-intro">This guide covers every step required to configure a fully operational Audtheia environmental monitoring deployment. It is written for researchers who want to process their own RTSP video streams, store species observations in their own Airtable base, and view results through the Audtheia researcher dashboard. Estimated setup time: 2&ndash;4 hours across all five platforms.</p>
+
+      <!-- Pipeline Overview -->
+      <div class="setup-pipeline" aria-label="System pipeline: five platforms in sequence">
+        <div class="setup-pipeline-step">
+          <div class="setup-pipeline-node">
+            <span class="setup-pipeline-num">01</span>
+            <span class="setup-pipeline-name">Roboflow</span>
+            <span class="setup-pipeline-desc">Species detection from RTSP video at 60&thinsp;FPS</span>
+          </div>
+        </div>
+        <div class="setup-pipeline-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="setup-pipeline-step">
+          <div class="setup-pipeline-node">
+            <span class="setup-pipeline-num">02</span>
+            <span class="setup-pipeline-name">N8N RTSP Analyst</span>
+            <span class="setup-pipeline-desc">9 AI agents generating 72 data points per observation</span>
+          </div>
+        </div>
+        <div class="setup-pipeline-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="setup-pipeline-step">
+          <div class="setup-pipeline-node">
+            <span class="setup-pipeline-num">03</span>
+            <span class="setup-pipeline-name">N8N Daily Reporter</span>
+            <span class="setup-pipeline-desc">5 AI agents generating scheduled PDF intelligence reports</span>
+          </div>
+        </div>
+        <div class="setup-pipeline-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="setup-pipeline-step">
+          <div class="setup-pipeline-node">
+            <span class="setup-pipeline-num">04</span>
+            <span class="setup-pipeline-name">Airtable</span>
+            <span class="setup-pipeline-desc">Research database storing all observations and reports</span>
+          </div>
+        </div>
+        <div class="setup-pipeline-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="setup-pipeline-step">
+          <div class="setup-pipeline-node">
+            <span class="setup-pipeline-num">05</span>
+            <span class="setup-pipeline-name">Dashboard</span>
+            <span class="setup-pipeline-desc">Researcher interface connected to your Airtable base</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Layout: Sidebar + Content ────────────────────────────────── -->
+  <div class="setup-layout">
+
+    <!-- Sidebar progress tracker -->
+    <aside class="setup-sidebar" id="setup-sidebar" aria-label="Guide sections">
+      <p class="setup-sidebar-label">IN THIS GUIDE</p>
+      <nav class="setup-progress" id="setup-progress" aria-label="Setup progress">
+        <a href="#prerequisites" class="setup-progress-item" data-section="prerequisites">
+          <span class="progress-dot" aria-hidden="true"></span>
+          <span class="progress-text">Prerequisites</span>
+        </a>
+        <div class="setup-progress-divider" aria-hidden="true"></div>
+        <a href="#section-01" class="setup-progress-item" data-section="section-01">
+          <span class="progress-number" aria-hidden="true">01</span>
+          <span class="progress-text">Roboflow</span>
+        </a>
+        <a href="#section-02" class="setup-progress-item" data-section="section-02">
+          <span class="progress-number" aria-hidden="true">02</span>
+          <span class="progress-text">N8N RTSP Analyst</span>
+        </a>
+        <a href="#section-03" class="setup-progress-item" data-section="section-03">
+          <span class="progress-number" aria-hidden="true">03</span>
+          <span class="progress-text">N8N Daily Reporter</span>
+        </a>
+        <a href="#section-04" class="setup-progress-item" data-section="section-04">
+          <span class="progress-number" aria-hidden="true">04</span>
+          <span class="progress-text">Airtable</span>
+        </a>
+        <a href="#section-05" class="setup-progress-item" data-section="section-05">
+          <span class="progress-number" aria-hidden="true">05</span>
+          <span class="progress-text">Dashboard</span>
+        </a>
+        <div class="setup-progress-divider" aria-hidden="true"></div>
+        <a href="#troubleshooting" class="setup-progress-item" data-section="troubleshooting">
+          <span class="progress-dot" aria-hidden="true"></span>
+          <span class="progress-text">Troubleshooting</span>
+        </a>
+        <a href="#help" class="setup-progress-item" data-section="help">
+          <span class="progress-dot" aria-hidden="true"></span>
+          <span class="progress-text">Getting Help</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="setup-content" id="setup-content">
+
+      <!-- ── Prerequisites ──────────────────────────────────────── -->
+      <section class="setup-prereqs" id="prerequisites">
+        <h2>Prerequisites</h2>
+        <p>Complete the following before beginning the platform-by-platform setup. All required platforms offer free tiers sufficient for research deployments.</p>
+
+        <!-- Hardware -->
+        <div class="prereq-group">
+          <h3 class="prereq-group-title">Hardware and access</h3>
+          <div class="prereq-list">
+            <div class="prereq-item">A camera with RTSP output, or any video source compatible with Roboflow Workflows (MP4 file, webcam, IP camera stream)</div>
+            <div class="prereq-item">GPS coordinates for your study site, either transmitted by the camera or available to enter manually in N8N</div>
+            <div class="prereq-item">Git installed locally, with the Audtheia repository cloned (see below)</div>
+          </div>
+        </div>
+
+        <!-- Clone -->
+        <div class="prereq-group">
+          <h3 class="prereq-group-title">Clone the repository</h3>
+          <p class="prereq-group-desc">Workflow templates, Airtable schemas, and the Roboflow workflow file are distributed through the repository. Clone it before proceeding with any section.</p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-block-label">BASH</span>
+              <button class="copy-btn" data-copy-target="prereq-clone">Copy</button>
+            </div>
+            <div class="code-block-body">
+              <pre><code id="prereq-clone">git clone https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring.git
+cd audtheia-environmental-monitoring</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credentials table -->
+        <div class="cred-checklist">
+          <h3 class="cred-checklist-title">API credentials and identifiers required</h3>
+          <div class="cred-table-wrap">
+            <table class="cred-table">
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Credential</th>
+                  <th>Where to obtain</th>
+                  <th>Used in</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Roboflow</td>
+                  <td><code>API key</code></td>
+                  <td>Settings &rarr; Roboflow API Key</td>
+                  <td>Roboflow workflow, N8N</td>
+                </tr>
+                <tr>
+                  <td>Anthropic</td>
+                  <td><code>API key</code></td>
+                  <td><a href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer">console.anthropic.com</a></td>
+                  <td>Roboflow Python blocks</td>
+                </tr>
+                <tr>
+                  <td>OpenAI (or compatible LLM)</td>
+                  <td><code>API key</code></td>
+                  <td><a href="https://platform.openai.com" target="_blank" rel="noopener noreferrer">platform.openai.com</a></td>
+                  <td>All N8N AI agents (9 + 5)</td>
+                </tr>
+                <tr>
+                  <td>IUCN Red List</td>
+                  <td><code>API key</code></td>
+                  <td><a href="https://apiv3.iucnredlist.org/api/v3/token" target="_blank" rel="noopener noreferrer">apiv3.iucnredlist.org/api/v3/token</a></td>
+                  <td>N8N RTSP Analyst</td>
+                </tr>
+                <tr>
+                  <td>API Ninjas</td>
+                  <td><code>API key</code></td>
+                  <td><a href="https://api-ninjas.com" target="_blank" rel="noopener noreferrer">api-ninjas.com</a></td>
+                  <td>N8N RTSP Analyst</td>
+                </tr>
+                <tr>
+                  <td>Mapbox</td>
+                  <td><code>Access token</code></td>
+                  <td><a href="https://account.mapbox.com" target="_blank" rel="noopener noreferrer">account.mapbox.com</a></td>
+                  <td>N8N Cartography Mapper agent</td>
+                </tr>
+                <tr>
+                  <td>PDFShift</td>
+                  <td><code>API key</code></td>
+                  <td><a href="https://pdfshift.io" target="_blank" rel="noopener noreferrer">pdfshift.io</a></td>
+                  <td>N8N Daily Reporter</td>
+                </tr>
+                <tr>
+                  <td>Airtable</td>
+                  <td><code>Personal Access Token</code></td>
+                  <td><a href="https://airtable.com/create/tokens" target="_blank" rel="noopener noreferrer">airtable.com/create/tokens</a></td>
+                  <td>N8N workflows, dashboard</td>
+                </tr>
+                <tr>
+                  <td>Airtable</td>
+                  <td><code>Base ID</code> (app&hellip;)</td>
+                  <td>Airtable base URL</td>
+                  <td>N8N workflows, dashboard</td>
+                </tr>
+                <tr>
+                  <td>Airtable</td>
+                  <td><code>Table IDs &times;3</code> (tbl&hellip;)</td>
+                  <td>Airtable table URL</td>
+                  <td>N8N workflows, dashboard</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="setup-note">
+          <span class="setup-note-icon">NOTE</span>
+          <p>GBIF, iNaturalist, OpenStreetMap Nominatim, Open-Meteo, OpenTopoData, and Open Elevation do not require API keys. NOAA Co-OPS and SOILGRIDS also require no authentication. Accounts on these services are not needed.</p>
+        </div>
+      </section>
+
+      <!-- ── SECTION 01: Roboflow ───────────────────────────────── -->
+      <div class="setup-section" id="section-01">
+        <div class="setup-section-header">
+          <div class="setup-section-meta">
+            <span class="setup-section-num" aria-hidden="true">01</span>
+            <div class="setup-section-title-group">
+              <h2>Roboflow</h2>
+              <p>Species detection model and real-time RTSP video processing pipeline</p>
+            </div>
+          </div>
+          <button class="setup-section-toggle" aria-expanded="true" aria-controls="section-01-body">
+            <span class="toggle-label">Collapse</span>
+            <span class="toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L6 4L10 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="setup-section-body" id="section-01-body">
+          <p class="setup-section-intro">Roboflow hosts your species detection model and runs the RTSP Analyst pipeline that processes your video stream. Detections are generated at 60&thinsp;FPS and forwarded to N8N via webhook. The workflow template contains two pre-configured custom Python blocks: one calls Claude 3.5 Sonnet for preliminary environmental analysis, the other dispatches detection data to N8N. Both require only API keys to activate.</p>
+
+          <div class="setup-steps">
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">1</div>
+              <div class="setup-step-content">
+                <h4>Create a Roboflow account</h4>
+                <p>Sign up at <a href="https://roboflow.com" target="_blank" rel="noopener noreferrer">roboflow.com</a>. The free tier supports all Audtheia functionality.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">2</div>
+              <div class="setup-step-content">
+                <h4>Choose a detection model</h4>
+                <p>Select the model that fits your target ecosystem and species. Three options are available:</p>
+                <div class="option-list">
+                  <div class="option-item">
+                    <span class="option-badge">OPTION A</span>
+                    <div class="option-body">
+                      <h5>Porifera Classifier (marine sponge research)</h5>
+                      <p>Fork workspace <code>official-porifera-classifier-ju8er</code> on Roboflow Universe. This is the reference implementation classifier: 126 species, 16,915 training images, RF-DETR Medium architecture. Fork it into your own account to use as-is or fine-tune for your site.</p>
+                    </div>
+                  </div>
+                  <div class="option-item">
+                    <span class="option-badge">OPTION B</span>
+                    <div class="option-body">
+                      <h5>Roboflow Universe (other ecosystems)</h5>
+                      <p>Browse <a href="https://universe.roboflow.com" target="_blank" rel="noopener noreferrer">Roboflow Universe</a> for a pre-trained model suited to your target species or habitat type. Fork a workspace and note the model endpoint string (format: <code>workspace-slug/model-id/version</code>).</p>
+                    </div>
+                  </div>
+                  <div class="option-item">
+                    <span class="option-badge">OPTION C</span>
+                    <div class="option-body">
+                      <h5>Custom-trained model</h5>
+                      <p>Upload and annotate your own image dataset in Roboflow, then train a model using Roboflow's training infrastructure. Choose an architecture appropriate for your detection requirements and deployment environment.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">3</div>
+              <div class="setup-step-content">
+                <h4>Import the Roboflow Workflow template</h4>
+                <p>Locate the workflow template file in the <code>roboflow-workflows/</code> directory of the cloned repository. In your Roboflow workspace, navigate to <strong>Workflows</strong> and import the template. The workflow contains three pre-configured components:</p>
+                <ul>
+                  <li><strong>Object detection block:</strong> runs your chosen model against each video frame</li>
+                  <li><strong>Anthropic_Environmental_Analyzer</strong> block: sends frame detections to Claude 3.5 Sonnet for real-time preliminary environmental analysis</li>
+                  <li><strong>Analyst_Caller</strong> block: forwards detection data to your N8N RTSP Analyst webhook</li>
+                </ul>
+                <p>Repository location: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/roboflow-workflows" target="_blank" rel="noopener noreferrer">roboflow-workflows/</a></p>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>All workflow logic is pre-configured in the template. You only need to enter API keys and the N8N webhook URL into the two Python blocks. No code editing is required.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">4</div>
+              <div class="setup-step-content">
+                <h4>Configure the Python block API keys</h4>
+                <p>Open each Python block in the workflow and enter the required credentials:</p>
+                <ul>
+                  <li><strong>Anthropic_Environmental_Analyzer:</strong> set <code>ANTHROPIC_API_KEY</code> to your Anthropic API key</li>
+                  <li><strong>Analyst_Caller:</strong> set <code>webhook_url</code> to your N8N RTSP Analyst webhook URL, obtained in Section 02, Step 5</li>
+                </ul>
+                <div class="setup-note setup-note--warn">
+                  <span class="setup-note-icon">WARN</span>
+                  <p>The <code>Analyst_Caller</code> block requires the N8N webhook URL from Section 02. Complete Section 02 Steps 1&ndash;5 first, then return here to finish this step.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">5</div>
+              <div class="setup-step-content">
+                <h4>Record your Roboflow API key and model endpoint</h4>
+                <p>Navigate to <strong>Settings &rarr; Roboflow API Key</strong> and copy your key. Also note your model endpoint string from the model deployment page (format: <code>workspace-slug/model-id/version</code>). Both values are referenced during N8N credential configuration in Section 02.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">6</div>
+              <div class="setup-step-content">
+                <h4>Connect your video source</h4>
+                <p>Configure the video input node in the workflow to point to your source. Supported formats:</p>
+                <ul>
+                  <li>RTSP stream (e.g., <code>rtsp://192.168.1.100:554/stream</code>)</li>
+                  <li>MP4 or video file path</li>
+                  <li>USB or webcam input</li>
+                </ul>
+                <p>If your camera does not transmit GPS coordinates with the video stream, note your study site latitude and longitude for manual entry in N8N (Section 02, Step 7).</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">7</div>
+              <div class="setup-step-content">
+                <h4>Verify detections are generated</h4>
+                <p>Run the workflow against your video source and confirm that detection events appear in the Roboflow Workflow output panel. Full end-to-end verification (detections reaching Airtable) is completed after N8N is configured and activated in Section 02.</p>
+              </div>
+            </div>
+
+          </div><!-- end .setup-steps -->
+
+          <div class="setup-subsection">
+            <h3>Roboflow documentation</h3>
+            <p class="setup-doc-links">
+              <a href="https://docs.roboflow.com/workflows" target="_blank" rel="noopener noreferrer">Roboflow Workflows</a>
+              &nbsp;&middot;&nbsp;
+              <a href="https://universe.roboflow.com" target="_blank" rel="noopener noreferrer">Roboflow Universe</a>
+              &nbsp;&middot;&nbsp;
+              <a href="https://docs.roboflow.com/api-reference/authentication" target="_blank" rel="noopener noreferrer">API Key Reference</a>
+            </p>
+          </div>
+        </div><!-- end section-01-body -->
+      </div><!-- end section-01 -->
+
+      <!-- ── SECTION 02: N8N RTSP Analyst ──────────────────────── -->
+      <div class="setup-section" id="section-02">
+        <div class="setup-section-header">
+          <div class="setup-section-meta">
+            <span class="setup-section-num" aria-hidden="true">02</span>
+            <div class="setup-section-title-group">
+              <h2>N8N &mdash; RTSP Analyst Workflow</h2>
+              <p>9 AI agents for deep ecological analysis, generating 72 data points per observation</p>
+            </div>
+          </div>
+          <button class="setup-section-toggle" aria-expanded="true" aria-controls="section-02-body">
+            <span class="toggle-label">Collapse</span>
+            <span class="toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L6 4L10 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="setup-section-body" id="section-02-body">
+          <p class="setup-section-intro">The RTSP Analyst Workflow receives detection data from Roboflow via webhook and runs 9 specialized AI agents. Agents cover taxonomy and phenology, species recurrence memory, GIS validation, biodiversity intelligence, environmental status, marine climate, terrestrial climate, habitat assessment, and cartographic mapping. Results are written to two Airtable tables: Species Observations (62 columns) and Environmental Mapping (10 columns).</p>
+
+          <div class="setup-steps">
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">1</div>
+              <div class="setup-step-content">
+                <h4>Create an N8N account or deploy self-hosted</h4>
+                <p>Sign up at <a href="https://n8n.io" target="_blank" rel="noopener noreferrer">n8n.io</a> for N8N Cloud (free trial available), or deploy N8N on your own server or VPS. The workflow template is compatible with both deployment modes.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">2</div>
+              <div class="setup-step-content">
+                <h4>Import the workflow template</h4>
+                <p>Download <code>RTSP_Analyst_Workflow__GitHub_Template_.json</code> from the <code>n8n-workflows/rtsp-analyst/</code> directory of the repository. In N8N, navigate to <strong>Workflows &rarr; Import</strong> and upload the file.</p>
+                <div class="setup-note setup-note--info">
+                  <span class="setup-note-icon">INFO</span>
+                  <p>Repository location: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/n8n-workflows/rtsp-analyst" target="_blank" rel="noopener noreferrer">n8n-workflows/rtsp-analyst/</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">3</div>
+              <div class="setup-step-content">
+                <h4>Configure credentials</h4>
+                <p>Navigate to <strong>Settings &rarr; Credentials &rarr; Add Credential</strong> in N8N and add the following:</p>
+                <div class="cred-table-wrap setup-step-table">
+                  <table class="cred-table">
+                    <thead>
+                      <tr>
+                        <th>Credential</th>
+                        <th>Type</th>
+                        <th>Used by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>OpenAI API (or compatible LLM)</td>
+                        <td>API key (Authorization: Bearer)</td>
+                        <td>All 9 AI agents</td>
+                      </tr>
+                      <tr>
+                        <td>Airtable</td>
+                        <td>Personal Access Token</td>
+                        <td>All Airtable write nodes, Memory Manager agent</td>
+                      </tr>
+                      <tr>
+                        <td>IUCN Red List</td>
+                        <td>API key (request header)</td>
+                        <td>Biodiversity Intelligence agent</td>
+                      </tr>
+                      <tr>
+                        <td>API Ninjas</td>
+                        <td>API key (request header: <code>X-Api-Key</code>)</td>
+                        <td>Systematics Phenologist, Biodiversity Intelligence agents</td>
+                      </tr>
+                      <tr>
+                        <td>Mapbox</td>
+                        <td>Access token (query parameter: <code>access_token</code>)</td>
+                        <td>Cartography Mapper agent</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>GBIF, iNaturalist, OpenStreetMap Nominatim, Open-Meteo (all endpoints), OpenTopoData, Open Elevation, NOAA Co-OPS, and SOILGRIDS require no credentials in N8N.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">4</div>
+              <div class="setup-step-content">
+                <h4>Set Airtable identifiers</h4>
+                <p>In the workflow configuration nodes, enter your Base ID and Table IDs. These values are also referenced as environment variables. Set them in N8N or in a <code>.env</code> file:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">ENV VARS</span>
+                    <button class="copy-btn" data-copy-target="rtsp-env-vars">Copy</button>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code id="rtsp-env-vars">AIRTABLE_BASE_ID=appXXXXXXXXXXXXXX
+AIRTABLE_SPECIES_TABLE_ID=tblXXXXXXXXXXXXXX
+AIRTABLE_MAPPING_TABLE_ID=tblXXXXXXXXXXXXXX
+IUCN_API_KEY=your_iucn_key
+API_NINJAS_KEY=your_api_ninjas_key
+MAPBOX_ACCESS_TOKEN=your_mapbox_token</code></pre>
+                  </div>
+                </div>
+                <p>Replace all placeholder values with your actual credentials obtained from Section 04 (Airtable IDs) and the credentials table above (API keys).</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">5</div>
+              <div class="setup-step-content">
+                <h4>Copy the webhook URL</h4>
+                <p>Open the <strong>Webhook</strong> trigger node in the workflow. Copy the webhook URL shown. It follows this format:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">WEBHOOK URL FORMAT</span>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code>https://your-n8n-instance.app.n8n.cloud/webhook/rtsp-analyst</code></pre>
+                  </div>
+                </div>
+                <p>Return to Section 01, Step 4 and paste this URL into the <code>webhook_url</code> variable of the Roboflow <code>Analyst_Caller</code> Python block.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">6</div>
+              <div class="setup-step-content">
+                <h4>Configure your ecosystem profile</h4>
+                <p>The RTSP Analyst includes habitat-specific climate agents. Enable or disable them based on your study environment to avoid processing irrelevant data and conserve API token consumption:</p>
+                <div class="cred-table-wrap setup-step-table">
+                  <table class="cred-table">
+                    <thead>
+                      <tr>
+                        <th>Study environment</th>
+                        <th>Marine Climate Search</th>
+                        <th>Terrestrial Climate Search</th>
+                        <th>Cartography Mapper</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Marine</td>
+                        <td>Enable</td>
+                        <td>Disable</td>
+                        <td>Enable when satellite imagery needed</td>
+                      </tr>
+                      <tr>
+                        <td>Terrestrial</td>
+                        <td>Disable</td>
+                        <td>Enable</td>
+                        <td>Enable when satellite imagery needed</td>
+                      </tr>
+                      <tr>
+                        <td>Estuarine or mixed</td>
+                        <td>Enable</td>
+                        <td>Enable</td>
+                        <td>Enable when satellite imagery needed</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>The Cartography Mapper agent generates Mapbox satellite imagery at three zoom levels and queries NOAA for coastal marine data. Each execution calls a vision-capable model to interpret the imagery. Enable this agent only when spatial satellite data is needed for your research to keep token usage proportional to output value.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">7</div>
+              <div class="setup-step-content">
+                <h4>Set static location (cameras without GPS)</h4>
+                <p>If your camera or recording device does not transmit GPS coordinates with the video stream, open the <strong>Set Static Location</strong> node in the <em>Static Location (Optional)</em> segment on the left side of the workflow canvas. Enter the latitude and longitude of your study site. All observations from this deployment will use these coordinates.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">8</div>
+              <div class="setup-step-content">
+                <h4>Test the webhook</h4>
+                <p>Send a test detection payload to verify the workflow processes data end-to-end before activating:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">CURL</span>
+                    <button class="copy-btn" data-copy-target="rtsp-test-curl">Copy</button>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code id="rtsp-test-curl">curl -X POST https://your-n8n-instance.app.n8n.cloud/webhook/rtsp-analyst \
+  -H "Content-Type: application/json" \
+  -d '{
+    "species_name": "Test Species",
+    "scientific_name": "Genus species",
+    "confidence": 0.94,
+    "timestamp": "2025-01-01T14:32:15Z",
+    "location": {
+      "latitude": 10.234,
+      "longitude": -84.567
+    }
+  }'</code></pre>
+                  </div>
+                </div>
+                <p>Expected response: <code>{"success": true, "observation_id": "...", "data_points": 72, "agents_executed": 9}</code></p>
+                <p>Verify a record appears in your Airtable Species Observations table. If the Cartography Mapper is active, a corresponding record should also appear in the Environmental Mapping table.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">9</div>
+              <div class="setup-step-content">
+                <h4>Activate the workflow</h4>
+                <p>Toggle the <strong>Active</strong> switch in the top-right corner of the workflow editor. The workflow will now receive incoming detection webhooks from Roboflow. Monitor the <strong>Executions</strong> tab for activity logs and error details.</p>
+              </div>
+            </div>
+
+          </div><!-- end .setup-steps -->
+
+          <div class="setup-subsection">
+            <h3>RTSP Analyst agent summary</h3>
+            <div class="cred-table-wrap">
+              <table class="cred-table">
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Primary data sources</th>
+                    <th>Output scope</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Systematics Phenologist</td>
+                    <td>GBIF, iNaturalist, API Ninjas</td>
+                    <td>Taxonomy, phenology, chronobiology (15 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>Memory Manager</td>
+                    <td>Airtable (historical records)</td>
+                    <td>Spatiotemporal context, pattern recognition, anomaly detection (5 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>GIS Data Manager</td>
+                    <td>OpenStreetMap Nominatim, OpenTopoData, Open Elevation</td>
+                    <td>Geographic validation, location, elevation, biogeographic region (8 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>Biodiversity Intelligence</td>
+                    <td>GBIF, IUCN Red List, iNaturalist, API Ninjas</td>
+                    <td>Conservation status, rarity score, ecological role (9 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>EnviroStatus Manager</td>
+                    <td>Open-Meteo (4 APIs)</td>
+                    <td>Habitat classification, ecosystem type, environmental suitability (6 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>Marine Climate Search</td>
+                    <td>NOAA Co-OPS, Open-Meteo Marine, Open Elevation</td>
+                    <td>SST, currents, wave height, salinity, bathymetry (8 data points, marine only)</td>
+                  </tr>
+                  <tr>
+                    <td>Terrestrial Climate Search</td>
+                    <td>Open-Meteo Weather, SOILGRIDS, Open Elevation</td>
+                    <td>Temperature, precipitation, humidity, soil type, biome (8 data points, terrestrial only)</td>
+                  </tr>
+                  <tr>
+                    <td>Habitat Assessment</td>
+                    <td>NDVI, Open Elevation, Open-Meteo</td>
+                    <td>Vegetation index, ecosystem health score, habitat quality, degradation indicators (7 data points)</td>
+                  </tr>
+                  <tr>
+                    <td>Cartography Mapper</td>
+                    <td>Mapbox Static Images API, NOAA</td>
+                    <td>Satellite imagery URLs, bathymetric data, spatial analysis (10 data points, optional)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="setup-footnote">Full workflow documentation: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/n8n-workflows/rtsp-analyst" target="_blank" rel="noopener noreferrer">n8n-workflows/rtsp-analyst/README.md</a></p>
+          </div>
+        </div><!-- end section-02-body -->
+      </div><!-- end section-02 -->
+
+      <!-- ── SECTION 03: N8N Daily Reporter ────────────────────── -->
+      <div class="setup-section" id="section-03">
+        <div class="setup-section-header">
+          <div class="setup-section-meta">
+            <span class="setup-section-num" aria-hidden="true">03</span>
+            <div class="setup-section-title-group">
+              <h2>N8N &mdash; Daily Reporter Workflow</h2>
+              <p>5 AI agents synthesizing observation data into scheduled PDF intelligence reports</p>
+            </div>
+          </div>
+          <button class="setup-section-toggle" aria-expanded="true" aria-controls="section-03-body">
+            <span class="toggle-label">Collapse</span>
+            <span class="toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L6 4L10 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="setup-section-body" id="section-03-body">
+          <p class="setup-section-intro">The Daily Reporter Workflow runs on a configurable schedule (default: midnight UTC) and reads all observations from the preceding reporting period to generate a structured PDF report. Five agents handle species biodiversity analysis, environmental and climate assessment, habitat and conservation evaluation, cartographic and spatial analysis using vision, and final report synthesis. Reports are saved to the Airtable Daily Reports table and are downloadable from the dashboard.</p>
+
+          <div class="setup-steps">
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">1</div>
+              <div class="setup-step-content">
+                <h4>Import the workflow template</h4>
+                <p>Download <code>Daily_Reporter__GitHub_Template_.json</code> from the <code>n8n-workflows/daily-reporter/</code> directory of the repository. In N8N, navigate to <strong>Workflows &rarr; Import</strong> and upload the file.</p>
+                <div class="setup-note setup-note--info">
+                  <span class="setup-note-icon">INFO</span>
+                  <p>Repository location: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/n8n-workflows/daily-reporter" target="_blank" rel="noopener noreferrer">n8n-workflows/daily-reporter/</a></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">2</div>
+              <div class="setup-step-content">
+                <h4>Configure credentials</h4>
+                <p>Add or reuse the following credentials in N8N (<strong>Settings &rarr; Credentials</strong>). The AI Model and Airtable credentials can be shared with the RTSP Analyst workflow:</p>
+                <div class="cred-table-wrap setup-step-table">
+                  <table class="cred-table">
+                    <thead>
+                      <tr>
+                        <th>Credential</th>
+                        <th>Type</th>
+                        <th>Used by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>OpenAI API (or compatible LLM)</td>
+                        <td>API key</td>
+                        <td>All 5 AI agents</td>
+                      </tr>
+                      <tr>
+                        <td>Airtable</td>
+                        <td>Personal Access Token</td>
+                        <td>Data fetch nodes, report save node</td>
+                      </tr>
+                      <tr>
+                        <td>PDFShift</td>
+                        <td>API key</td>
+                        <td>PDF generation node</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>Obtain a PDFShift API key at <a href="https://pdfshift.io" target="_blank" rel="noopener noreferrer">pdfshift.io</a>. The free tier supports up to 50 PDF conversions per month.</p>
+                <div class="setup-note setup-note--warn">
+                  <span class="setup-note-icon">WARN</span>
+                  <p>PDFShift is required for PDF generation. If the PDFShift credential is missing or invalid, the report synthesis step will complete but no PDF file will be produced and the Airtable record will not be saved.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">3</div>
+              <div class="setup-step-content">
+                <h4>Set Airtable identifiers</h4>
+                <p>Configure all four Airtable identifiers required by this workflow:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">ENV VARS</span>
+                    <button class="copy-btn" data-copy-target="reporter-env-vars">Copy</button>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code id="reporter-env-vars">AIRTABLE_BASE_ID=appXXXXXXXXXXXXXX
+AIRTABLE_SPECIES_TABLE_ID=tblXXXXXXXXXXXXXX
+AIRTABLE_MAPPING_TABLE_ID=tblXXXXXXXXXXXXXX
+AIRTABLE_REPORTS_TABLE_ID=tblXXXXXXXXXXXXXX</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">4</div>
+              <div class="setup-step-content">
+                <h4>Configure the report schedule</h4>
+                <p>Open the <strong>Daily Trigger</strong> node in the workflow and set the cron expression for your desired reporting frequency. The default is midnight UTC:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">CRON EXPRESSIONS</span>
+                    <button class="copy-btn" data-copy-target="cron-examples">Copy</button>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code id="cron-examples">0 0 * * *      # Daily at midnight UTC (default)
+0 6 * * *      # Daily at 06:00 UTC
+0 */6 * * *    # Every 6 hours
+0 0 * * 1      # Weekly, Monday midnight UTC</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">5</div>
+              <div class="setup-step-content">
+                <h4>Test the workflow manually</h4>
+                <p>Click <strong>Execute Workflow</strong> in the workflow editor. Monitor the execution in the <strong>Executions</strong> tab. Verify that a record appears in the Airtable Daily Reports table with a populated Report PDF URL. Expected execution time is 2&ndash;5 minutes depending on observation volume.</p>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>If no observations exist for the reporting period, the workflow generates an empty-period notification rather than a PDF report. Ensure the RTSP Analyst workflow has processed at least one observation and that records appear in the Species Observations table before running this test.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">6</div>
+              <div class="setup-step-content">
+                <h4>Activate the workflow</h4>
+                <p>Toggle the <strong>Active</strong> switch in the workflow editor. The workflow will run automatically on the configured schedule.</p>
+              </div>
+            </div>
+
+          </div><!-- end .setup-steps -->
+
+          <div class="setup-subsection">
+            <h3>Daily Reporter agent summary</h3>
+            <div class="cred-table-wrap">
+              <table class="cred-table">
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Analysis domain</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Agent 1: Species &amp; Biodiversity Analyst</td>
+                    <td>Shannon/Simpson diversity indices, taxonomic composition, conservation status distribution, rarity assessment, endemic species, ecological roles, temporal activity patterns</td>
+                  </tr>
+                  <tr>
+                    <td>Agent 2: Environmental &amp; Climate Analyst</td>
+                    <td>Marine/terrestrial climate trends, sea surface temperature, precipitation, atmospheric conditions, oceanographic patterns, anomaly detection, seasonal context</td>
+                  </tr>
+                  <tr>
+                    <td>Agent 3: Habitat &amp; Conservation Analyst</td>
+                    <td>Habitat type distribution, ecosystem health scores, conservation status, degradation indicators, management recommendations, priority conservation areas</td>
+                  </tr>
+                  <tr>
+                    <td>Agent 4: Cartography &amp; Spatial Analyst (vision)</td>
+                    <td>Satellite imagery interpretation across three zoom levels, geographic clustering, habitat connectivity, bathymetric analysis, land use and cover assessment</td>
+                  </tr>
+                  <tr>
+                    <td>Agent 5: Report Synthesis &amp; Generation</td>
+                    <td>Cross-domain integration, narrative generation, HTML report assembly (12 sections), FAIR compliance documentation, professional PDF output via PDFShift</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="setup-footnote">Full workflow documentation: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/n8n-workflows/daily-reporter" target="_blank" rel="noopener noreferrer">n8n-workflows/daily-reporter/README.md</a></p>
+          </div>
+        </div><!-- end section-03-body -->
+      </div><!-- end section-03 -->
+
+      <!-- ── SECTION 04: Airtable ───────────────────────────────── -->
+      <div class="setup-section" id="section-04">
+        <div class="setup-section-header">
+          <div class="setup-section-meta">
+            <span class="setup-section-num" aria-hidden="true">04</span>
+            <div class="setup-section-title-group">
+              <h2>Airtable</h2>
+              <p>Research database hosting species observations, geospatial mapping records, and generated reports</p>
+            </div>
+          </div>
+          <button class="setup-section-toggle" aria-expanded="true" aria-controls="section-04-body">
+            <span class="toggle-label">Collapse</span>
+            <span class="toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L6 4L10 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="setup-section-body" id="section-04-body">
+          <p class="setup-section-intro">Airtable is the central database for all Audtheia data. The N8N RTSP Analyst and Daily Reporter workflows write to it; the Audtheia dashboard reads from it. Three tables are required. Example CSV files and full schema documentation are available in the <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/airtable-schemas" target="_blank" rel="noopener noreferrer">airtable-schemas/</a> directory of the repository.</p>
+
+          <div class="setup-steps">
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">1</div>
+              <div class="setup-step-content">
+                <h4>Create an Airtable account</h4>
+                <p>Sign up at <a href="https://airtable.com" target="_blank" rel="noopener noreferrer">airtable.com</a>. The free tier supports the full Audtheia schema.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">2</div>
+              <div class="setup-step-content">
+                <h4>Create the base</h4>
+                <p>Create a new base and name it <strong>Environmental Data Management</strong>. This name is referenced in the Personal Access Token access configuration.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">3</div>
+              <div class="setup-step-content">
+                <h4>Create the Species Observations table</h4>
+                <p>Create a table named <strong>Species Observations</strong> with the 62 columns defined below. The fastest method is to import <code>species-observations-example.csv</code> from <code>airtable-schemas/</code> and then adjust column types to match the definitions. Alternatively, create columns manually using the schema as reference.</p>
+
+                <div class="setup-note setup-note--info">
+                  <span class="setup-note-icon">INFO</span>
+                  <p>Schema documentation and example CSV files: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/airtable-schemas" target="_blank" rel="noopener noreferrer">airtable-schemas/</a></p>
+                </div>
+
+                <!-- Full 62-column schema -->
+                <div class="schema-wrap">
+
+                  <div class="schema-category">
+                    <h4>Taxonomic &amp; Identification &mdash; Columns 1&ndash;5</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Species Name</td><td>Short Text</td><td>Common name of observed species</td></tr>
+                        <tr><td>Species Taxonomy</td><td>Short Text</td><td>Full classification: Kingdom &rarr; Species (semicolon-separated)</td></tr>
+                        <tr><td>Observation ID</td><td>Short Text</td><td>Unique identifier for the observation (e.g., OBS-12345)</td></tr>
+                        <tr><td>Observation Time</td><td>Number</td><td>Unix timestamp of observation</td></tr>
+                        <tr><td>Total Species Count</td><td>Number</td><td>Number of individuals observed in the frame</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Spatiotemporal Context &mdash; Columns 6&ndash;7</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Same Specimen</td><td>Checkbox</td><td>Indicates the same individual was observed previously</td></tr>
+                        <tr><td>Observation Season</td><td>Single Select</td><td>Winter / Spring / Summer / Autumn</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Geographic Data &mdash; Columns 8&ndash;12</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Location</td><td>Short Text</td><td>Specific location name (reverse-geocoded)</td></tr>
+                        <tr><td>Region</td><td>Short Text</td><td>Geographic region or state</td></tr>
+                        <tr><td>Country</td><td>Short Text</td><td>Country name</td></tr>
+                        <tr><td>Geographic Confidence</td><td>Single Select</td><td>High / Medium / Low / Unknown</td></tr>
+                        <tr><td>GIS Analysis</td><td>Long Text</td><td>Comprehensive geographic analysis: biogeographic province, proximity to protected areas, fragmentation, human footprint index</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Environmental Conditions &mdash; Columns 13&ndash;15</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Environmental Conditions</td><td>Long Text</td><td>Overall environmental assessment at time of observation</td></tr>
+                        <tr><td>Weather Conditions</td><td>Long Text</td><td>Current weather observations for the site</td></tr>
+                        <tr><td>Habitat Type Classification</td><td>Single Select</td><td>Marine / Freshwater / Estuarine / Terrestrial / Mixed / Unknown</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Geographic &amp; Marine Zone &mdash; Columns 16&ndash;17</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Geographic Zone</td><td>Short Text</td><td>Biogeographic zone (e.g., &ldquo;Tropical Marine Zone (MEOW Province #11)&rdquo;)</td></tr>
+                        <tr><td>Marine Zone</td><td>Short Text</td><td>Marine habitat classification (e.g., &ldquo;Neritic Coral Reef&rdquo;, &ldquo;Intertidal Rocky Shore&rdquo;)</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Marine Climate Data &mdash; Columns 18&ndash;23</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Air-Sea Interface (SST, Salinity, Wind)</td><td>Long Text</td><td>Surface marine conditions: sea surface temperature, salinity (PSU), wind speed/direction</td></tr>
+                        <tr><td>Atmospheric Pressure</td><td>Number</td><td>Pressure in hPa</td></tr>
+                        <tr><td>Ocean Current Velocity-Direction</td><td>Long Text</td><td>Current speed (m/s) and cardinal direction</td></tr>
+                        <tr><td>Substrate Type</td><td>Single Select</td><td>Sand / Rock / Coral / Mud / Soil / Gravel / Seagrass / Algae / Mixed / Unknown</td></tr>
+                        <tr><td>Water Depth</td><td>Number</td><td>Depth in meters</td></tr>
+                        <tr><td>Wave Height</td><td>Number</td><td>Significant wave height in meters</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Terrestrial Climate Data &mdash; Columns 24&ndash;32</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Terrestrial Biome</td><td>Short Text</td><td>Biome classification (e.g., &ldquo;Tropical Rainforest&rdquo;, &ldquo;Temperate Grassland&rdquo;)</td></tr>
+                        <tr><td>Air Temperature (Celsius)</td><td>Number</td><td>Air temperature in &deg;C</td></tr>
+                        <tr><td>Soil Temperature (Celsius)</td><td>Number</td><td>Soil temperature in &deg;C</td></tr>
+                        <tr><td>Precipitation (mm)</td><td>Number</td><td>Precipitation in millimetres</td></tr>
+                        <tr><td>Humidity %</td><td>Number</td><td>Relative humidity (0&ndash;100)</td></tr>
+                        <tr><td>Elevation (Meters)</td><td>Number</td><td>Elevation above sea level in metres</td></tr>
+                        <tr><td>Land Cover Type</td><td>Single Select</td><td>Snow/Ice / Water / Wetland / Grassland / Shrubland / Barren / Cropland / Urban / Forest / Unknown</td></tr>
+                        <tr><td>Soil Type</td><td>Single Select</td><td>Clay / Sand / Loam / Silt / Peat / Rocky / Mixed / Unknown</td></tr>
+                        <tr><td>Vegetation Index</td><td>Number</td><td>NDVI score (0.0 to 1.0)</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Chronobiological Data &mdash; Columns 33&ndash;34</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Chronobiological Observations</td><td>Multiple Select</td><td>Activity period (Diurnal / Nocturnal / Crepuscular / Unknown); Behavioral context (Feeding / Resting / Sessile / Social / Reproductive / Territorial / Migration / Invasive Species); Circadian phase (Activity Onset / Activity Offset / Acrophase / Arrhythmic/Unknown)</td></tr>
+                        <tr><td>Chronobiology Notes</td><td>Long Text</td><td>Detailed chronobiological analysis narrative: activity timing, circadian patterns, behavioral context</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Phenological Data &mdash; Columns 35&ndash;36</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Phenological Observations</td><td>Multiple Select</td><td>Seasonal timing (Expected / Early / Late / Unusual / Unknown); Life cycle stage (Juvenile / Adult / Reproductive / Migrating / Dormant / Unknown); Breeding season (Pre-breeding / Breeding / Post-breeding / Non-breeding / Unknown)</td></tr>
+                        <tr><td>Phenology Notes</td><td>Long Text</td><td>Detailed phenological assessment: seasonal timing analysis, life stage, breeding season alignment, climate correlations</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Biodiversity Data &mdash; Columns 37&ndash;45</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>GBIF Occurrence Count</td><td>Number</td><td>Total recorded occurrences for the species in GBIF globally</td></tr>
+                        <tr><td>IUCN Conservation Status</td><td>Single Select</td><td>LC / NT / VU / EN / CR / EW / EX / DD / NE</td></tr>
+                        <tr><td>Species Abundance Trend</td><td>Single Select</td><td>Increasing / Stable / Decreasing / Fluctuating / Unknown</td></tr>
+                        <tr><td>Species Rarity Score</td><td>Number</td><td>0.0 (common) to 1.0 (extremely rare), derived from GBIF occurrence count</td></tr>
+                        <tr><td>Species Rarity Reason</td><td>Long Text</td><td>Justification for the rarity score: population distribution, occurrence data, regional threats</td></tr>
+                        <tr><td>Endemic Species</td><td>Checkbox</td><td>Species is endemic to the observed region</td></tr>
+                        <tr><td>Breeding Season Match</td><td>Checkbox</td><td>Observation falls within the species' known breeding season</td></tr>
+                        <tr><td>Migration Route Overlap</td><td>Checkbox</td><td>Observation location overlaps a known migration route</td></tr>
+                        <tr><td>Ecological Role</td><td>Long Text</td><td>Species' function in the ecosystem (e.g., &ldquo;Pollinator&rdquo;, &ldquo;Filter feeder&rdquo;, &ldquo;Apex predator&rdquo;)</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Conservation &amp; Threat Assessment &mdash; Columns 46&ndash;52</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Environmental Conservation Status</td><td>Long Text</td><td>Protected area status, IUCN category, protection level, habitat coverage</td></tr>
+                        <tr><td>Threat Indicators</td><td>Long Text</td><td>Identified threats: tourism pressure, development, pollution, climate impacts</td></tr>
+                        <tr><td>Pollution Risk Level</td><td>Single Select</td><td>None / Low / Moderate / High / Severe / Unknown</td></tr>
+                        <tr><td>Algal Bloom Risk</td><td>Single Select</td><td>None / Low / Moderate / High / Active Bloom / Unknown</td></tr>
+                        <tr><td>Overfishing Pressure</td><td>Single Select</td><td>None / Low / Moderate / High / Overexploited / Unknown</td></tr>
+                        <tr><td>Invasive Species Risk</td><td>Single Select</td><td>None / Low / Moderate / High / Established / Unknown</td></tr>
+                        <tr><td>Deforestation Risk</td><td>Single Select</td><td>None / Low / Moderate / High / Active Clearing / Unknown</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Habitat Assessment &mdash; Columns 53&ndash;60</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Canopy Cover Percent</td><td>Number</td><td>Forest canopy coverage (0&ndash;100)</td></tr>
+                        <tr><td>Habitat Complexity</td><td>Number</td><td>Structural complexity score (0&ndash;100)</td></tr>
+                        <tr><td>Habitat Connectivity</td><td>Number</td><td>Connectivity index (0&ndash;100)</td></tr>
+                        <tr><td>Anthropogenic Disturbance</td><td>Single Select</td><td>None / Low / Moderate / High / Severe / Unknown</td></tr>
+                        <tr><td>Geopolitical Stability</td><td>Single Select</td><td>Stable / Generally Stable / Moderate Risk / High Risk / Conflict Zone / Unknown</td></tr>
+                        <tr><td>Habitat Quality Score</td><td>Number</td><td>Overall habitat quality (0&ndash;100)</td></tr>
+                        <tr><td>Ecosystem Health Score</td><td>Number</td><td>Ecosystem health metric (0&ndash;100), weighted composite of NDVI, vegetation cover, water quality, pollution, and biodiversity</td></tr>
+                        <tr><td>Conservation Timing Priority</td><td>Single Select</td><td>Low / Medium / High / Critical / Unknown</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="schema-category">
+                    <h4>Research Metadata &mdash; Columns 61&ndash;62</h4>
+                    <table class="schema-table">
+                      <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+                      <tbody>
+                        <tr><td>Research Value</td><td>Number</td><td>Scientific research value score (0&ndash;100)</td></tr>
+                        <tr><td>Monitoring Frequency</td><td>Single Select</td><td>Daily / Weekly / Monthly / Quarterly / Annually / As Needed / Unknown</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div><!-- end .schema-wrap -->
+              </div>
+            </div><!-- end step 3 -->
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">4</div>
+              <div class="setup-step-content">
+                <h4>Create the Environmental Mapping table</h4>
+                <p>Create a table named <strong>Environmental Mapping</strong> with the following 10 columns. Column names must match exactly as listed; they are referenced by name in the N8N workflow.</p>
+                <div class="cred-table-wrap setup-step-table">
+                  <table class="cred-table">
+                    <thead>
+                      <tr>
+                        <th>Column name</th>
+                        <th>Type</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Species Name</td><td>Short Text</td><td>Species observed at this location</td></tr>
+                      <tr><td>Observation ID</td><td>Short Text</td><td>Links to Species Observations by Observation ID value</td></tr>
+                      <tr><td>Map Overview URL</td><td>URL</td><td>Mapbox satellite-streets image, zoom 10</td></tr>
+                      <tr><td>Map Detail URL</td><td>URL</td><td>Mapbox satellite-streets image, zoom 12</td></tr>
+                      <tr><td>Map Closeup URL</td><td>URL</td><td>Mapbox satellite-streets image, zoom 14</td></tr>
+                      <tr><td>Center Coordinates</td><td>Long Text</td><td>Latitude, longitude format</td></tr>
+                      <tr><td>Bathymetry Available</td><td>Checkbox</td><td>NOAA bathymetric data available for this location</td></tr>
+                      <tr><td>Research Stations Marked</td><td>Checkbox</td><td>NOAA research stations present on the generated map</td></tr>
+                      <tr><td>Map Generation Date</td><td>Date</td><td>Timestamp of Mapbox image generation</td></tr>
+                      <tr><td>Projection System</td><td>Short Text</td><td>Map projection used (e.g., &ldquo;Web Mercator&rdquo;, &ldquo;WGS 84&rdquo;)</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">5</div>
+              <div class="setup-step-content">
+                <h4>Create the Daily Reports table</h4>
+                <p>Create a table named <strong>Daily Reports</strong> with the following 3 columns:</p>
+                <div class="cred-table-wrap setup-step-table">
+                  <table class="cred-table">
+                    <thead>
+                      <tr>
+                        <th>Column name</th>
+                        <th>Type</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Report Name</td><td>Short Text</td><td>Primary field. Report identifier (e.g., &ldquo;Audtheia Daily Environmental Report - 2025-11-27&rdquo;)</td></tr>
+                      <tr><td>Report PDF URL</td><td>URL</td><td>PDF download link generated by PDFShift</td></tr>
+                      <tr><td>Date Uploaded</td><td>Date</td><td>Report generation timestamp</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">6</div>
+              <div class="setup-step-content">
+                <h4>Create a Personal Access Token</h4>
+                <p>Navigate to <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener noreferrer">Builder Hub &rarr; Personal access tokens</a> and create a new token. Configure the following before saving:</p>
+                <ul>
+                  <li><strong>Scopes:</strong> add <code>data.records:read</code> (required for the Audtheia dashboard) and <code>data.records:write</code> (required for N8N to write observation data)</li>
+                  <li><strong>Access:</strong> add your <strong>Environmental Data Management</strong> base to the token's access list</li>
+                </ul>
+                <div class="setup-note setup-note--warn">
+                  <span class="setup-note-icon">WARN</span>
+                  <p>Copy the token immediately after creation. Airtable does not display it again. If lost, the token must be regenerated and re-entered in all N8N workflows and the dashboard settings.</p>
+                </div>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>A missing <code>data.records:read</code> scope is the most common cause of "Invalid permissions" errors in the dashboard. A base that is not added to the token's access list produces the same error even when scopes are correctly set.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">7</div>
+              <div class="setup-step-content">
+                <h4>Record your Base ID and Table IDs</h4>
+                <p>These identifiers appear in the Airtable URL. Open your base and note the values:</p>
+                <div class="code-block">
+                  <div class="code-block-header">
+                    <span class="code-block-label">URL FORMAT</span>
+                  </div>
+                  <div class="code-block-body">
+                    <pre><code># Base ID is in the base URL
+https://airtable.com/appXXXXXXXXXXXXXX/...
+                         ^^^^^^^^^^^^^^^^
+                         Base ID (starts with "app")
+
+# Table ID is in the URL when a table is selected
+https://airtable.com/appXXXXXXXXXXXXXX/tblXXXXXXXXXXXXXX/...
+                                         ^^^^^^^^^^^^^^^^
+                                         Table ID (starts with "tbl")</code></pre>
+                  </div>
+                </div>
+                <p>You need one Base ID and three Table IDs (Species Observations, Environmental Mapping, Daily Reports). Enter these in N8N (Sections 02 and 03) and in the dashboard (Section 05).</p>
+              </div>
+            </div>
+
+          </div><!-- end .setup-steps -->
+        </div><!-- end section-04-body -->
+      </div><!-- end section-04 -->
+
+      <!-- ── SECTION 05: Dashboard ──────────────────────────────── -->
+      <div class="setup-section" id="section-05">
+        <div class="setup-section-header">
+          <div class="setup-section-meta">
+            <span class="setup-section-num" aria-hidden="true">05</span>
+            <div class="setup-section-title-group">
+              <h2>Dashboard Connection</h2>
+              <p>Connect the Audtheia researcher dashboard to your Airtable base</p>
+            </div>
+          </div>
+          <button class="setup-section-toggle" aria-expanded="true" aria-controls="section-05-body">
+            <span class="toggle-label">Collapse</span>
+            <span class="toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L6 4L10 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+        <div class="setup-section-body" id="section-05-body">
+          <p class="setup-section-intro">The Audtheia dashboard connects directly to your Airtable base via the Airtable REST API using your Personal Access Token. Credentials are stored only in your browser's localStorage on your own device and are never transmitted to Audtheia servers. No Audtheia account is required to use the dashboard.</p>
+
+          <div class="setup-steps">
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">1</div>
+              <div class="setup-step-content">
+                <h4>Open the dashboard</h4>
+                <p>Navigate to <a href="dashboard.html">the Audtheia dashboard</a>. The settings panel is visible by default on first visit before credentials are saved.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">2</div>
+              <div class="setup-step-content">
+                <h4>Enter credentials in Settings</h4>
+                <p>Fill in all five fields in the Settings section:</p>
+                <ul>
+                  <li><strong>Airtable Personal Access Token:</strong> the token created in Section 04, Step 6</li>
+                  <li><strong>Airtable Base ID:</strong> starts with <code>app</code></li>
+                  <li><strong>Species Observations Table ID:</strong> starts with <code>tbl</code></li>
+                  <li><strong>Environmental Mapping Table ID:</strong> starts with <code>tbl</code></li>
+                  <li><strong>Daily Reports Table ID:</strong> starts with <code>tbl</code></li>
+                </ul>
+                <p>Click <strong>Save Credentials</strong>. Values are written to localStorage on your device only.</p>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">3</div>
+              <div class="setup-step-content">
+                <h4>Verify each tab loads data</h4>
+                <p>Open each of the three dashboard tabs and confirm data appears:</p>
+                <ul>
+                  <li><strong>Species Observations:</strong> collapsible detection records with taxonomy, rarity scores, conservation status, and full 62-field expansion</li>
+                  <li><strong>Environmental Mapping:</strong> satellite imagery at three zoom levels, center coordinates, and mapping metadata per observation</li>
+                  <li><strong>Daily Reports:</strong> report records with name, date, and PDF download link</li>
+                </ul>
+                <div class="setup-note">
+                  <span class="setup-note-icon">NOTE</span>
+                  <p>Tabs are lazy-loaded on first click. If a tab shows no data, wait 2&ndash;3 seconds and click again. An "Invalid permissions" error indicates a token scope or base access issue. See Section 04, Step 6 for resolution.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-step">
+              <div class="setup-step-num" aria-hidden="true">4</div>
+              <div class="setup-step-content">
+                <h4>Security note</h4>
+                <p>Your Airtable Personal Access Token is transmitted only to <code>api.airtable.com</code> as a Bearer header when the dashboard fetches your data. It is not logged or stored by Audtheia. Do not use the dashboard on shared or public computers.</p>
+              </div>
+            </div>
+
+          </div><!-- end .setup-steps -->
+
+          <div class="setup-subsection">
+            <h3>Deployment complete</h3>
+            <p class="setup-footnote">With all five sections complete, your Audtheia instance is fully operational. Roboflow processes your video stream; the RTSP Analyst writes 72-point observations to Airtable; the Daily Reporter generates PDF reports on schedule; and the dashboard displays your research data. If you encounter issues, see the Troubleshooting section below or open a GitHub issue.</p>
+          </div>
+        </div><!-- end section-05-body -->
+      </div><!-- end section-05 -->
+
+      <!-- ── Troubleshooting ────────────────────────────────────── -->
+      <section class="setup-troubleshoot" id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <div class="trouble-list">
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-01-answer">
+              N8N is not receiving detections from Roboflow
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-01-answer">
+              <p>Check the following in order:</p>
+              <ol>
+                <li>Confirm the N8N RTSP Analyst workflow is set to <strong>Active</strong> (toggle in the top-right of the workflow editor).</li>
+                <li>Verify the webhook URL in the Roboflow <code>Analyst_Caller</code> Python block matches the URL shown in the N8N Webhook trigger node exactly, including the protocol and path.</li>
+                <li>Open the N8N <strong>Executions</strong> tab. If requests are arriving but failing, the error details appear there at the node level.</li>
+                <li>Run the test <code>curl</code> command from Section 02, Step 8 to isolate whether the problem is in Roboflow's dispatch or in N8N's processing.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-02-answer">
+              Dashboard shows an "Invalid permissions" error
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-02-answer">
+              <p>This error is returned by the Airtable API when the Personal Access Token is missing a required scope or does not have access to the base. Both conditions produce the same error message.</p>
+              <ol>
+                <li>Navigate to <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener noreferrer">Builder Hub &rarr; Personal access tokens</a> and edit your token.</li>
+                <li>Verify that both <code>data.records:read</code> and <code>data.records:write</code> are listed under Scopes.</li>
+                <li>Under Access, confirm that your <strong>Environmental Data Management</strong> base is included.</li>
+                <li>Save the token. If you regenerated it, re-enter the new value in the dashboard Settings section.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-03-answer">
+              No satellite imagery appears in the Environmental Mapping tab
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-03-answer">
+              <p>Satellite imagery is generated by the Cartography Mapper agent. If Environmental Mapping records exist but URL fields are empty:</p>
+              <ol>
+                <li>Confirm the Cartography Mapper agent is enabled in the RTSP Analyst workflow (Section 02, Step 6).</li>
+                <li>Verify your Mapbox access token is correctly entered in N8N credentials. An invalid token does not fail immediately but produces empty URL fields in the output.</li>
+                <li>Check your Mapbox account at <a href="https://account.mapbox.com" target="_blank" rel="noopener noreferrer">account.mapbox.com</a> for token status and monthly quota usage.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-04-answer">
+              Dashboard shows no data after credentials are entered
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-04-answer">
+              <p>If credentials are accepted without an error but tabs display an empty state:</p>
+              <ol>
+                <li>Verify the Base ID begins with <code>app</code> and each Table ID begins with <code>tbl</code>. Pasting the wrong segment from the URL is the most common source of this issue.</li>
+                <li>Confirm the RTSP Analyst workflow has processed at least one observation successfully. Tables must contain records before the dashboard can display anything.</li>
+                <li>Check that table names in Airtable match exactly: <strong>Species Observations</strong>, <strong>Environmental Mapping</strong>, <strong>Daily Reports</strong>.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-05-answer">
+              PDF reports are not being generated by the Daily Reporter
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-05-answer">
+              <ol>
+                <li>Verify the PDFShift API key is correctly configured in N8N credentials under <strong>Settings &rarr; Credentials</strong>.</li>
+                <li>Confirm observations exist in the reporting period. Run the RTSP Analyst workflow first and confirm records appear in Airtable before triggering the Daily Reporter.</li>
+                <li>Verify the Daily Reports table exists with column names exactly as specified in Section 04, Step 5: <strong>Report Name</strong>, <strong>Report PDF URL</strong>, <strong>Date Uploaded</strong>.</li>
+                <li>Check the N8N Executions tab for the Daily Reporter workflow for node-level error details.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-06-answer">
+              Airtable Species Observations records are incomplete
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-06-answer">
+              <p>Partial records indicate one or more N8N agents failed mid-execution. Check the N8N Executions tab and look for errors in specific agent nodes.</p>
+              <ol>
+                <li>IUCN or API Ninjas API key missing or rate-limited: verify credentials and account quota at their respective dashboards.</li>
+                <li>Agent execution timeout: increase the timeout setting in N8N Settings (default: 120 seconds). Reduce <code>max_tokens</code> in the agent configuration if needed.</li>
+                <li>Airtable Personal Access Token missing <code>data.records:write</code> scope: verify in Builder Hub.</li>
+                <li>Column name mismatch in Airtable: check that all 62 Species Observations column names match the schema exactly, including capitalization and spacing.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="trouble-item">
+            <button class="trouble-question" aria-expanded="false" aria-controls="trouble-07-answer">
+              The demo page takes 30&ndash;50 seconds to respond on first load
+              <span class="trouble-question-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="trouble-answer" id="trouble-07-answer">
+              <p>Expected behavior. The Audtheia demo proxy is deployed on Render.com's free tier, which suspends services after 15 minutes of inactivity. The first request after a suspension period wakes the service, which takes 30&ndash;50 seconds. Subsequent requests within the same active window respond within 1&ndash;2 seconds. This only affects the public demo at <a href="demo.html">demo.html</a> and has no impact on your own Roboflow or N8N deployment.</p>
+            </div>
+          </div>
+
+        </div><!-- end .trouble-list -->
+      </section>
+
+      <!-- ── Getting Help ───────────────────────────────────────── -->
+      <section class="setup-help" id="help">
+        <h2>Getting Help</h2>
+        <p>If you encounter an issue not covered above, open a GitHub issue. Include the N8N execution log, the error message from Airtable or the dashboard, and the section and step number where setup stopped working.</p>
+        <p>The repository also contains complete workflow READMEs, Airtable schema documentation, and annotated example CSV files that cover edge cases not addressed in this guide.</p>
+        <div class="help-links">
+          <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Open a GitHub Issue</a>
+          <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View Repository</a>
+          <a href="about.html" class="btn btn-secondary">About Audtheia</a>
+        </div>
+        <p class="setup-help-meta">DOI&nbsp;<code>10.5281/zenodo.17842738</code>&nbsp;&middot;&nbsp;MIT License&nbsp;&middot;&nbsp;Maintained by Andy Portalatin</p>
+      </section>
+
+    </main>
+  </div><!-- end .setup-layout -->
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AUDTHEIA</span>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+        <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <span class="footer-meta">DOI&nbsp;10.5281/zenodo.17842738 &middot; MIT License</span>
+    </div>
+  </footer>
+
+  <script src="assets/nav.js"></script>
+  <script src="assets/setup.js"></script>
+</body>
+</html>
