@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Audtheia Environmental Monitoring</title>
+  <meta name="description" content="About Audtheia: an open-source real-time ecological monitoring system combining AI-powered species detection, multi-agent environmental analysis, and automated scientific reporting for researchers, students, and conservation communities worldwide.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css">
+
+  <!--
+    nav.js is loaded as a blocking script (no defer) so the theme-reading
+    IIFE at the top of the file applies the saved colour theme to <html>
+    before the first paint, preventing a flash of the wrong theme.
+  -->
+  <script src="assets/nav.js"></script>
+</head>
+<body>
+
+  <nav class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">AUDTHEIA</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <section class="about-hero">
+      <div class="about-inner">
+        <span class="section-label">About</span>
+        <h1>Audtheia</h1>
+        <p class="about-hero-lead">An open-source real-time ecological monitoring system that combines AI-powered species detection, environmental data integration, and automated scientific reporting into a unified research platform — designed for field deployment, built for open science, and accessible to anyone working to understand the natural world.</p>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         MISSION
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Mission</span>
+          <h2>Continuous field observation without continuous presence</h2>
+          <p>Audtheia exists to lower the barrier for deploying research-grade ecological monitoring at field sites where continuous observation is needed but human presence is limited or impossible. Designed for use at organizations such as NOAA and MBARI, by independent conservation scientists, and equally by university programs, students, and citizen scientists building their first monitoring station, Audtheia makes it practical to operate a rigorous observation pipeline from a laptop and a camera feed.</p>
+          <p>The system is built on a bring-your-own-account architecture: data stays within platforms the researcher controls, credentials never leave their device or N8N instance, and the entire pipeline — detection models, workflow templates, database schemas, and proxy source code — is published under the MIT license for unrestricted use, modification, and redistribution.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         SYSTEM OVERVIEW — 4 components
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">System Architecture</span>
+          <h2>Four interconnected components</h2>
+          <p>Data originates at the camera and flows through detection, multi-agent ecological analysis, structured database storage, and automated PDF reporting without manual intervention at any stage. Each component operates on its own platform, communicates through defined API boundaries, and can be individually adapted to the researcher's target species and ecosystem.</p>
+        </div>
+
+        <div class="about-components">
+
+          <div class="about-component-card">
+            <span class="about-component-num">01 / Roboflow</span>
+            <h3>Species Detection</h3>
+            <p>A Roboflow Workflow processes RTSP video at 60 FPS using a custom Python block. The reference implementation ships with the official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>), trained on 126 marine sponge species. Any Roboflow-compatible detection model can be substituted for other target species or field environments. Claude 3.5 Sonnet performs real-time preliminary environmental analysis at configurable intervals within the same workflow.</p>
+            <div class="about-component-tags">
+              <span class="about-tag">RF-DETR</span>
+              <span class="about-tag">RTSP · 60 FPS</span>
+              <span class="about-tag">Claude 3.5 Sonnet</span>
+              <span class="about-tag">Custom models</span>
+            </div>
+          </div>
+
+          <div class="about-component-card">
+            <span class="about-component-num">02 / N8N RTSP Analyst</span>
+            <h3>Multi-Agent Analysis</h3>
+            <p>Nine specialized AI agents handle post-detection ecological analysis, drawing on 12+ scientific databases for every observation. Agents cover taxonomy and phenology, species recurrence memory, GIS validation, biodiversity intelligence, environmental status, marine climate, terrestrial climate, habitat assessment, and cartographic mapping. Each detection event generates 72 structured data points written to Airtable.</p>
+            <div class="about-component-tags">
+              <span class="about-tag">9 agents</span>
+              <span class="about-tag">72 data points</span>
+              <span class="about-tag">GBIF · IUCN · NOAA</span>
+              <span class="about-tag">Mapbox</span>
+            </div>
+          </div>
+
+          <div class="about-component-card">
+            <span class="about-component-num">03 / N8N Daily Reporter</span>
+            <h3>Automated PDF Reporting</h3>
+            <p>Five agents synthesize accumulated observation data into comprehensive PDF intelligence reports on a configurable schedule. Reports cover species biodiversity analysis, environmental and climate assessment, habitat and conservation evaluation, cartographic and spatial interpretation, and a FAIR-compliant synthesis section. Reports are stored in Airtable and available for download through the researcher dashboard.</p>
+            <div class="about-component-tags">
+              <span class="about-tag">5 agents</span>
+              <span class="about-tag">Scheduled PDF</span>
+              <span class="about-tag">FAIR synthesis</span>
+              <span class="about-tag">PDFShift</span>
+            </div>
+          </div>
+
+          <div class="about-component-card">
+            <span class="about-component-num">04 / Dashboard</span>
+            <h3>Researcher Interface</h3>
+            <p>A browser-based interface connecting directly to the researcher's own Airtable base. Credentials are stored in browser localStorage and transmitted only to Airtable's API — never to Audtheia servers. Researchers can review species observation records, Mapbox satellite imagery at three zoom levels, and download daily PDF reports. No Audtheia account is required.</p>
+            <div class="about-component-tags">
+              <span class="about-tag">Airtable REST</span>
+              <span class="about-tag">Local credentials</span>
+              <span class="about-tag">Satellite imagery</span>
+              <span class="about-tag">No account needed</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         SUPPORTED ECOSYSTEMS
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Deployment Contexts</span>
+          <h2>Built for any field environment</h2>
+          <p>Audtheia supports marine, terrestrial, estuarine, and freshwater ecosystems. The RTSP Analyst includes habitat-specific climate agents that can be individually enabled or disabled, keeping API usage proportional to the analytical output relevant to each deployment context.</p>
+        </div>
+
+        <div class="about-ecosystem-grid">
+          <div class="about-ecosystem-card">
+            <h3>Marine</h3>
+            <p>Open water, reef systems, intertidal zones, and pelagic environments. Sea surface temperature, salinity, current, and bathymetric data from NOAA and Open-Meteo Marine.</p>
+          </div>
+          <div class="about-ecosystem-card">
+            <h3>Terrestrial</h3>
+            <p>Forest, grassland, shrubland, and upland field sites. NDVI, soil composition, biome classification, and atmospheric conditions from SOILGRIDS and Open-Meteo.</p>
+          </div>
+          <div class="about-ecosystem-card">
+            <h3>Estuarine</h3>
+            <p>Mixed marine-freshwater transitional zones. Both marine and terrestrial climate agents can be enabled simultaneously for full environmental context.</p>
+          </div>
+          <div class="about-ecosystem-card">
+            <h3>Freshwater</h3>
+            <p>Rivers, lakes, and inland aquatic systems. Elevation, watershed context, and atmospheric data provide environmental baseline for freshwater habitats.</p>
+          </div>
+        </div>
+
+        <p class="about-ecosystem-note">The Cartography Mapper agent generates Mapbox satellite imagery at 10×, 13×, and 15× zoom and is optional. Enabling it only when spatial satellite data is needed for a research project keeps token consumption aligned with output value.</p>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         FAIR DATA COMPLIANCE
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Data Standards</span>
+          <h2>FAIR-compliant observation records</h2>
+          <p>Every Audtheia observation is structured to meet the FAIR data principles — Findable, Accessible, Interoperable, Reusable — enabling integration with established biodiversity databases and long-term dataset archiving workflows.</p>
+        </div>
+
+        <div class="about-fair-grid">
+
+          <div class="about-fair-card">
+            <div class="about-fair-letter">F</div>
+            <h3>Findable</h3>
+            <p>Each detection event receives a unique Observation ID. Records include rich taxonomic metadata sourced from GBIF, iNaturalist, and IUCN, making every observation self-describing and independently searchable within the Airtable database.</p>
+          </div>
+
+          <div class="about-fair-card">
+            <div class="about-fair-letter">A</div>
+            <h3>Accessible</h3>
+            <p>Data is retrievable via the Airtable REST API using researcher-controlled credentials. CSV export is available from Airtable at any time without proprietary software. No Audtheia intermediary is required for data access.</p>
+          </div>
+
+          <div class="about-fair-card">
+            <div class="about-fair-letter">I</div>
+            <h3>Interoperable</h3>
+            <p>Taxonomic fields follow Darwin Core conventions. Timestamps use ISO 8601 format. GPS coordinates are recorded in WGS 84. Schema documentation enables integration with external biodiversity and conservation data systems.</p>
+          </div>
+
+          <div class="about-fair-card">
+            <div class="about-fair-letter">R</div>
+            <h3>Reusable</h3>
+            <p>Complete schema documentation and annotated example CSV files are provided in the repository. Every observation record includes a computed data quality score and provenance metadata documenting which data sources and agents contributed to it.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         DATA QUALITY
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Data Quality</span>
+          <h2>Transparent quality scoring per observation</h2>
+          <p>A data quality score from 0 to 100 is computed for every observation. The score combines four weighted components, each measuring a distinct aspect of observational reliability, and is stored alongside the observation record as a transparent indicator for downstream analysis and dataset filtering.</p>
+        </div>
+
+        <div class="about-quality-block">
+          <p>Score components and their weights:</p>
+          <div class="about-quality-formula">Data completeness     40%
+API success rate      30%
+Detection confidence  20%
+Validation checks     10%
+─────────────────────────
+Quality Score         0 – 100</div>
+          <p class="about-quality-threshold">Research-grade threshold: <strong>≥ 85</strong>. Observations scoring below this threshold are retained in the database but are flagged in the quality field, allowing researchers to apply their own filtering criteria for analysis.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         TECHNOLOGY STACK
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Technology</span>
+          <h2>Platform and integration stack</h2>
+          <p>Audtheia coordinates across a set of independent platforms, each handling a specific layer of the monitoring pipeline. All core platforms have free tiers sufficient for research deployments.</p>
+        </div>
+
+        <ul class="about-stack-list">
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Roboflow</span>
+            <span class="about-stack-desc">Detection model hosting and RTSP workflow execution at 60 FPS</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">N8N</span>
+            <span class="about-stack-desc">AI agent workflow orchestration for RTSP analysis and daily reporting</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Airtable</span>
+            <span class="about-stack-desc">Structured research database with browser-CORS REST API</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Mapbox</span>
+            <span class="about-stack-desc">Satellite cartography at 10×, 13×, and 15× zoom for observation context</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Claude 3.5 Sonnet</span>
+            <span class="about-stack-desc">Real-time video analysis and ecological reasoning within Roboflow Workflows via Anthropic API</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Configurable LLM</span>
+            <span class="about-stack-desc">N8N agent inference — GPT-4o or any compatible provider</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">PDFShift</span>
+            <span class="about-stack-desc">HTML-to-PDF generation for daily intelligence reports</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">Render.com</span>
+            <span class="about-stack-desc">Proxy server hosting for public demo detection requests</span>
+          </li>
+          <li class="about-stack-item">
+            <span class="about-stack-tech">GitHub Pages</span>
+            <span class="about-stack-desc">Static website hosting from the project repository</span>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         CITATION & PUBLICATION
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Citation</span>
+          <h2>Cite this work</h2>
+          <p>Audtheia is archived on Zenodo as a citable, versioned release. The archive includes trained models, workflow configurations, Airtable schemas, proxy source code, and field deployment documentation.</p>
+        </div>
+
+        <div class="about-citation-block">
+          <div class="about-citation-text">Portalatin, A. (2025). Audtheia Environmental Monitoring System.
+<a href="https://doi.org/10.5281/zenodo.17842738" target="_blank" rel="noopener noreferrer">DOI: 10.5281/zenodo.17842738</a>. MIT License.
+<a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring" target="_blank" rel="noopener noreferrer">https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring</a></div>
+
+          <a class="about-doi-badge"
+             href="https://doi.org/10.5281/zenodo.17842738"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="View Audtheia on Zenodo — DOI 10.5281/zenodo.17842738">
+            <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17842738.svg"
+                 alt="DOI: 10.5281/zenodo.17842738"
+                 width="200"
+                 height="20">
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         QUICK LINKS
+         ===================================================== -->
+    <section class="about-section">
+      <div class="about-inner">
+        <div class="about-section-header">
+          <span class="section-label">Links</span>
+          <h2>Get started</h2>
+        </div>
+
+        <div class="about-links-row">
+
+          <a class="about-link-card"
+             href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring"
+             target="_blank"
+             rel="noopener noreferrer">
+            <span class="about-link-card-label">Source code</span>
+            <span class="about-link-card-title">GitHub Repository</span>
+          </a>
+
+          <a class="about-link-card" href="setup.html">
+            <span class="about-link-card-label">Deployment</span>
+            <span class="about-link-card-title">Setup Guide</span>
+          </a>
+
+          <a class="about-link-card" href="dashboard.html">
+            <span class="about-link-card-label">Researcher interface</span>
+            <span class="about-link-card-title">Dashboard</span>
+          </a>
+
+          <a class="about-link-card" href="demo.html">
+            <span class="about-link-card-label">No account required</span>
+            <span class="about-link-card-title">Try the Demo</span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       ABOUT THE AUTHOR
+       Visually separated section — surface background
+       ===================================================== -->
+  <section class="about-author-section">
+    <div class="about-inner">
+      <div class="about-author-content">
+        <span class="section-label">About the Author</span>
+        <h2>Andy Portalatin</h2>
+
+        <p>Andy Portalatin is a marine biologist with an M.S. in Biology concentrated in marine sciences. Audtheia developed directly from his graduate research: the official Porifera classifier included in the repository — trained on 16,915 labeled images across 126 tropical marine sponge species using RF-DETR (Medium) — was produced as part of his thesis work and serves as the reference implementation for the detection layer.</p>
+
+        <p>The design intent behind Audtheia extends beyond any single research institution. The full pipeline is published under the MIT license and documented for adaptation by any group with a monitoring objective: federal and governmental agencies establishing species baselines and MPA management frameworks, university programs incorporating a real-world computer vision or environmental data pipeline into ecology, marine biology, or computer science coursework, independent researchers studying ecosystems where continuous field observation has required either significant infrastructure or sustained physical presence, and students or community members who want to contribute credible, structured observational data to the scientific record.</p>
+
+        <p>Audtheia is not finished — any monitoring system deployed in an active research context will encounter edge cases, missing agent configurations, and ecosystem-specific adaptations that improve it. Collaborations, curriculum integrations, and proposed extensions are all considered. If you are developing a monitoring program, designing a course that could benefit from a complete real-world pipeline to work with, or have ideas that would improve Audtheia's analytical coverage, opening a proposal on the GitHub repository is the right path.</p>
+
+        <a class="about-collab-cta"
+           href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues"
+           target="_blank"
+           rel="noopener noreferrer">
+          <span class="about-collab-dot" aria-hidden="true"></span>
+          Open a proposal on GitHub
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AUDTHEIA</span>
+      <nav class="footer-links" aria-label="Site navigation">
+        <a href="demo.html">Demo</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="setup.html">Setup</a>
+        <a href="about.html">About</a>
+        <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring"
+           target="_blank"
+           rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <span class="footer-meta">DOI 10.5281/zenodo.17842738 · MIT License</span>
+    </div>
+  </footer>
+
+</body>
+</html>

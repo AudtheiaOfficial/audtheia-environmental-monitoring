@@ -5146,3 +5146,596 @@ a.institution-item:hover {
     gap: var(--space-2);
   }
 }
+/* =============================================================
+   SECTION 19 — Theme Toggle · Light Theme · About Page
+   Appended by Session 7 — do not edit earlier sections
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   19.1  Theme transition
+   Applied momentarily on toggle to smooth all colour changes.
+   The !important overrides any component-level transition: none.
+   ---------------------------------------------------------- */
+
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.3s ease,
+    color            0.3s ease,
+    border-color     0.3s ease,
+    fill             0.3s ease,
+    stroke           0.3s ease !important;
+}
+
+
+/* ----------------------------------------------------------
+   19.2  Light theme variable overrides
+   Toggled via html.theme-light (set by nav.js / localStorage).
+   Palette: "Close to Nature" — warm, terrestrial, readable.
+   ---------------------------------------------------------- */
+
+html.theme-light {
+  --color-bg:           #F7F9FB;
+  --color-surface:      #FFFFFF;
+  --color-surface-2:    #EDF1F5;
+  --color-border:       #D4DCE4;
+  --color-border-subtle:#E4EAF0;
+  --color-teal:         #31708E;
+  --color-blue:         #5085A5;
+  --color-glow-teal:    rgba(49, 112, 142, 0.08);
+  --color-text:         #1C2B35;
+  --color-text-2:       #3D5A6C;
+  --color-text-muted:   #687864;
+}
+
+
+/* ----------------------------------------------------------
+   19.3  Theme toggle button
+   Injected dynamically by nav.js into .nav-inner.
+   ---------------------------------------------------------- */
+
+.theme-toggle {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           36px;
+  height:          36px;
+  border:          1px solid var(--color-border);
+  border-radius:   var(--radius-md);
+  background:      transparent;
+  color:           var(--color-text-2);
+  cursor:          pointer;
+  flex-shrink:     0;
+  transition:
+    color            var(--transition-fast),
+    border-color     var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color:            var(--color-teal);
+  border-color:     var(--color-teal);
+  background-color: var(--color-glow-teal);
+}
+
+.theme-toggle:focus-visible {
+  outline:        2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+.theme-toggle .theme-icon {
+  display:    block;
+  transition: transform var(--transition-base);
+}
+
+/* Flip icon when light mode is active — filled half moves to right */
+html.theme-light .theme-toggle .theme-icon {
+  transform: scaleX(-1);
+}
+
+/* Desktop: appears to the right of nav-links via CSS order */
+@media (min-width: 641px) {
+  .theme-toggle {
+    order:       10;
+    margin-left: var(--space-3);
+  }
+}
+
+/* Mobile: always visible, small right margin before hamburger */
+@media (max-width: 640px) {
+  .theme-toggle {
+    margin-right: var(--space-2);
+  }
+}
+
+
+/* ----------------------------------------------------------
+   19.4  About page — shared layout utilities
+   ---------------------------------------------------------- */
+
+.about-inner {
+  max-width: var(--container-max);
+  margin:    0 auto;
+  padding:   0 var(--container-pad);
+}
+
+
+/* ----------------------------------------------------------
+   19.5  About hero
+   ---------------------------------------------------------- */
+
+.about-hero {
+  padding-top:    calc(var(--nav-height) + var(--space-20));
+  padding-bottom: var(--space-20);
+  border-bottom:  1px solid var(--color-border);
+}
+
+.about-hero h1 {
+  font-family:    var(--font-serif);
+  font-size:      clamp(var(--text-4xl), 6vw, var(--text-5xl));
+  font-weight:    600;
+  color:          var(--color-text);
+  margin:         var(--space-4) 0 var(--space-6);
+  letter-spacing: -0.02em;
+  line-height:    1.1;
+}
+
+.about-hero-lead {
+  font-size:   var(--text-lg);
+  color:       var(--color-text-2);
+  max-width:   760px;
+  line-height: 1.75;
+  margin:      0;
+}
+
+
+/* ----------------------------------------------------------
+   19.6  About content sections
+   ---------------------------------------------------------- */
+
+.about-section {
+  padding:       var(--space-20) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.about-section:last-of-type {
+  border-bottom: none;
+}
+
+.about-section-header {
+  margin-bottom: var(--space-10);
+}
+
+.about-section-header h2 {
+  font-family:    var(--font-serif);
+  font-size:      var(--text-3xl);
+  font-weight:    600;
+  color:          var(--color-text);
+  margin:         var(--space-3) 0 var(--space-4);
+  letter-spacing: -0.01em;
+  line-height:    1.25;
+}
+
+.about-section-header p {
+  color:       var(--color-text-2);
+  font-size:   var(--text-base);
+  line-height: 1.75;
+  max-width:   720px;
+  margin:      0;
+}
+
+.about-section-header p + p {
+  margin-top: var(--space-4);
+}
+
+
+/* ----------------------------------------------------------
+   19.7  System components grid (4 cards)
+   ---------------------------------------------------------- */
+
+.about-components {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap:                   var(--space-6);
+}
+
+.about-component-card {
+  background:     var(--color-surface);
+  border:         1px solid var(--color-border);
+  border-radius:  var(--radius-lg);
+  padding:        var(--space-8);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-4);
+  transition:     border-color var(--transition-base);
+}
+
+.about-component-card:hover {
+  border-color: var(--color-teal);
+}
+
+.about-component-num {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--color-teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-component-card h3 {
+  font-family:  var(--font-serif);
+  font-size:    var(--text-xl);
+  color:        var(--color-text);
+  margin:       0;
+  font-weight:  600;
+  line-height:  1.25;
+}
+
+.about-component-card p {
+  color:       var(--color-text-2);
+  font-size:   var(--text-sm);
+  line-height: 1.75;
+  margin:      0;
+  flex:        1;
+}
+
+.about-component-tags {
+  display:     flex;
+  flex-wrap:   wrap;
+  gap:         var(--space-2);
+  margin-top:  auto;
+  padding-top: var(--space-2);
+}
+
+.about-tag {
+  font-family:   var(--font-mono);
+  font-size:     var(--text-xs);
+  color:         var(--color-text-muted);
+  background:    var(--color-surface-2);
+  border:        1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding:       var(--space-1) var(--space-2);
+  line-height:   1.4;
+}
+
+
+/* ----------------------------------------------------------
+   19.8  Ecosystem cards
+   ---------------------------------------------------------- */
+
+.about-ecosystem-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap:                   var(--space-4);
+  margin-bottom:         var(--space-8);
+}
+
+.about-ecosystem-card {
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding:       var(--space-6);
+}
+
+.about-ecosystem-card h3 {
+  font-family:  var(--font-sans);
+  font-size:    var(--text-base);
+  font-weight:  600;
+  color:        var(--color-text);
+  margin:       0 0 var(--space-2);
+}
+
+.about-ecosystem-card p {
+  font-size:   var(--text-sm);
+  color:       var(--color-text-muted);
+  line-height: 1.65;
+  margin:      0;
+}
+
+.about-ecosystem-note {
+  font-size:   var(--text-sm);
+  color:       var(--color-text-muted);
+  line-height: 1.7;
+  max-width:   680px;
+}
+
+
+/* ----------------------------------------------------------
+   19.9  FAIR compliance grid
+   ---------------------------------------------------------- */
+
+.about-fair-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:                   var(--space-6);
+}
+
+.about-fair-card {
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding:       var(--space-6) var(--space-8);
+  transition:    border-color var(--transition-base);
+}
+
+.about-fair-card:hover {
+  border-color: var(--color-teal);
+}
+
+.about-fair-letter {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-3xl);
+  font-weight:    600;
+  color:          var(--color-teal);
+  line-height:    1;
+  margin-bottom:  var(--space-3);
+  opacity:        0.9;
+}
+
+.about-fair-card h3 {
+  font-family:  var(--font-sans);
+  font-size:    var(--text-base);
+  font-weight:  600;
+  color:        var(--color-text);
+  margin:       0 0 var(--space-3);
+}
+
+.about-fair-card p {
+  font-size:   var(--text-sm);
+  color:       var(--color-text-2);
+  line-height: 1.7;
+  margin:      0;
+}
+
+
+/* ----------------------------------------------------------
+   19.10  Data quality block
+   ---------------------------------------------------------- */
+
+.about-quality-block {
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding:       var(--space-8);
+  max-width:     800px;
+}
+
+.about-quality-block p {
+  color:       var(--color-text-2);
+  font-size:   var(--text-base);
+  line-height: 1.75;
+  margin:      0 0 var(--space-4);
+}
+
+.about-quality-formula {
+  font-family:   var(--font-mono);
+  font-size:     var(--text-sm);
+  color:         var(--color-teal);
+  background:    var(--color-surface-2);
+  border:        1px solid var(--color-border-subtle);
+  border-left:   3px solid var(--color-teal);
+  border-radius: var(--radius-md);
+  padding:       var(--space-4) var(--space-6);
+  margin:        var(--space-4) 0;
+  line-height:   2;
+  white-space:   pre-wrap;
+}
+
+.about-quality-threshold {
+  font-family:  var(--font-mono);
+  font-size:    var(--text-sm);
+  color:        var(--color-text-muted);
+  margin:       var(--space-3) 0 0;
+  line-height:  1.6;
+}
+
+.about-quality-threshold strong {
+  color: var(--color-teal);
+}
+
+
+/* ----------------------------------------------------------
+   19.11  Technology stack list
+   ---------------------------------------------------------- */
+
+.about-stack-list {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap:                   var(--space-3);
+  list-style:            none;
+  padding:               0;
+  margin:                0;
+}
+
+.about-stack-item {
+  display:       flex;
+  align-items:   baseline;
+  gap:           var(--space-3);
+  padding:       var(--space-3) var(--space-4);
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  transition:    border-color var(--transition-fast);
+}
+
+.about-stack-item:hover {
+  border-color: var(--color-border);
+}
+
+.about-stack-tech {
+  font-family:  var(--font-mono);
+  font-size:    var(--text-sm);
+  color:        var(--color-teal);
+  white-space:  nowrap;
+  flex-shrink:  0;
+  line-height:  1.5;
+}
+
+.about-stack-desc {
+  font-size:   var(--text-sm);
+  color:       var(--color-text-muted);
+  line-height: 1.55;
+}
+
+
+/* ----------------------------------------------------------
+   19.12  Citation block
+   ---------------------------------------------------------- */
+
+.about-citation-block {
+  background:    var(--color-surface);
+  border:        1px solid var(--color-border);
+  border-left:   3px solid var(--color-teal);
+  border-radius: var(--radius-lg);
+  padding:       var(--space-8);
+  max-width:     820px;
+}
+
+.about-citation-text {
+  font-family:  var(--font-mono);
+  font-size:    var(--text-sm);
+  color:        var(--color-text-2);
+  line-height:  1.9;
+  margin:       0 0 var(--space-6);
+  white-space:  pre-wrap;
+  word-break:   break-all;
+}
+
+.about-citation-text a {
+  color:           var(--color-teal);
+  text-decoration: none;
+}
+
+.about-citation-text a:hover {
+  text-decoration: underline;
+}
+
+.about-doi-badge {
+  display:     block;
+  margin-top:  var(--space-4);
+}
+
+.about-doi-badge img {
+  height: 20px;
+  width:  auto;
+}
+
+
+/* ----------------------------------------------------------
+   19.13  Quick links row
+   ---------------------------------------------------------- */
+
+.about-links-row {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       var(--space-4);
+}
+
+.about-link-card {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-2);
+  background:     var(--color-surface);
+  border:         1px solid var(--color-border);
+  border-radius:  var(--radius-lg);
+  padding:        var(--space-5) var(--space-8);
+  text-decoration:none;
+  color:          var(--color-text);
+  transition:
+    border-color     var(--transition-fast),
+    background-color var(--transition-fast);
+  min-width: 180px;
+}
+
+.about-link-card:hover {
+  border-color:     var(--color-teal);
+  background-color: var(--color-glow-teal);
+}
+
+.about-link-card-label {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.about-link-card-title {
+  font-family:  var(--font-sans);
+  font-size:    var(--text-base);
+  font-weight:  600;
+  color:        var(--color-teal);
+  line-height:  1.3;
+}
+
+
+/* ----------------------------------------------------------
+   19.14  About the Author section
+   Visually separated from content sections by a surface fill.
+   ---------------------------------------------------------- */
+
+.about-author-section {
+  background:  var(--color-surface);
+  border-top:  1px solid var(--color-border);
+  padding:     var(--space-20) 0;
+}
+
+.about-author-content {
+  max-width: 780px;
+}
+
+.about-author-content h2 {
+  font-family:    var(--font-serif);
+  font-size:      var(--text-3xl);
+  font-weight:    600;
+  color:          var(--color-text);
+  margin:         var(--space-3) 0 var(--space-6);
+  letter-spacing: -0.01em;
+}
+
+.about-author-content p {
+  color:       var(--color-text-2);
+  font-size:   var(--text-base);
+  line-height: 1.8;
+  margin:      0 0 var(--space-5);
+}
+
+.about-author-content p:last-of-type {
+  margin-bottom: 0;
+}
+
+.about-collab-cta {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            var(--space-3);
+  margin-top:     var(--space-8);
+  padding:        var(--space-3) var(--space-6);
+  background:     var(--color-surface-2);
+  border:         1px solid var(--color-border);
+  border-radius:  var(--radius-md);
+  font-family:    var(--font-mono);
+  font-size:      var(--text-sm);
+  color:          var(--color-text-2);
+  text-decoration:none;
+  transition:
+    border-color     var(--transition-fast),
+    background-color var(--transition-fast),
+    color            var(--transition-fast);
+}
+
+.about-collab-cta:hover {
+  border-color:     var(--color-teal);
+  background-color: var(--color-glow-teal);
+  color:            var(--color-teal);
+}
+
+.about-collab-dot {
+  display:       inline-block;
+  width:         6px;
+  height:        6px;
+  border-radius: 50%;
+  background:    var(--color-teal);
+  flex-shrink:   0;
+}
