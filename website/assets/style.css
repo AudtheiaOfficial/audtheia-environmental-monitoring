@@ -5739,3 +5739,303 @@ html.theme-light .theme-toggle .theme-icon {
   background:    var(--color-teal);
   flex-shrink:   0;
 }
+/* =============================================================
+   SECTION 19 — POST-DEPLOY UPDATES (Session 7, Round 2)
+   Append this entire file to website/assets/style.css
+   PowerShell:
+     Get-Content "$env:USERPROFILE\Downloads\style-section-19-updates.css" |
+     Add-Content "C:\Users\17kaw\Documents\audtheia-environmental-monitoring\website\assets\style.css"
+
+   These rules override earlier Section 19 declarations via CSS
+   cascade order (later rules win). No earlier sections touched.
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   19.20  Forest light theme — full palette override
+   Replaces the ocean palette from original Section 19.2.
+   Palette: Close to Nature (earthy, forest, terrestrial).
+   --color-teal is now olive green; text is dark forest.
+   ---------------------------------------------------------- */
+
+html.theme-light {
+  --color-bg:           #EFF1ED;
+  --color-surface:      #FAFAF9;
+  --color-surface-2:    #E6E9E1;
+  --color-border:       #CECFBA;
+  --color-border-subtle:#DDDFC9;
+  --color-teal:         #717744;
+  --color-blue:         #5C6733;
+  --color-glow-teal:    rgba(113, 119, 68, 0.09);
+  --color-text:         #373D20;
+  --color-text-2:       #4F5630;
+  --color-text-muted:   #766153;
+}
+
+
+/* ----------------------------------------------------------
+   19.21  Light theme — nav-specific colour reinforcements
+   Ensures the nav logo and links read as forest green
+   against the warm #EFF1ED banner background.
+   ---------------------------------------------------------- */
+
+html.theme-light .nav-logo {
+  color: var(--color-teal);
+}
+
+html.theme-light .nav-links a {
+  color: var(--color-text-2);
+}
+
+html.theme-light .nav-links a:hover,
+html.theme-light .nav-links a.nav-active {
+  color: var(--color-text);
+}
+
+html.theme-light .site-nav {
+  border-color: var(--color-border-subtle);
+}
+
+html.theme-light .theme-toggle {
+  border-color: var(--color-border);
+  color: var(--color-text-2);
+}
+
+html.theme-light .theme-toggle:hover {
+  border-color: var(--color-teal);
+  background-color: var(--color-glow-teal);
+  color: var(--color-teal);
+}
+
+
+/* ----------------------------------------------------------
+   19.22  Hamburger button — smooth span transitions
+   Allows the three bars to animate cleanly into an X
+   when the mobile overlay opens. Additive only.
+   ---------------------------------------------------------- */
+
+.nav-toggle span {
+  transition:
+    transform 0.28s cubic-bezier(0.52, 0.02, 0.19, 1.02),
+    opacity   0.2s ease;
+}
+
+.nav-toggle-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle-open span:nth-child(2) {
+  opacity:   0;
+  transform: scaleX(0);
+}
+
+.nav-toggle-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* ----------------------------------------------------------
+   19.23  Mobile nav overlay
+   Full-screen navigation panel injected by nav.js.
+   Appears only on screens ≤640px.
+   ---------------------------------------------------------- */
+
+.mobile-nav-overlay {
+  position:   fixed;
+  inset:      0;
+  z-index:    997;
+  background: var(--color-surface);
+  display:    flex;
+  flex-direction: column;
+  align-items:    center;
+  justify-content:center;
+  padding:    0 var(--space-8);
+  opacity:    0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.mobile-nav-overlay.overlay-open {
+  opacity:        1;
+  pointer-events: all;
+}
+
+/* Prevent body scroll when overlay is open */
+body.overlay-active {
+  overflow: hidden;
+}
+
+/* Close (X) button — top-right corner */
+.overlay-close-btn {
+  position: absolute;
+  top:      var(--space-5);
+  right:    var(--space-5);
+  width:    42px;
+  height:   42px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  border:          1px solid var(--color-border);
+  border-radius:   var(--radius-md);
+  background:      transparent;
+  color:           var(--color-text-2);
+  cursor:          pointer;
+  transition:
+    color        var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.overlay-close-btn:hover {
+  color:        var(--color-teal);
+  border-color: var(--color-teal);
+}
+
+.overlay-close-btn:focus-visible {
+  outline:        2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+/* Nav links — centered, large serif */
+.overlay-links {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            var(--space-8);
+  width:          100%;
+  text-align:     center;
+}
+
+.overlay-links a {
+  font-family:    var(--font-serif);
+  font-size:      clamp(var(--text-2xl), 7vw, var(--text-4xl));
+  font-weight:    400;
+  color:          var(--color-text-2);
+  text-decoration:none;
+  letter-spacing: -0.02em;
+  line-height:    1;
+  opacity:        0;
+  transform:      translateY(16px);
+  transition:
+    color     var(--transition-fast),
+    opacity   0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-overlay.overlay-open .overlay-links a {
+  opacity:   1;
+  transform: translateY(0);
+}
+
+/* Staggered entrance — each link 50ms later */
+.mobile-nav-overlay.overlay-open .overlay-links a:nth-child(1) { transition-delay: 0.07s; }
+.mobile-nav-overlay.overlay-open .overlay-links a:nth-child(2) { transition-delay: 0.12s; }
+.mobile-nav-overlay.overlay-open .overlay-links a:nth-child(3) { transition-delay: 0.17s; }
+.mobile-nav-overlay.overlay-open .overlay-links a:nth-child(4) { transition-delay: 0.22s; }
+.mobile-nav-overlay.overlay-open .overlay-links a:nth-child(5) { transition-delay: 0.27s; }
+
+.overlay-links a:hover {
+  color: var(--color-teal);
+}
+
+.overlay-links a.nav-active {
+  color:       var(--color-teal);
+  font-weight: 600;
+}
+
+/* Subtle brand mark at bottom */
+.overlay-brand {
+  position:       absolute;
+  bottom:         var(--space-8);
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  color:          var(--color-text-muted);
+  letter-spacing: 0.18em;
+  opacity:        0;
+  transition:     opacity 0.5s ease 0.32s;
+}
+
+.mobile-nav-overlay.overlay-open .overlay-brand {
+  opacity: 1;
+}
+
+/* Thin accent line above links */
+.overlay-accent-line {
+  width:            1px;
+  height:           48px;
+  background:       var(--color-border);
+  margin-bottom:    var(--space-8);
+  opacity:          0;
+  transform:        scaleY(0);
+  transform-origin: top;
+  transition:
+    opacity   0.3s ease 0.04s,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
+}
+
+.mobile-nav-overlay.overlay-open .overlay-accent-line {
+  opacity:   1;
+  transform: scaleY(1);
+}
+
+/* Never show on desktop */
+@media (min-width: 641px) {
+  .mobile-nav-overlay {
+    display: none !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   19.24  Architecture cards — 2-column grid (desktop)
+   Changes the landing page platform cards from a cramped
+   4-column layout to 2 wider columns.
+
+   NOTE: Class name ".platforms" is the best available guess
+   from the repo structure. If this rule does not apply,
+   open DevTools on index.html, inspect the container that
+   wraps the four cards (Roboflow, N8N, Airtable, Integrations)
+   and replace ".platforms" below with the actual class name,
+   then re-append only this updated rule.
+   ---------------------------------------------------------- */
+
+@media (min-width: 900px) {
+  .platforms {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 899px) {
+  .platforms {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   19.25  Global mobile overflow prevention
+   Prevents any element (including wide architecture cards)
+   from causing horizontal page scroll on narrow screens.
+   ---------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  html,
+  body {
+    overflow-x: hidden;
+    max-width:  100%;
+  }
+
+  /* Constrain any grid or flex container that might overflow */
+  .platforms,
+  .platform,
+  .platform-card,
+  .arch-grid,
+  .arch-card,
+  .landing-platforms,
+  .system-grid,
+  .system-card {
+    min-width:  0 !important;
+    max-width:  100% !important;
+    width:      100% !important;
+    box-sizing: border-box !important;
+  }
+}
