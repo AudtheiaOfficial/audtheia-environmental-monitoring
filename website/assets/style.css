@@ -6085,3 +6085,9 @@ html.theme-light .nav-links a.nav-active {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+/* About page component cards: 2 columns on desktop, matches home page layout */
+@media (min-width: 900px) {
+  .about-components {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
