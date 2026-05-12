@@ -6039,3 +6039,49 @@ body.overlay-active {
     box-sizing: border-box !important;
   }
 }
+/* =============================================================
+   SECTION 19 — PATCH 2
+   Append to website/assets/style.css
+   ============================================================= */
+
+/* ----------------------------------------------------------
+   Nav links: lighter colour so they're readable against
+   the nav's dark background in light mode. ONLY this changes.
+   ---------------------------------------------------------- */
+html.theme-light .nav-links a {
+  color: #BCBD8B;
+}
+
+html.theme-light .nav-links a:hover {
+  color: #EFF1ED;
+}
+
+html.theme-light .nav-links a.nav-active {
+  color: #EFF1ED;
+}
+
+
+/* ----------------------------------------------------------
+   Landing page architecture cards: 2-column grid on desktop.
+   Covers every plausible class name the landing page might use.
+   One of these will match; the rest are harmless no-ops.
+   ---------------------------------------------------------- */
+@media (min-width: 900px) {
+  .platforms,
+  .platform-grid,
+  .platforms-grid,
+  .platform-cards,
+  .arch-platforms,
+  .arch-grid,
+  .arch-cards,
+  .system-grid,
+  .system-cards,
+  .landing-platforms,
+  .landing-grid,
+  .landing-cards,
+  .pipeline-platforms,
+  .components-grid,
+  .four-platforms {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
