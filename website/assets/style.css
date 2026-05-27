@@ -6265,3 +6265,75 @@ html.theme-light .illus-forest { opacity: 1; }
     padding: var(--space-4) 0;
   }
 }
+/* =============================================================
+   STYLE.CSS — VISUAL REFINEMENTS PATCH
+   Append after Section 20.
+   Addresses: logo weight, nav surface contrast, btn-secondary
+   solid background, and nav-links box on theme switch.
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   R1. Nav logo — slightly bolder for improved legibility
+   ---------------------------------------------------------- */
+
+.nav-logo {
+  font-weight: 600;
+}
+
+
+/* ----------------------------------------------------------
+   R2. Light mode nav — distinct sage surface
+   Separates the nav bar visually from the #F7F9F5 page
+   background, which was previously indistinguishable.
+   ---------------------------------------------------------- */
+
+html.theme-light .site-nav {
+  background: rgba(218, 226, 214, 0.96);
+}
+
+html.theme-light .site-nav.nav-scrolled,
+html.theme-light .site-nav.scrolled {
+  background: rgba(212, 222, 208, 0.99);
+  border-bottom-color: var(--color-border);
+}
+
+
+/* ----------------------------------------------------------
+   R3. Secondary button — solid surface background
+   Prevents the hero grid lines from bleeding through the
+   button text area in both light and dark modes.
+   ---------------------------------------------------------- */
+
+.btn-secondary {
+  background: var(--color-surface);
+}
+
+.btn-secondary:hover {
+  background:   var(--color-surface-2);
+  color:        var(--color-text);
+  border-color: var(--color-text-muted);
+}
+
+
+/* ----------------------------------------------------------
+   R4. Nav-links box fix on theme switch
+   The Section 20 rule that gave .nav-links a light background
+   was not scoped to mobile, causing a visible box to appear
+   on desktop during theme transitions. This patch cancels it
+   on desktop (where .nav-links has no background) and applies
+   it correctly for mobile only, matching the existing breakpoint
+   used by the mobile dropdown in Section 8.
+   ---------------------------------------------------------- */
+
+@media (min-width: 769px) {
+  html.theme-light .nav-links {
+    background: transparent !important;
+  }
+}
+
+@media (max-width: 768px) {
+  html.theme-light .nav-links {
+    background: rgba(212, 222, 208, 0.98);
+  }
+}
