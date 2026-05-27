@@ -7,6 +7,13 @@
 
   <title>Dashboard &mdash; Audtheia</title>
 
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Audtheia">
+  <meta property="og:title"       content="Dashboard &mdash; Audtheia">
+  <meta property="og:description" content="Researcher dashboard for viewing Airtable species observation records, environmental mapping data, and daily PDF intelligence reports from your Audtheia deployment.">
+  <meta property="og:url"         content="https://audtheiaofficial.github.io/audtheia-environmental-monitoring/dashboard.html">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -201,7 +208,6 @@
           </div>
 
           <!-- Species Observations panel -->
-          <!-- class="obs-list" renders rows as a vertical list, not a card grid -->
           <div class="dash-panel" id="panel-species" role="tabpanel" aria-labelledby="tab-species">
             <div id="species-grid" class="obs-list" aria-live="polite" aria-atomic="false"></div>
             <div id="species-load-more" class="dash-load-more" hidden>

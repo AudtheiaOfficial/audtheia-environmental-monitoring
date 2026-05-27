@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — Audtheia Environmental Monitoring</title>
+  <title>About &mdash; Audtheia Environmental Monitoring</title>
   <meta name="description" content="About Audtheia: an open-source real-time ecological monitoring system combining AI-powered species detection, multi-agent environmental analysis, and automated scientific reporting for researchers, students, and conservation communities worldwide.">
+
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Audtheia">
+  <meta property="og:title"       content="About &mdash; Audtheia Environmental Monitoring">
+  <meta property="og:description" content="About Audtheia: an open-source real-time ecological monitoring system combining AI-powered species detection, multi-agent environmental analysis, and automated scientific reporting for researchers, students, and conservation communities worldwide.">
+  <meta property="og:url"         content="https://audtheiaofficial.github.io/audtheia-environmental-monitoring/about.html">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,10 +89,10 @@
           <div class="about-component-card">
             <span class="about-component-num">01 / Roboflow</span>
             <h3>Species Detection</h3>
-            <p>A Roboflow Workflow processes RTSP video at 60 FPS using a custom Python block. The reference implementation ships with the official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>), trained on 126 marine sponge species. Any Roboflow-compatible detection model can be substituted for other target species or field environments. Claude 3.5 Sonnet performs real-time preliminary environmental analysis at configurable intervals within the same workflow.</p>
+            <p>A Roboflow Workflow processes RTSP video at 60 FPS using four custom Python blocks for video overlay, data conversion, real-time environmental analysis, and detection dispatch to the multi-agent pipeline. The reference implementation ships with the official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>), trained on 126 marine sponge species using RF-DETR (Medium). Any Roboflow-compatible detection model can be substituted for other target species or field environments.</p>
             <div class="about-component-tags">
               <span class="about-tag">RF-DETR</span>
-              <span class="about-tag">RTSP · 60 FPS</span>
+              <span class="about-tag">RTSP &middot; 60 FPS</span>
               <span class="about-tag">Claude 3.5 Sonnet</span>
               <span class="about-tag">Custom models</span>
             </div>
@@ -98,7 +105,7 @@
             <div class="about-component-tags">
               <span class="about-tag">9 agents</span>
               <span class="about-tag">72 data points</span>
-              <span class="about-tag">GBIF · IUCN · NOAA</span>
+              <span class="about-tag">GBIF &middot; IUCN &middot; NOAA</span>
               <span class="about-tag">Mapbox</span>
             </div>
           </div>
@@ -162,7 +169,7 @@
           </div>
         </div>
 
-        <p class="about-ecosystem-note">The Cartography Mapper agent generates Mapbox satellite imagery at 10×, 13×, and 15× zoom and is optional. Enabling it only when spatial satellite data is needed for a research project keeps token consumption aligned with output value.</p>
+        <p class="about-ecosystem-note">The Cartography Mapper agent generates Mapbox satellite imagery at 10&times;, 13&times;, and 15&times; zoom and is optional. Enabling it only when spatial satellite data is needed for a research project keeps token consumption aligned with output value.</p>
 
       </div>
     </section>
@@ -227,9 +234,9 @@
 API success rate      30%
 Detection confidence  20%
 Validation checks     10%
-─────────────────────────
-Quality Score         0 – 100</div>
-          <p class="about-quality-threshold">Research-grade threshold: <strong>≥ 85</strong>. Observations scoring below this threshold are retained in the database but are flagged in the quality field, allowing researchers to apply their own filtering criteria for analysis.</p>
+&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+Quality Score         0 &ndash; 100</div>
+          <p class="about-quality-threshold">Research-grade threshold: <strong>&ge; 85</strong>. Observations scoring below this threshold are retained in the database but are flagged in the quality field, allowing researchers to apply their own filtering criteria for analysis.</p>
         </div>
 
       </div>
@@ -256,7 +263,7 @@ Quality Score         0 – 100</div>
              href="https://doi.org/10.5281/zenodo.17842738"
              target="_blank"
              rel="noopener noreferrer"
-             aria-label="View Audtheia on Zenodo — DOI 10.5281/zenodo.17842738">
+             aria-label="View Audtheia on Zenodo &mdash; DOI 10.5281/zenodo.17842738">
             <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17842738.svg"
                  alt="DOI: 10.5281/zenodo.17842738"
                  width="200"
@@ -313,7 +320,6 @@ Quality Score         0 – 100</div>
 
   <!-- =====================================================
        ABOUT THE AUTHOR
-       Visually separated section — surface background
        ===================================================== -->
   <section class="about-author-section">
     <div class="about-inner">
@@ -352,7 +358,7 @@ Quality Score         0 – 100</div>
            target="_blank"
            rel="noopener noreferrer">GitHub</a>
       </nav>
-      <span class="footer-meta">DOI 10.5281/zenodo.17842738 · MIT License</span>
+      <span class="footer-meta">DOI 10.5281/zenodo.17842738 &middot; MIT License</span>
     </div>
   </footer>
 

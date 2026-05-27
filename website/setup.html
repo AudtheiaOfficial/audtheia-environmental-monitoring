@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Setup Guide &mdash; Audtheia Environmental Monitoring</title>
   <meta name="description" content="Step-by-step deployment guide for Audtheia: configure Roboflow species detection, N8N ecological analysis workflows, Airtable research database, and the researcher dashboard.">
+
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Audtheia">
+  <meta property="og:title"       content="Setup Guide &mdash; Audtheia Environmental Monitoring">
+  <meta property="og:description" content="Step-by-step deployment guide for Audtheia: configure Roboflow species detection, N8N ecological analysis workflows, Airtable research database, and the researcher dashboard.">
+  <meta property="og:url"         content="https://audtheiaofficial.github.io/audtheia-environmental-monitoring/setup.html">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
@@ -270,7 +278,9 @@ cd audtheia-environmental-monitoring</code></pre>
           </button>
         </div>
         <div class="setup-section-body" id="section-01-body">
-          <p class="setup-section-intro">Roboflow hosts your species detection model and runs the RTSP Analyst pipeline that processes your video stream. Detections are generated at 60&thinsp;FPS and forwarded to N8N via webhook. The workflow template contains two pre-configured custom Python blocks: one calls Claude 3.5 Sonnet for preliminary environmental analysis, the other dispatches detection data to N8N. Both require only API keys to activate.</p>
+
+          <!-- ═══ CORRECTED INTRO — four Python blocks named ═══ -->
+          <p class="setup-section-intro">Roboflow hosts your species detection model and runs the RTSP Analyst pipeline that processes your video stream. Detections are generated at 60&thinsp;FPS and forwarded to N8N via webhook. The workflow template contains four pre-configured custom Python blocks: <code>Detection_Converter</code>, <code>Add_Webcam_Interface</code>, <code>Anthropic_Environmental_Analyzer</code>, and <code>Analyst_Caller</code>. The <code>Anthropic_Environmental_Analyzer</code> block calls Claude 3.5 Sonnet for preliminary environmental analysis, and the <code>Analyst_Caller</code> block dispatches detection data to N8N. All four blocks require only API keys or configuration values to activate.</p>
 
           <div class="setup-steps">
 
@@ -317,16 +327,19 @@ cd audtheia-environmental-monitoring</code></pre>
               <div class="setup-step-num" aria-hidden="true">3</div>
               <div class="setup-step-content">
                 <h4>Import the Roboflow Workflow template</h4>
-                <p>Locate the workflow template file in the <code>roboflow-workflows/</code> directory of the cloned repository. In your Roboflow workspace, navigate to <strong>Workflows</strong> and import the template. The workflow contains three pre-configured components:</p>
+                <!-- ═══ CORRECTED — five components listed ═══ -->
+                <p>Locate the workflow template file in the <code>roboflow-workflows/</code> directory of the cloned repository. In your Roboflow workspace, navigate to <strong>Workflows</strong> and import the template. The workflow contains five pre-configured components:</p>
                 <ul>
-                  <li><strong>Object detection block:</strong> runs your chosen model against each video frame</li>
-                  <li><strong>Anthropic_Environmental_Analyzer</strong> block: sends frame detections to Claude 3.5 Sonnet for real-time preliminary environmental analysis</li>
-                  <li><strong>Analyst_Caller</strong> block: forwards detection data to your N8N RTSP Analyst webhook</li>
+                  <li><strong>Object detection block:</strong> runs your chosen model against each video frame and generates detection predictions</li>
+                  <li><strong>Detection_Converter</strong> block: converts raw detection predictions into structured data ready for downstream processing</li>
+                  <li><strong>Add_Webcam_Interface</strong> block: generates the real-time video overlay with live species identification ticker displayed on the output stream</li>
+                  <li><strong>Anthropic_Environmental_Analyzer</strong> block: sends frame detections to Claude 3.5 Sonnet at configurable intervals for preliminary environmental analysis</li>
+                  <li><strong>Analyst_Caller</strong> block: forwards structured detection data to your N8N RTSP Analyst webhook for deep multi-agent analysis</li>
                 </ul>
                 <p>Repository location: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/roboflow-workflows" target="_blank" rel="noopener noreferrer">roboflow-workflows/</a></p>
                 <div class="setup-note">
                   <span class="setup-note-icon">NOTE</span>
-                  <p>All workflow logic is pre-configured in the template. You only need to enter API keys and the N8N webhook URL into the two Python blocks. No code editing is required.</p>
+                  <p>All workflow logic is pre-configured in the template. You only need to enter API keys and the N8N webhook URL into the Python blocks. No code editing is required.</p>
                 </div>
               </div>
             </div>
@@ -906,7 +919,6 @@ AIRTABLE_REPORTS_TABLE_ID=tblXXXXXXXXXXXXXX</code></pre>
                   <p>Schema documentation and example CSV files: <a href="https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/airtable-schemas" target="_blank" rel="noopener noreferrer">airtable-schemas/</a></p>
                 </div>
 
-                <!-- Full 62-column schema -->
                 <div class="schema-wrap">
 
                   <div class="schema-category">

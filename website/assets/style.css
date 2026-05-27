@@ -6091,3 +6091,177 @@ html.theme-light .nav-links a.nav-active {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+/* =============================================================
+   SECTION 20 — Light theme forest palette, page illustration,
+   nav scroll fix, and moved inline styles
+   Appended by Session 8 — do not edit earlier sections
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   20.1  Light theme — complete forest green palette
+   Replaces the olive palette from Section 19 with a high-contrast
+   forest green system confirmed in Session 8.
+   ---------------------------------------------------------- */
+
+html.theme-light {
+  --color-bg:            #F7F9F5;
+  --color-surface:       #FFFFFF;
+  --color-surface-2:     #EEF2EB;
+  --color-border:        #C8D0C4;
+  --color-border-subtle: #DDE3D9;
+  --color-teal:          #166534;
+  --color-teal-dim:      #14532D;
+  --color-blue:          #92400E;
+  --color-glow-teal:     rgba(22, 101, 52, 0.09);
+  --color-glow-blue:     rgba(146, 64, 14, 0.09);
+  --color-text:          #0F1A0F;
+  --color-text-2:        #374151;
+  --color-text-muted:    #4B5563;
+}
+
+
+/* ----------------------------------------------------------
+   20.2  Light theme — nav background
+   White/near-white nav in light mode for clean contrast and
+   consistent appearance with scientific reference sites.
+   Overrides the hardcoded rgba dark background from Section 5.
+   ---------------------------------------------------------- */
+
+html.theme-light .site-nav {
+  background:    rgba(247, 249, 245, 0.92);
+  border-bottom-color: var(--color-border-subtle);
+}
+
+html.theme-light .site-nav.nav-scrolled {
+  background:    rgba(247, 249, 245, 0.98);
+  border-bottom-color: var(--color-border);
+}
+
+/* Also cover the old scrolled class for any residual rules */
+html.theme-light .site-nav.scrolled {
+  background:    rgba(247, 249, 245, 0.98);
+  border-bottom-color: var(--color-border);
+}
+
+/* Nav links — readable against white nav surface */
+html.theme-light .nav-links a {
+  color: var(--color-text-2);
+}
+
+html.theme-light .nav-links a:hover,
+html.theme-light .nav-links a.nav-active {
+  color: var(--color-text);
+}
+
+/* Hamburger spans — dark in light mode */
+html.theme-light .nav-toggle span {
+  background: var(--color-text-2);
+}
+
+/* Mobile dropdown panel — light background in light mode */
+html.theme-light .nav-links {
+  background: rgba(247, 249, 245, 0.98);
+}
+
+
+/* ----------------------------------------------------------
+   20.3  nav.js scroll-state class name fix
+   nav.js toggles .nav-scrolled; earlier CSS targets .scrolled.
+   This rule makes .nav-scrolled work in both themes.
+   ---------------------------------------------------------- */
+
+.site-nav.nav-scrolled {
+  border-bottom-color: var(--color-border);
+  background:          rgba(7, 9, 15, 0.97);
+}
+
+
+/* ----------------------------------------------------------
+   20.4  About page components — enforce 2x2 grid on desktop
+   Explicit Section 20 rule per deliverable spec.
+   ---------------------------------------------------------- */
+
+@media (min-width: 900px) {
+  .about-components {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   20.5  Page illustration container
+   Injected by nav.js immediately before <footer.site-footer>.
+   Fixed height, full viewport width, overflow hidden.
+   Both SVGs occupy the same space via absolute positioning.
+   ---------------------------------------------------------- */
+
+.page-illustration {
+  position:       relative;
+  width:          100%;
+  height:         80px;
+  overflow:       hidden;
+  pointer-events: none;
+  color:          var(--color-border);
+}
+
+.page-illustration svg {
+  position:   absolute;
+  inset:      0;
+  width:      100%;
+  height:     100%;
+  transition: opacity var(--transition-base);
+}
+
+/* Dark mode: ocean visible, forest hidden */
+.illus-ocean  { opacity: 1; }
+.illus-forest { opacity: 0; }
+
+/* Light mode: forest visible, ocean hidden */
+html.theme-light .illus-ocean  { opacity: 0; }
+html.theme-light .illus-forest { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-illustration svg { transition: none; }
+}
+
+@media (max-width: 640px) {
+  .page-illustration { height: 56px; }
+}
+
+
+/* ----------------------------------------------------------
+   20.6  Demo page top padding
+   Moved from inline style on demo.html <section> element.
+   Eliminates the only remaining inline style on that page.
+   ---------------------------------------------------------- */
+
+.demo-hero-section {
+  padding-top: calc(var(--nav-height) + var(--space-16));
+}
+
+
+/* ----------------------------------------------------------
+   20.7  Platform carousel favicon sizing
+   Moved from inline <style> block on index.html.
+   ---------------------------------------------------------- */
+
+.psc-card img {
+  width:         20px;
+  height:        20px;
+  border-radius: 4px;
+  opacity:       0.8;
+}
+
+
+/* ----------------------------------------------------------
+   20.8  Mobile pipeline spacing
+   Moved from inline <style> block on index.html.
+   ---------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .pipeline {
+    margin:  var(--space-6) 0;
+    padding: var(--space-4) 0;
+  }
+}

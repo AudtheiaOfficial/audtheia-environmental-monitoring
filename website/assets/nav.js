@@ -1,19 +1,29 @@
 /* =============================================================
-   nav.js — Shared navigation + theme toggle
+   nav.js — Shared navigation, theme toggle, page illustration
    Audtheia Environmental Monitoring
-   Session 7 R2: mobile overlay menu added
    ============================================================= */
 
 /* ----------------------------------------------------------
-   1. Apply saved theme before first paint (synchronous IIFE)
+   1. Apply saved or system-preferred theme before first paint
+   Synchronous IIFE — runs before any CSS renders, preventing
+   a flash of the wrong colour scheme.
+   Priority: saved preference > system preference > dark (default)
    ---------------------------------------------------------- */
 (function () {
   try {
-    if (localStorage.getItem('audtheia-theme') === 'light') {
+    var saved = localStorage.getItem('audtheia-theme');
+    if (saved === 'light') {
       document.documentElement.classList.add('theme-light');
+    } else if (!saved) {
+      /* No saved preference — honour the operating system setting */
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.classList.add('theme-light');
+      }
     }
-  } catch (e) { /* localStorage unavailable */ }
+    /* saved === 'dark' or any unrecognised value: no class, dark mode */
+  } catch (e) { /* localStorage unavailable — continue in dark mode */ }
 }());
+
 
 /* ----------------------------------------------------------
    2. DOM-ready logic
@@ -25,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var navToggle = document.getElementById('nav-toggle');
   var navLinks  = document.getElementById('nav-links');
 
+
   /* ---- Scroll state ---- */
   if (siteNav) {
     function updateScroll() {
@@ -34,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
     updateScroll();
   }
 
-  /* ---- Active nav link (header links) ---- */
+
+  /* ---- Active nav link ---- */
   var page = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(function (link) {
     var href = link.getAttribute('href');
@@ -43,11 +55,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+
   /* ----------------------------------------------------------
      Mobile overlay menu
      Injected into the document on DOMContentLoaded.
-     Styled entirely by Section 19 CSS. Does not depend on any
-     existing dropdown behaviour from earlier CSS sections.
+     Styled entirely by Section 19 CSS.
      ---------------------------------------------------------- */
 
   var overlay  = null;
@@ -55,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (navToggle) {
 
-    /* Create overlay container */
     overlay           = document.createElement('div');
     overlay.id        = 'mobile-nav-overlay';
     overlay.className = 'mobile-nav-overlay';
@@ -63,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
     overlay.setAttribute('role',        'dialog');
     overlay.setAttribute('aria-label',  'Navigation menu');
 
-    /* Close (X) button */
     closeBtn           = document.createElement('button');
     closeBtn.className = 'overlay-close-btn';
     closeBtn.setAttribute('aria-label', 'Close navigation');
@@ -75,13 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
       '</svg>';
     overlay.appendChild(closeBtn);
 
-    /* Decorative accent line above the links */
-    var accentLine           = document.createElement('div');
-    accentLine.className     = 'overlay-accent-line';
+    var accentLine       = document.createElement('div');
+    accentLine.className = 'overlay-accent-line';
     overlay.appendChild(accentLine);
 
-    /* Nav links */
-    var overlayNav     = document.createElement('nav');
+    var overlayNav      = document.createElement('nav');
     overlayNav.className = 'overlay-links';
     overlayNav.setAttribute('aria-label', 'Mobile navigation');
 
@@ -105,15 +113,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     overlay.appendChild(overlayNav);
 
-    /* Brand mark — bottom of overlay */
-    var brand           = document.createElement('div');
-    brand.className     = 'overlay-brand';
-    brand.textContent   = 'AUDTHEIA';
+    var brand         = document.createElement('div');
+    brand.className   = 'overlay-brand';
+    brand.textContent = 'AUDTHEIA';
     overlay.appendChild(brand);
 
     document.body.appendChild(overlay);
 
-    /* --- Open / close helpers --- */
     function openOverlay() {
       overlay.classList.add('overlay-open');
       overlay.setAttribute('aria-hidden', 'false');
@@ -130,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.remove('overlay-active');
     }
 
-    /* Hamburger click: overlay on mobile, dropdown fallback on desktop */
     navToggle.addEventListener('click', function () {
       if (window.innerWidth <= 640) {
         if (overlay.classList.contains('overlay-open')) {
@@ -139,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
           openOverlay();
         }
       } else {
-        /* Desktop fallback — existing dropdown logic */
         if (navLinks) {
           var open = navLinks.classList.toggle('nav-open');
           navToggle.setAttribute('aria-expanded', String(open));
@@ -148,33 +152,29 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    /* Close button */
     closeBtn.addEventListener('click', closeOverlay);
 
-    /* Overlay link clicks: close then navigate */
     overlayNav.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', closeOverlay);
     });
 
-    /* Escape key */
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && overlay.classList.contains('overlay-open')) {
         closeOverlay();
       }
     });
 
-    /* Backdrop click (clicking the overlay itself, not its children) */
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) closeOverlay();
     });
 
-    /* Resize: auto-close if screen grows beyond mobile breakpoint */
     window.addEventListener('resize', function () {
       if (window.innerWidth > 640 && overlay.classList.contains('overlay-open')) {
         closeOverlay();
       }
     }, { passive: true });
   }
+
 
   /* ---- Desktop dropdown: close on outside click ---- */
   if (navLinks) {
@@ -186,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
 
   /* ---- Theme toggle: inject button into .nav-inner ---- */
   var navInner  = document.querySelector('.nav-inner');
@@ -201,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.innerHTML =
       '<svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" ' +
       'viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">' +
-
       '<line x1="12" y1="2"    x2="12" y2="4.5"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
       '<line x1="12" y1="19.5" x2="12" y2="22"   stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
       '<line x1="2"  y1="12"   x2="4.5" y2="12"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
@@ -210,10 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
       '<line x1="17.36" y1="17.36" x2="19.07" y2="19.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
       '<line x1="19.07" y1="4.93"  x2="17.36" y2="6.64"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
       '<line x1="6.64"  y1="17.36" x2="4.93"  y2="19.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
-
       '<path d="M12 7 A5 5 0 0 0 12 17 Z" fill="currentColor"/>' +
       '<path d="M12 7 A5 5 0 0 1 12 17" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
-
       '</svg>';
 
     if (hamburger) {
@@ -233,6 +231,63 @@ document.addEventListener('DOMContentLoaded', function () {
         html.classList.remove('theme-transitioning');
       }, 350);
     });
+  }
+
+
+  /* ----------------------------------------------------------
+     Page illustration
+     Injects a decorative silhouette div immediately before
+     <footer class="site-footer"> on every page.
+     Dark mode: ocean reef (wave + corals). Uses .illus-ocean.
+     Light mode: forest floor (ground + ferns). Uses .illus-forest.
+     CSS in Section 20 controls visibility via opacity transitions.
+     ---------------------------------------------------------- */
+
+  var footer = document.querySelector('footer.site-footer');
+
+  if (footer) {
+
+    var illus       = document.createElement('div');
+    illus.className = 'page-illustration';
+    illus.setAttribute('aria-hidden', 'true');
+
+    /* Ocean SVG — visible in dark mode */
+    var oceanSvg =
+      '<svg class="illus-ocean" viewBox="0 0 1440 80" ' +
+      'xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">' +
+      /* Wave horizon */
+      '<path d="M0 56 C120 50 180 62 360 55 C540 48 600 64 720 57 C840 50 900 63 1080 56 C1200 51 1320 64 1440 57" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.8"/>' +
+      /* Coral 1 at x~220 */
+      '<path d="M220 56 L220 36 M220 46 L212 28 M220 46 L228 30 M212 28 L208 18 M212 28 L215 20 M228 30 L225 20 M228 30 L232 20" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>' +
+      /* Sea fan at x~720 */
+      '<path d="M720 56 L720 28 M720 42 Q708 36 702 24 M720 42 Q732 36 738 24 M720 36 Q711 28 706 18 M720 36 Q729 28 734 18 M720 32 Q715 22 714 14 M720 32 Q725 22 726 14" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.75" stroke-linecap="round"/>' +
+      /* Coral 2 at x~1200 */
+      '<path d="M1200 56 L1200 36 M1200 46 L1192 28 M1200 46 L1208 30 M1192 28 L1188 18 M1192 28 L1195 20 M1208 30 L1205 20 M1208 30 L1212 20" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
+
+    /* Forest SVG — visible in light mode */
+    var forestSvg =
+      '<svg class="illus-forest" viewBox="0 0 1440 80" ' +
+      'xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">' +
+      /* Ground line */
+      '<line x1="0" y1="56" x2="1440" y2="56" stroke="currentColor" stroke-width="0.8"/>' +
+      /* Grass tuft 1 at x~195 */
+      '<path d="M192 56 L188 42 M196 56 L194 39 M200 56 L202 43 M204 56 L208 44 M188 56 L184 46" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>' +
+      /* Fern at x~710 */
+      '<path d="M710 56 L710 30 M710 50 Q700 44 696 36 M710 47 Q720 41 724 34 M710 44 Q702 36 698 28 M710 41 Q718 33 722 26 M710 38 Q705 30 703 22 M710 38 Q715 30 717 22" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"/>' +
+      /* Grass tuft 2 at x~1235 */
+      '<path d="M1232 56 L1228 42 M1236 56 L1234 39 M1240 56 L1242 43 M1244 56 L1248 44 M1228 56 L1224 46" ' +
+      'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>' +
+      '</svg>';
+
+    illus.innerHTML = oceanSvg + forestSvg;
+    footer.parentNode.insertBefore(illus, footer);
   }
 
 });

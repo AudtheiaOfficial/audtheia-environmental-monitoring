@@ -4,21 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Audtheia is an open-source environmental monitoring pipeline for real-time species detection, multi-agent ecological analysis, and automated intelligence reporting in marine and terrestrial ecosystems." />
-  <title>Audtheia — Environmental Monitoring</title>
+  <title>Audtheia &mdash; Environmental Monitoring</title>
+
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Audtheia" />
+  <meta property="og:title"       content="Audtheia &mdash; Environmental Monitoring" />
+  <meta property="og:description" content="Open-source environmental monitoring pipeline for real-time species detection, multi-agent ecological analysis, and automated intelligence reporting in marine and terrestrial ecosystems." />
+  <meta property="og:url"         content="https://audtheiaofficial.github.io/audtheia-environmental-monitoring/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="assets/style.css" />
-  <style>
-    /* Platform carousel — service favicon icons */
-    .psc-card img { width: 20px; height: 20px; border-radius: 4px; opacity: 0.8; }
-    /* Mobile — reduce pipeline vertical spacing to eliminate blank gap on small screens */
-    @media (max-width: 768px) {
-      .pipeline { margin: var(--space-6) 0; padding: var(--space-4) 0; }
-    }
-  </style>
 </head>
 <body>
 
@@ -136,7 +135,7 @@
         <div class="pipeline-node">
           <span class="pipeline-node-label">01 / Roboflow</span>
           <span class="pipeline-node-name">Detection</span>
-          <span class="pipeline-node-sub">RF-DETR &middot; YOLO &middot; custom</span>
+          <span class="pipeline-node-sub">RF-DETR &middot; custom classifier</span>
         </div>
         <span class="pipeline-connector" aria-hidden="true">→</span>
         <div class="pipeline-node">
@@ -169,11 +168,11 @@
           <div class="platform-id" title="official-porifera-classifier-ju8er/12">
             <code>official-porifera-classifier-ju8er/12</code>
           </div>
-          <p>Audtheia's detection layer runs inside a Roboflow Workflow using a custom Python block. The official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>) was trained using RF-DETR (Medium) and serves as the reference implementation. Users deploy their own custom-trained classifiers and detection models to match their target species and field conditions.</p>
+          <p>Audtheia's detection layer runs inside a Roboflow Workflow with four custom Python blocks handling video overlay, data conversion, preliminary ecological analysis, and automated dispatch to the multi-agent pipeline. The official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>) was trained using RF-DETR (Medium) and serves as the reference implementation. Users deploy their own custom-trained classifiers and detection models to match their target species and field conditions.</p>
           <ul class="platform-specs">
             <li>Hosted inference endpoint at <code>detect.roboflow.com</code></li>
             <li>Hosted Image and Hosted Video inference both available</li>
-            <li>Custom Python block enables arbitrary workflow logic and third-party API integration at the inference step</li>
+            <li>Four custom Python blocks: video overlay, data conversion, real-time ecological analysis (Claude 3.5 Sonnet), and detection dispatch</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">RF-DETR</span>
@@ -213,9 +212,9 @@
           </div>
           <p>Structured research database with three observation tables. The REST API at <code>api.airtable.com</code> supports direct browser CORS calls, so the dashboard reads observational data without a proxy layer, keeping credentials in browser local storage only.</p>
           <ul class="platform-specs">
-            <li><code>Species Observations</code> — 62 columns</li>
-            <li><code>Environmental Mapping</code> — 10 columns</li>
-            <li><code>Daily Reports</code> — 3 columns (finalized PDF records from the Daily Reporter Workflow)</li>
+            <li><code>Species Observations</code> &mdash; 62 columns</li>
+            <li><code>Environmental Mapping</code> &mdash; 10 columns</li>
+            <li><code>Daily Reports</code> &mdash; 3 columns (finalized PDF records from the Daily Reporter Workflow)</li>
             <li><code>72 data points</code> per complete observation record</li>
           </ul>
           <div class="platform-tags">
@@ -237,7 +236,8 @@
           <ul class="platform-specs">
             <li><code>GBIF &middot; iNaturalist &middot; IUCN &middot; NOAA &middot; Open-Meteo</code></li>
             <li>Seven additional scientific and environmental databases</li>
-            <li>Mapbox Static Images API — satellite imagery at <code>10&times;, 13&times;, 15&times;</code> zoom</li>
+            <li>Mapbox Static Images API &mdash; satellite imagery at <code>10&times;, 13&times;, 15&times;</code> zoom</li>
+            <li>Any other compatible REST API or data source can be added through the N8N workflow layer</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">GBIF</span>
@@ -321,7 +321,7 @@
             <img src="https://www.google.com/s2/favicons?domain=mapbox.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">Mapbox</span>
-            <span class="psc-desc">Satellite imagery API for geospatial observation context at 10×, 13×, and 15× zoom</span>
+            <span class="psc-desc">Satellite imagery API for geospatial observation context at 10&times;, 13&times;, and 15&times; zoom</span>
             <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" class="psc-link">mapbox.com →</a>
           </div>
 
@@ -337,7 +337,7 @@
             <img src="https://www.google.com/s2/favicons?domain=gbif.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">GBIF</span>
-            <span class="psc-desc">Global Biodiversity Information Facility — species occurrence records and taxonomic reference data</span>
+            <span class="psc-desc">Global Biodiversity Information Facility &mdash; species occurrence records and taxonomic reference data</span>
             <a href="https://www.gbif.org" target="_blank" rel="noopener noreferrer" class="psc-link">gbif.org →</a>
           </div>
 
@@ -369,7 +369,7 @@
             <img src="https://www.google.com/s2/favicons?domain=open-meteo.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">Open-Meteo</span>
-            <span class="psc-desc">Open-source weather and atmospheric data API — no registration or API key required</span>
+            <span class="psc-desc">Open-source weather and atmospheric data API &mdash; no registration or API key required</span>
             <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" class="psc-link">open-meteo.com →</a>
           </div>
 
@@ -401,7 +401,7 @@
             <img src="https://www.google.com/s2/favicons?domain=soilgrids.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">SoilGrids</span>
-            <span class="psc-desc">Global soil information system by ISRIC — soil composition and property data for terrestrial deployments</span>
+            <span class="psc-desc">Global soil information system by ISRIC &mdash; soil composition and property data for terrestrial deployments</span>
             <a href="https://soilgrids.org" target="_blank" rel="noopener noreferrer" class="psc-link">soilgrids.org →</a>
           </div>
 
@@ -469,8 +469,9 @@
             rel="noopener noreferrer"
             class="github-link"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true" focusable="false">
-              <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 100 100" aria-label="Roboflow" role="img">
+              <rect width="100" height="100" rx="18" fill="#6706CE"/>
+              <text x="50" y="67" font-family="system-ui,sans-serif" font-size="44" font-weight="700" fill="#ffffff" text-anchor="middle">rf</text>
             </svg>
             <span>Marine Sciences Research Station / official-porifera-classifier-ju8er</span>
           </a>

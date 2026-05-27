@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Run the official Audtheia Porifera classifier on any image. No account required — drag and drop to detect marine sponge species in seconds.">
+  <meta name="description" content="Run the official Audtheia Porifera classifier on any image. No account required &mdash; drag and drop to detect marine sponge species in seconds.">
 
-  <title>Demo — Audtheia</title>
+  <title>Demo &mdash; Audtheia</title>
 
-  <!-- IBM Plex font family — required by the Audtheia design system -->
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Audtheia">
+  <meta property="og:title"       content="Demo &mdash; Audtheia">
+  <meta property="og:description" content="Run the official Audtheia Porifera classifier on any image. No account required &mdash; drag and drop to detect marine sponge species in seconds.">
+  <meta property="og:url"         content="https://audtheiaofficial.github.io/audtheia-environmental-monitoring/demo.html">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -35,7 +41,8 @@
 
   <!-- ── Main content ───────────────────────────────────────────────────── -->
   <main>
-    <section class="section" style="padding-top: calc(var(--nav-height) + var(--space-16));">
+    <!-- Padding-top class set via Section 20 CSS (.demo-hero-section) -->
+    <section class="section demo-hero-section">
       <div class="container">
         <div class="demo-content">
 
@@ -60,7 +67,6 @@
             tabindex="0"
             aria-label="Upload an image for species detection. Click or drag and drop."
           >
-            <!-- Hidden file input — triggered by the drop zone click handler -->
             <input
               type="file"
               id="demo-file-input"
@@ -70,7 +76,6 @@
               hidden
             >
 
-            <!-- Upload icon -->
             <svg
               class="demo-drop-icon"
               width="48"
@@ -89,32 +94,25 @@
             <span class="demo-drop-sub">JPEG &middot; PNG &middot; WebP &middot; GIF &middot; BMP &middot; max&nbsp;10&nbsp;MB</span>
           </div>
 
-          <!-- Preview section — hidden until a file is selected -->
+          <!-- Preview section -->
           <div id="demo-preview-section" class="demo-preview-section" hidden>
-            <!-- Image frame — canvas is absolutely positioned over the img -->
             <div class="demo-image-frame">
               <img
                 id="demo-preview-img"
                 class="demo-preview-img"
                 alt="Uploaded image awaiting species detection"
               >
-              <!--
-                Canvas bitmap size and display size are both set by syncCanvas()
-                in demo.js. No CSS width/height on this element — JS has full
-                control to keep coordinate math correct.
-                pointer-events: none keeps the canvas non-interactive.
-              -->
               <canvas id="demo-canvas" aria-hidden="true"></canvas>
             </div>
           </div>
 
-          <!-- Action buttons — hidden until a file is selected -->
+          <!-- Action buttons -->
           <div id="demo-actions" class="demo-actions" hidden>
             <button id="demo-submit" class="btn btn-primary">Run detection</button>
             <button id="demo-reset"  class="btn btn-secondary">Clear</button>
           </div>
 
-          <!-- Status message — updated by demo.js; hidden when idle -->
+          <!-- Status message -->
           <div
             id="demo-status"
             class="demo-status"
@@ -124,7 +122,7 @@
             hidden
           ></div>
 
-          <!-- Detection results — hidden until a successful detection -->
+          <!-- Detection results -->
           <section id="demo-results-section" aria-label="Detection results" hidden>
             <div class="demo-results-header">
               <span class="section-label">Detections</span>
@@ -145,8 +143,8 @@
             </p>
           </div>
 
-        </div><!-- /.demo-content -->
-      </div><!-- /.container -->
+        </div>
+      </div>
     </section>
   </main>
 
@@ -165,8 +163,6 @@
     </div>
   </footer>
 
-  <!-- No inline JavaScript. Navigation behaviour is in nav.js.
-       All demo logic is in demo.js.                              -->
   <script src="assets/nav.js"></script>
   <script src="assets/demo.js"></script>
 
