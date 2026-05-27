@@ -32,6 +32,19 @@ Continuous ecosystem monitoring has become increasingly significant as biodivers
 
 ---
 
+## Official Website 🌐
+
+The Audtheia website provides a public demo, researcher dashboard, and complete deployment documentation.
+
+**https://audtheiaofficial.github.io/audtheia-environmental-monitoring**
+
+- [Demo](https://audtheiaofficial.github.io/audtheia-environmental-monitoring/demo.html) — Run the Porifera classifier on any image, no account required
+- [Dashboard](https://audtheiaofficial.github.io/audtheia-environmental-monitoring/dashboard.html) — Connect your Airtable base and view observation data
+- [Setup Guide](https://audtheiaofficial.github.io/audtheia-environmental-monitoring/setup.html) — Step-by-step deployment instructions for all platforms
+- [About](https://audtheiaofficial.github.io/audtheia-environmental-monitoring/about.html) — System architecture, FAIR data compliance, and citation
+
+---
+
 ## System Architecture 🏗️
 
 The Audtheia ecosystem consists of four integrated components:
