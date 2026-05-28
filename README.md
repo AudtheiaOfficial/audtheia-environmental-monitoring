@@ -4,7 +4,7 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github&cacheSeconds=3600)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github&cacheSeconds=3600)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/AudtheiaOfficial/audtheia-environmental-monitoring?cacheSeconds=3600)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
+[![GitHub Issues](https://img.shields.io/badge/issues-open-brightgreen?logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17842738-blue)](https://doi.org/10.5281/zenodo.17842738)
 
