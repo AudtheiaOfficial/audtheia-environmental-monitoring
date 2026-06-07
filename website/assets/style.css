@@ -6939,3 +6939,570 @@ html.theme-light .platform-tag {
   font-weight: 500;
   color:       var(--color-text);
 }
+/* =============================================================
+   STYLE.CSS — SESSION 9 FINAL POLISH PATCH
+   Append after Session 9 Correction Patch.
+   Covers: schema collapsible headers + animation, code-block-
+   label bold, hero-text min-width, gif-wrap shadow, pub-eyebrow
+   weight, footer-brand style, about-page full visual overhaul.
+   ============================================================= */
+
+
+/* ============================================================
+   P1.  Schema category — collapsible header + table animation
+   JS adds .schema-collapsible and .schema-open classes.
+   The h4 becomes a clickable toggle row with a darker surface
+   and a chevron indicator. The .cred-table-wrap animates
+   open/closed via max-height transition.
+   ============================================================ */
+
+/* Collapsible h4 header row */
+.schema-collapsible h4 {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  padding:         var(--space-3) var(--space-4);
+  margin:          0;
+  background:      var(--color-surface-2);
+  border:          1px solid var(--color-border);
+  border-radius:   var(--radius-md) var(--radius-md) 0 0;
+  cursor:          pointer;
+  user-select:     none;
+  font-family:     var(--font-sans);
+  font-size:       var(--text-xs);
+  font-weight:     700;
+  color:           var(--color-text);
+  letter-spacing:  0.05em;
+  text-transform:  uppercase;
+  transition:      background var(--transition-fast),
+                   border-color var(--transition-fast);
+}
+
+.schema-collapsible h4:hover {
+  background:   var(--color-surface);
+  border-color: var(--color-teal);
+  color:        var(--color-teal);
+}
+
+/* When closed, round all corners */
+.schema-collapsible:not(.schema-open) h4 {
+  border-radius: var(--radius-md);
+}
+
+/* Chevron indicator */
+.schema-chevron {
+  display:        inline-block;
+  width:          16px;
+  height:         16px;
+  flex-shrink:    0;
+  margin-left:    var(--space-3);
+  position:       relative;
+  transition:     transform var(--transition-base);
+}
+
+.schema-chevron::before,
+.schema-chevron::after {
+  content:    '';
+  position:   absolute;
+  top:        50%;
+  width:      7px;
+  height:     1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform var(--transition-base);
+}
+
+.schema-chevron::before {
+  left:      2px;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.schema-chevron::after {
+  right:     2px;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Open state — chevron points up */
+.schema-open .schema-chevron::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.schema-open .schema-chevron::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Table wrapper — animated height */
+.schema-collapsible .cred-table-wrap {
+  max-height:     1200px;
+  overflow:       hidden;
+  transition:     max-height var(--transition-slow) ease,
+                  opacity    var(--transition-base) ease;
+  opacity:        1;
+  border-top:     none;
+  border-radius:  0 0 var(--radius-md) var(--radius-md);
+}
+
+/* Closed state */
+.schema-collapsible:not(.schema-open) .cred-table-wrap {
+  max-height: 0;
+  opacity:    0;
+}
+
+/* Remove double-border between header and table */
+.schema-collapsible .schema-table {
+  border-radius: 0;
+}
+
+/* Light mode header surface */
+html.theme-light .schema-collapsible h4 {
+  background: #DDE8D8;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+html.theme-light .schema-collapsible h4:hover {
+  background:   #C8D8C0;
+  border-color: var(--color-teal);
+  color:        var(--color-teal);
+}
+
+
+/* ============================================================
+   P2.  Code-block label — bold, visible title
+   "URL FORMAT", "BASH", "CURL" etc. get Sans Bold weight
+   so they read as section labels, not fine-print annotations.
+   The caret symbols (^) in code are replaced by the new
+   setup.html; this just ensures the label is styled correctly.
+   ============================================================ */
+
+.code-block-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-text-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Remove any text-shadow that may cause blurry bold text */
+.cred-table td,
+.cred-table th,
+.schema-table td,
+.schema-table th,
+.setup-step-content h4,
+.setup-step-content strong,
+code {
+  text-shadow: none !important;
+}
+
+
+/* ============================================================
+   P3.  Hero text column — wider, less narrow
+   Current padding + backdrop creates a narrow white block.
+   Reducing horizontal padding and increasing the column's
+   natural width by removing the max-width cap allows the
+   headline to break more naturally.
+   ============================================================ */
+
+.hero-text {
+  padding:   var(--space-8) var(--space-8);
+  min-width: 0;
+}
+
+/* Headline — force natural line breaks at semantic points */
+.hero-headline {
+  word-spacing:   0.04em;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .hero-text {
+    padding: var(--space-5) var(--space-5);
+  }
+}
+
+
+/* ============================================================
+   P4.  Hero video / gif-wrap — southeast drop shadow
+   Adds a soft shadow offset toward bottom-right that gives
+   the video frame a sense of depth and removes the blue tint
+   by neutralising the glow-blue in light mode.
+   ============================================================ */
+
+.gif-wrap {
+  box-shadow:
+    0 0 0 1px var(--color-border-subtle),
+    8px 12px 40px rgba(0, 0, 0, 0.45),
+    16px 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+html.theme-light .gif-wrap {
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    8px 12px 40px rgba(15, 26, 15, 0.22),
+    16px 24px 60px rgba(15, 26, 15, 0.12);
+}
+
+
+/* ============================================================
+   P5.  Publication cards — pub-eyebrow bold, pub-doi-string
+   "ZENODO ARCHIVE", "SOURCE CODE", "ROBOFLOW UNIVERSE" labels
+   get Sans Bold. The DOI string at card bottom gets lifted
+   from muted to text-2.
+   ============================================================ */
+
+.pub-eyebrow {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  letter-spacing: 0.10em;
+  color:          var(--color-teal);
+}
+
+.pub-doi-string {
+  color:       var(--color-text-2);
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   P6.  Footer brand — more distinctive than nav logo
+   The nav logo uses .nav-logo (mono, 600 weight).
+   The footer brand gets Serif italic for contrast and
+   personality — same teal, slightly larger, italic weight.
+   ============================================================ */
+
+.footer-brand {
+  font-family:    var(--font-serif);
+  font-size:      var(--text-base);
+  font-weight:    600;
+  font-style:     italic;
+  color:          var(--color-teal);
+  letter-spacing: 0.04em;
+}
+
+
+/* ============================================================
+   P7.  About page — full visual overhaul
+   Every section gets richer treatment: gradient hero, teal
+   accent lines on cards, bolder section labels, distinct
+   component-num style, ecosystem cards with left border
+   accents, FAIR cards with large letter backdrop, quality
+   block refinement, link cards with hover fill, author
+   section with stronger contrast.
+   ============================================================ */
+
+/* -- About hero — gradient accent background */
+.about-hero {
+  background:     linear-gradient(
+                    160deg,
+                    var(--color-bg) 60%,
+                    rgba(0, 201, 167, 0.05) 100%
+                  );
+  padding-bottom: var(--space-24);
+  position:       relative;
+}
+
+.about-hero::after {
+  content:    '';
+  position:   absolute;
+  bottom:     0;
+  left:       0;
+  right:      0;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-teal),
+    transparent
+  );
+  opacity: 0.35;
+}
+
+html.theme-light .about-hero {
+  background: linear-gradient(
+    160deg,
+    var(--color-bg) 60%,
+    rgba(22, 101, 52, 0.05) 100%
+  );
+}
+
+/* Teal accent left-border on h1 */
+.about-hero h1 {
+  padding-left:  var(--space-5);
+  border-left:   4px solid var(--color-teal);
+  margin-left:   0;
+}
+
+.about-hero-lead {
+  font-size:    var(--text-xl);
+  font-weight:  400;
+  color:        var(--color-text-2);
+  padding-left: var(--space-5);
+  border-left:  4px solid transparent; /* keeps alignment with h1 */
+}
+
+
+/* -- Section label on about page — stronger */
+.about-section .section-label,
+.about-hero .section-label,
+.about-author-section .section-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.14em;
+  margin-bottom:  var(--space-3);
+}
+
+
+/* -- Component cards — richer, with teal top stripe */
+.about-component-card {
+  border-top:     3px solid var(--color-teal);
+  border-radius:  0 0 var(--radius-lg) var(--radius-lg);
+  background:     var(--color-surface);
+  box-shadow:     0 2px 12px rgba(0, 0, 0, 0.12);
+  transition:     transform       var(--transition-base),
+                  box-shadow      var(--transition-base),
+                  border-color    var(--transition-base);
+}
+
+.about-component-card:hover {
+  border-top-color: var(--color-blue);
+  transform:        translateY(-3px);
+  box-shadow:       0 8px 28px rgba(0, 201, 167, 0.15);
+}
+
+html.theme-light .about-component-card:hover {
+  box-shadow: 0 8px 28px rgba(22, 101, 52, 0.14);
+}
+
+/* Component number badge */
+.about-component-num {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Component tags — match platform-tag pill style */
+.about-tag {
+  font-family:   var(--font-sans);
+  font-size:     var(--text-xs);
+  font-weight:   600;
+  color:         var(--color-teal);
+  background:    rgba(0, 201, 167, 0.08);
+  border:        1px solid rgba(0, 201, 167, 0.20);
+  border-radius: var(--radius-sm);
+  padding:       2px var(--space-2);
+  letter-spacing: 0.02em;
+}
+
+html.theme-light .about-tag {
+  background: rgba(22, 101, 52, 0.07);
+  border:     1px solid rgba(22, 101, 52, 0.18);
+  color:      var(--color-teal);
+}
+
+
+/* -- Ecosystem cards — left accent border, hover lift */
+.about-ecosystem-card {
+  border-left:  3px solid var(--color-border);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  transition:   border-color  var(--transition-fast),
+                box-shadow    var(--transition-fast),
+                transform     var(--transition-fast);
+}
+
+.about-ecosystem-card:hover {
+  border-left-color: var(--color-teal);
+  transform:         translateY(-2px);
+  box-shadow:        0 4px 16px rgba(0, 201, 167, 0.10);
+}
+
+html.theme-light .about-ecosystem-card:hover {
+  box-shadow: 0 4px 16px rgba(22, 101, 52, 0.10);
+}
+
+.about-ecosystem-card h3 {
+  font-family: var(--font-serif);
+  font-size:   var(--text-lg);
+  font-weight: 600;
+  color:       var(--color-text);
+  margin:      0 0 var(--space-2);
+}
+
+.about-ecosystem-card p {
+  color: var(--color-text-2);
+}
+
+
+/* -- FAIR cards — large letter as visual backdrop + hover lift */
+.about-fair-grid {
+  gap: var(--space-5);
+}
+
+.about-fair-card {
+  position:      relative;
+  overflow:      hidden;
+  border-top:    3px solid var(--color-teal);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  padding:       var(--space-8);
+  transition:    transform   var(--transition-base),
+                 box-shadow  var(--transition-base);
+}
+
+.about-fair-card:hover {
+  transform:  translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 201, 167, 0.12);
+}
+
+html.theme-light .about-fair-card:hover {
+  box-shadow: 0 8px 28px rgba(22, 101, 52, 0.12);
+}
+
+/* Large decorative letter behind card content */
+.about-fair-letter {
+  font-family:   var(--font-serif);
+  font-size:     var(--text-6xl);
+  font-weight:   600;
+  color:         var(--color-teal);
+  line-height:   1;
+  margin-bottom: var(--space-4);
+  opacity:       1;
+}
+
+.about-fair-card h3 {
+  font-family:  var(--font-serif);
+  font-size:    var(--text-lg);
+  font-weight:  600;
+  color:        var(--color-text);
+  margin:       0 0 var(--space-3);
+}
+
+
+/* -- Link cards ("Get started") — more defined, hover fill */
+.about-link-card {
+  border-top:     3px solid var(--color-border);
+  border-radius:  0 0 var(--radius-lg) var(--radius-lg);
+  min-width:      200px;
+  flex:           1;
+  transition:     border-top-color var(--transition-fast),
+                  transform        var(--transition-fast),
+                  box-shadow       var(--transition-fast),
+                  background-color var(--transition-fast);
+}
+
+.about-link-card:hover {
+  border-top-color: var(--color-teal);
+  background-color: var(--color-surface-2);
+  transform:        translateY(-3px);
+  box-shadow:       0 6px 20px rgba(0, 201, 167, 0.12);
+}
+
+html.theme-light .about-link-card:hover {
+  box-shadow: 0 6px 20px rgba(22, 101, 52, 0.12);
+}
+
+.about-link-card-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.about-link-card-title {
+  font-family:  var(--font-serif);
+  font-size:    var(--text-lg);
+  font-weight:  600;
+  color:        var(--color-teal);
+}
+
+
+/* -- About section headers — stronger visual hierarchy */
+.about-section-header h2 {
+  font-size:    var(--text-4xl);
+  padding-left: var(--space-4);
+  border-left:  3px solid var(--color-teal);
+}
+
+
+/* -- Quality block — richer */
+.about-quality-block {
+  border-top: 3px solid var(--color-teal);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.about-quality-threshold {
+  font-family: var(--font-sans);
+  font-size:   var(--text-sm);
+  color:       var(--color-text-2);
+  font-weight: 500;
+}
+
+.about-quality-threshold strong {
+  font-size: var(--text-base);
+}
+
+
+/* -- Author section — stronger contrast */
+.about-author-section {
+  border-top: 3px solid var(--color-teal);
+}
+
+.about-author-content h2 {
+  font-size:    var(--text-4xl);
+  padding-left: var(--space-4);
+  border-left:  3px solid var(--color-teal);
+}
+
+.about-author-content p {
+  font-size:   var(--text-base);
+  color:       var(--color-text-2);
+  line-height: 1.85;
+}
+
+
+/* -- Citation block — stronger left accent */
+.about-citation-block {
+  border-left-width: 4px;
+  border-top:        2px solid var(--color-teal);
+}
+
+
+/* -- Collab CTA button on about author section */
+.about-collab-cta {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            var(--space-2);
+  margin-top:     var(--space-8);
+  padding:        var(--space-3) var(--space-6);
+  background:     var(--color-teal);
+  color:          var(--color-bg) !important;
+  font-family:    var(--font-sans);
+  font-weight:    700;
+  font-size:      var(--text-sm);
+  letter-spacing: 0.04em;
+  border-radius:  var(--radius-md);
+  text-decoration:none;
+  transition:     opacity var(--transition-fast),
+                  transform var(--transition-fast);
+}
+
+.about-collab-cta:hover {
+  opacity:   0.88;
+  transform: translateY(-1px);
+}
+
+.about-collab-dot {
+  width:         8px;
+  height:        8px;
+  border-radius: 50%;
+  background:    rgba(255, 255, 255, 0.7);
+  animation:     audtheia-glowPulse 2.5s ease-in-out infinite;
+  flex-shrink:   0;
+}

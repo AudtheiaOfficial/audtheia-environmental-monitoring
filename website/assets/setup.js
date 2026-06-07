@@ -214,13 +214,70 @@
     });
   }
 
-  /* ── 5. Init ────────────────────────────────────────────────────── */
+  /* ── 5. Schema Category Collapse / Expand ──────────────────────── */
+
+  function initSchemaToggles() {
+    var categories = document.querySelectorAll('.schema-category');
+    if (!categories.length) return;
+
+    categories.forEach(function (cat) {
+      var h4   = cat.querySelector('h4');
+      var wrap = cat.querySelector('.cred-table-wrap');
+      if (!h4) return;
+
+      /* If no .cred-table-wrap, look for the schema-table directly */
+      var tableEl = wrap || cat.querySelector('.schema-table');
+      if (!tableEl) return;
+
+      /* Wrap the table if not already wrapped */
+      if (!wrap) {
+        var newWrap = document.createElement('div');
+        newWrap.className = 'cred-table-wrap';
+        tableEl.parentNode.insertBefore(newWrap, tableEl);
+        newWrap.appendChild(tableEl);
+        wrap = newWrap;
+      }
+
+      cat.classList.add('schema-collapsible');
+
+      /* Chevron indicator */
+      var chevron = document.createElement('span');
+      chevron.className = 'schema-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      h4.appendChild(chevron);
+
+      /* Start expanded */
+      cat.classList.add('schema-open');
+      h4.setAttribute('role', 'button');
+      h4.setAttribute('tabindex', '0');
+      h4.setAttribute('aria-expanded', 'true');
+
+      function toggle() {
+        var isOpen = cat.classList.contains('schema-open');
+        if (isOpen) {
+          cat.classList.remove('schema-open');
+          h4.setAttribute('aria-expanded', 'false');
+        } else {
+          cat.classList.add('schema-open');
+          h4.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      h4.addEventListener('click', toggle);
+      h4.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+
+  /* ── 6. Init ────────────────────────────────────────────────────── */
 
   function init() {
     initSectionToggles();
     initCopyButtons();
     initProgressTracker();
     initTroubleshootAccordion();
+    initSchemaToggles();
   }
 
   if (document.readyState === 'loading') {
