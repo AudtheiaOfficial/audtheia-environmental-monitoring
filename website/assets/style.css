@@ -6466,3 +6466,476 @@ html.theme-light .platform-tag {
   border-left:   2px solid var(--color-teal);
   margin-bottom: var(--space-3);
 }
+/* =============================================================
+   STYLE.CSS — SESSION 9 CORRECTION PATCH
+   Append after Session 9 Patch.
+   Fixes: section-label weight/contrast, hero-text background
+   strength, pipeline node consistency, table header design,
+   schema table header design — both dark (ocean) and light
+   (forest) themes.
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   C1.  Section labels — IBM Plex Sans Bold, clearly visible
+   All `.section-label` spans ("HOW IT WORKS", "SETUP GUIDE",
+   "IN THIS GUIDE", "OPEN-SOURCE · FAIR DATA …", etc.) were
+   rendered at text-xs mono with low opacity. Now rendered in
+   IBM Plex Sans Bold at text-xs so they read as strong
+   navigational anchors in both themes.
+   ---------------------------------------------------------- */
+
+.section-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Hero eyebrow ("OPEN-SOURCE · FAIR DATA · MARINE + TERRESTRIAL")
+   same treatment as section-label */
+.hero-eyebrow {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.12em;
+}
+
+/* Setup sidebar "IN THIS GUIDE" label */
+.setup-sidebar-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.12em;
+}
+
+
+/* ----------------------------------------------------------
+   C2.  Stat labels — heavier weight, clearly readable
+   Already bumped to text-sm in S9 patch; adding font-weight
+   600 so they read alongside the bold stat values.
+   ---------------------------------------------------------- */
+
+.stat-label {
+  font-weight: 600;
+  color:       var(--color-text);
+}
+
+html.theme-light .stat-label {
+  color: var(--color-text);
+}
+
+
+/* ----------------------------------------------------------
+   C3.  Hero text background — more visible frosted panel
+   The S9 patch used rgba(7,9,15,0.28) which was imperceptible.
+   Increased to a clear semi-transparent surface so the text
+   column lifts off the dot grid. Rounded corners, no hard edge.
+   Dark mode: deep navy panel, ocean-appropriate.
+   Light mode: near-white with forest-green tint.
+   ---------------------------------------------------------- */
+
+.hero-text {
+  background:              rgba(7, 9, 15, 0.62);
+  backdrop-filter:         blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border:                  1px solid rgba(255, 255, 255, 0.04);
+}
+
+html.theme-light .hero-text {
+  background:              rgba(247, 249, 245, 0.82);
+  backdrop-filter:         blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border:                  1px solid rgba(22, 101, 52, 0.10);
+}
+
+
+/* ----------------------------------------------------------
+   C4.  Pipeline nodes — consistent colour, readable labels
+   The home-page pipeline (INPUT → Roboflow → … → OUTPUT)
+   nodes all get the same dark header stripe treatment so
+   they form one visual unit. Platform nodes get a teal top
+   stripe; IO nodes (INPUT/OUTPUT) get a muted border stripe.
+   Pipeline sub-labels lifted from color-text-muted to
+   color-text-2 so "RF-DETR · custom classifier" is legible.
+   ---------------------------------------------------------- */
+
+/* All nodes — shared base: add visible top border accent */
+.pipeline-node {
+  border-top: 3px solid var(--color-teal);
+  background: var(--color-surface);
+}
+
+.pipeline-node--io {
+  border-top:   3px solid var(--color-border);
+  border-style: solid !important; /* override dashed base */
+  background:   transparent;
+}
+
+.pipeline-node-label {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.10em;
+}
+
+.pipeline-node-name {
+  font-weight: 700;
+  font-size:   var(--text-base);
+  color:       var(--color-text);
+}
+
+.pipeline-node-sub {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    500;
+  color:          var(--color-text-2);
+  letter-spacing: 0;
+}
+
+/* Connector arrows — more visible */
+.pipeline-connector {
+  opacity: 0.7;
+  color:   var(--color-teal);
+}
+
+/* Light-mode pipeline nodes */
+html.theme-light .pipeline-node {
+  background:  var(--color-surface);
+  border-top:  3px solid var(--color-teal);
+  box-shadow:  0 1px 4px rgba(22, 101, 52, 0.08);
+}
+
+html.theme-light .pipeline-node--io {
+  background:  var(--color-surface-2);
+  border-top:  3px solid var(--color-border);
+}
+
+
+/* ----------------------------------------------------------
+   C5.  Setup-page pipeline nodes — same consistent treatment
+   The setup page has its own .setup-pipeline-* classes.
+   Apply the same bold-header card style.
+   ---------------------------------------------------------- */
+
+.setup-pipeline-node {
+  border-top:  3px solid var(--color-teal);
+  background:  var(--color-surface);
+  box-shadow:  0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.setup-pipeline-node::before {
+  display: none; /* remove the old half-opacity pseudo stripe */
+}
+
+.setup-pipeline-num {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          var(--color-teal);
+  letter-spacing: 0.10em;
+}
+
+.setup-pipeline-name {
+  font-weight: 700;
+  font-size:   var(--text-sm);
+  color:       var(--color-text);
+}
+
+.setup-pipeline-desc {
+  font-family: var(--font-sans);
+  font-size:   var(--text-xs);
+  font-weight: 500;
+  color:       var(--color-text-2);
+}
+
+html.theme-light .setup-pipeline-node {
+  background:  var(--color-surface);
+  border-top:  3px solid var(--color-teal);
+  box-shadow:  0 2px 8px rgba(22, 101, 52, 0.10);
+}
+
+
+/* ----------------------------------------------------------
+   C6.  Credential tables — bold coloured header row
+   Tables previously had a barely-visible mono header in
+   color-text-muted. Now headers have a solid teal/forest
+   background (dark mode) or solid forest-green (light mode),
+   white text, full weight — like the example reference tables.
+   Rows alternate subtle backgrounds for scanability.
+   ---------------------------------------------------------- */
+
+/* Wrapper: add border and radius so table looks card-like */
+.cred-table-wrap {
+  border:        1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow:      hidden; /* clips the th background to rounded corners */
+}
+
+.cred-table {
+  border-collapse: collapse;
+  border-radius:   var(--radius-md);
+}
+
+/* Header row: dark teal background, white bold text */
+.cred-table thead {
+  background: var(--color-teal);
+}
+
+.cred-table th {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          #ffffff;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding:        var(--space-3) var(--space-4);
+  border-bottom:  none;
+  white-space:    nowrap;
+}
+
+/* Body rows: alternating subtle tint */
+.cred-table tbody tr:nth-child(even) {
+  background: var(--color-surface-2);
+}
+
+.cred-table tbody tr:nth-child(odd) {
+  background: var(--color-surface);
+}
+
+.cred-table td {
+  padding:       var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  color:         var(--color-text-2);
+  font-size:     var(--text-sm);
+}
+
+.cred-table td:first-child {
+  font-weight: 600;
+  color:       var(--color-text);
+}
+
+.cred-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Light mode: forest green header */
+html.theme-light .cred-table thead {
+  background: var(--color-teal);
+}
+
+html.theme-light .cred-table th {
+  color: #ffffff;
+}
+
+html.theme-light .cred-table tbody tr:nth-child(even) {
+  background: var(--color-surface-2);
+}
+
+html.theme-light .cred-table tbody tr:nth-child(odd) {
+  background: var(--color-surface);
+}
+
+html.theme-light .cred-table td {
+  color:         var(--color-text-2);
+  border-bottom-color: var(--color-border);
+}
+
+html.theme-light .cred-table td:first-child {
+  color: var(--color-text);
+}
+
+
+/* ----------------------------------------------------------
+   C7.  Schema tables — same bold-header treatment
+   The 62-column Airtable schema tables get identical
+   header styling to the credential tables for visual
+   consistency throughout the Setup page.
+   ---------------------------------------------------------- */
+
+.schema-table-wrap,
+.schema-wrap .cred-table-wrap {
+  border:        1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow:      hidden;
+  margin-bottom: var(--space-1);
+}
+
+.schema-table {
+  border-collapse: collapse;
+}
+
+.schema-table thead {
+  background: var(--color-teal);
+}
+
+.schema-table th {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  color:          #ffffff;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding:        var(--space-3) var(--space-4);
+  border-bottom:  none;
+  white-space:    nowrap;
+}
+
+.schema-table tbody tr:nth-child(even) {
+  background: var(--color-surface-2);
+}
+
+.schema-table tbody tr:nth-child(odd) {
+  background: var(--color-surface);
+}
+
+.schema-table td {
+  padding:       var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  color:         var(--color-text-2);
+  font-size:     var(--text-sm);
+}
+
+.schema-table td:first-child {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  font-weight: 600;
+  color:       var(--color-text);
+  white-space: nowrap;
+}
+
+.schema-table td:nth-child(2) {
+  font-family: var(--font-mono);
+  font-size:   var(--text-xs);
+  font-weight: 500;
+  color:       var(--color-teal);
+  white-space: nowrap;
+}
+
+.schema-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Light mode schema tables */
+html.theme-light .schema-table thead {
+  background: var(--color-teal);
+}
+
+html.theme-light .schema-table th {
+  color: #ffffff;
+}
+
+html.theme-light .schema-table tbody tr:nth-child(even) {
+  background: var(--color-surface-2);
+}
+
+html.theme-light .schema-table tbody tr:nth-child(odd) {
+  background: var(--color-surface);
+}
+
+html.theme-light .schema-table td {
+  color:              var(--color-text-2);
+  border-bottom-color: var(--color-border);
+}
+
+html.theme-light .schema-table td:first-child {
+  color: var(--color-text);
+}
+
+html.theme-light .schema-table td:nth-child(2) {
+  color: var(--color-teal);
+}
+
+
+/* ----------------------------------------------------------
+   C8.  Schema category headers — bolder, teal-accented
+   Each category title above a schema group (e.g. "Taxonomic
+   and Identification") gets full bold weight and stronger
+   left accent so it clearly separates groups.
+   ---------------------------------------------------------- */
+
+.schema-category {
+  margin-bottom: var(--space-6);
+}
+
+.schema-category h4 {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-sm);
+  font-weight:    700;
+  color:          var(--color-text);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-left:   var(--space-3);
+  border-left:    3px solid var(--color-teal);
+  margin-bottom:  var(--space-3);
+  line-height:    1.4;
+}
+
+html.theme-light .schema-category h4 {
+  color:       var(--color-text);
+  border-left-color: var(--color-teal);
+}
+
+
+/* ----------------------------------------------------------
+   C9.  Platform-tag chips — add a light background surface
+   Tags like "RF-DETR", "Multi-agent", "REST" get a subtle
+   pill background so they register as badges, not just
+   coloured text floating at the bottom of cards.
+   ---------------------------------------------------------- */
+
+.platform-tag {
+  font-family:      var(--font-sans);
+  font-size:        var(--text-xs);
+  font-weight:      600;
+  color:            var(--color-teal);
+  letter-spacing:   0.03em;
+  background:       rgba(0, 201, 167, 0.10);
+  border:           1px solid rgba(0, 201, 167, 0.20);
+  border-radius:    var(--radius-sm);
+  padding:          2px var(--space-2);
+  opacity:          1;
+}
+
+html.theme-light .platform-tag {
+  background: rgba(22, 101, 52, 0.08);
+  border:     1px solid rgba(22, 101, 52, 0.18);
+  color:      var(--color-teal);
+}
+
+
+/* ----------------------------------------------------------
+   C10.  Gif-caption and platform-id — bold, readable
+   The classifier ID and caption sub-line get Sans Bold
+   so they stand out as data labels rather than fine print.
+   ---------------------------------------------------------- */
+
+.gif-caption .mono {
+  font-family: var(--font-mono);
+  font-size:   var(--text-sm);
+  font-weight: 500;
+  color:       var(--color-text);
+}
+
+.gif-caption-sub {
+  font-family: var(--font-sans);
+  font-size:   var(--text-xs);
+  font-weight: 600;
+  color:       var(--color-text-2);
+  letter-spacing: 0.03em;
+}
+
+.platform-id code {
+  font-weight: 500;
+  color:       var(--color-text);
+}
+
+.platform-id-inner code {
+  font-weight: 500;
+  color:       var(--color-text);
+}
