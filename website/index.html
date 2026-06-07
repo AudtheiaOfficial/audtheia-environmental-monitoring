@@ -57,13 +57,13 @@
           </h1>
 
           <p class="hero-body">
-            Audtheia is a distributed pipeline integrating real-time Porifera detection on RTSP video streams, nine-agent post-detection ecological analysis, 72-point structured observation records following FAIR data principles, and automated daily PDF intelligence reports, designed for deployment in marine protected areas and terrestrial field research contexts.
+            Audtheia watches your field site so you don't have to be there. Point a camera at a habitat, and the system automatically identifies species, cross-references them against global biodiversity databases, records 72 data points per sighting, and generates a structured research report, all without manual intervention.
           </p>
 
           <div class="hero-stats" role="list">
             <div class="stat-item" role="listitem">
               <span class="stat-value">60 FPS</span>
-              <span class="stat-label">RTSP inference</span>
+              <span class="stat-label">RTSP video inference</span>
             </div>
             <div class="stat-item" role="listitem">
               <span class="stat-value">72</span>
@@ -116,9 +116,9 @@
   <section class="section" id="architecture">
     <div class="container">
 
-      <span class="section-label">System architecture</span>
-      <h2>A four-platform detection and analysis pipeline</h2>
-      <p class="section-intro">Data originates at the camera and flows through detection, multi-agent ecological analysis, structured storage, and automated reporting without manual intervention at any stage. Each platform operates independently and communicates through defined API boundaries.</p>
+      <span class="section-label">How it works</span>
+      <h2>From camera feed to research record, automatically</h2>
+      <p class="section-intro">Video comes in from a camera. Audtheia detects what species are visible, runs a team of AI agents to analyze the sighting in depth, stores everything in a structured database, and produces daily PDF reports. Each step hands off cleanly to the next with no manual work required at any stage.</p>
 
       <!-- Pipeline flow diagram -->
       <div
@@ -168,11 +168,11 @@
           <div class="platform-id" title="official-porifera-classifier-ju8er/12">
             <code>official-porifera-classifier-ju8er/12</code>
           </div>
-          <p>Audtheia's detection layer runs inside a Roboflow Workflow with four custom Python blocks handling video overlay, data conversion, preliminary ecological analysis, and automated dispatch to the multi-agent pipeline. The official Porifera classifier (<code>official-porifera-classifier-ju8er/12</code>) was trained using RF-DETR (Medium) and serves as the reference implementation. Users deploy their own custom-trained classifiers and detection models to match their target species and field conditions.</p>
+          <p>This is where species identification happens. Audtheia runs a custom detection model inside a Roboflow Workflow, watching your video stream in real time. When a species appears, four specialized code blocks kick in: one converts the raw detection into structured data, one draws the live overlay on your video feed, one sends the detection to AI agents for deeper analysis, and one generates a quick preliminary environmental note using an AI language model. The reference Porifera classifier covers 126 marine sponge species. You can swap in any detection model for your own target species.</p>
           <ul class="platform-specs">
             <li>Hosted inference endpoint at <code>detect.roboflow.com</code></li>
-            <li>Hosted Image and Hosted Video inference both available</li>
-            <li>Four custom Python blocks: video overlay, data conversion, real-time ecological analysis (Claude 3.5 Sonnet), and detection dispatch</li>
+            <li>Works with live RTSP streams, webcams, or uploaded video files</li>
+            <li>Four custom blocks handle video overlay, data conversion, AI analysis, and webhook dispatch</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">RF-DETR</span>
@@ -189,11 +189,11 @@
           <div class="platform-id" title="RTSP Analyst Workflow · Daily Reporter Workflow">
             <code>RTSP Analyst Workflow &middot; Daily Reporter Workflow</code>
           </div>
-          <p>Two independent N8N workflows handle post-detection processing. The RTSP Analyst Workflow runs nine specialized agents for deep ecological analysis, cross-referencing detections against biodiversity and environmental databases. The Daily Reporter Workflow runs five agents to compile and export structured PDF intelligence reports.</p>
+          <p>N8N is the analysis engine. Every time Roboflow detects a species, N8N receives the detection and runs nine specialized AI agents in sequence. Each agent handles a different research question: where exactly is this species found, what is its conservation status, what are the current environmental conditions, how does this sighting fit historical patterns? A second workflow, the Daily Reporter, runs on a schedule and compiles everything into a PDF research report.</p>
           <ul class="platform-specs">
-            <li><code>9 agents</code> — RTSP Analyst Workflow (ecological analysis)</li>
-            <li><code>5 agents</code> — Daily Reporter Workflow (automated PDF generation)</li>
-            <li>All LLM and API credentials are isolated within N8N's credential system and never transmitted to any client</li>
+            <li><code>9 agents</code> in the RTSP Analyst, covering taxonomy, GIS, biodiversity, climate, and mapping</li>
+            <li><code>5 agents</code> in the Daily Reporter for scheduled PDF generation</li>
+            <li>All API keys and credentials stay inside your N8N instance, never transmitted to any client</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">Multi-agent</span>
@@ -210,12 +210,11 @@
           <div class="platform-id" title="api.airtable.com · REST · browser CORS">
             <code>api.airtable.com &middot; REST &middot; browser CORS</code>
           </div>
-          <p>Structured research database with three observation tables. The REST API at <code>api.airtable.com</code> supports direct browser CORS calls, so the dashboard reads observational data without a proxy layer, keeping credentials in browser local storage only.</p>
+          <p>Airtable stores everything. Each observation lands in your own Airtable base with 72 structured fields covering species identity, location, environmental conditions, conservation status, habitat quality, and more. You own this database entirely. The Audtheia dashboard reads directly from it using your own credentials, with no Audtheia intermediary involved.</p>
           <ul class="platform-specs">
-            <li><code>Species Observations</code> &mdash; 62 columns</li>
-            <li><code>Environmental Mapping</code> &mdash; 10 columns</li>
-            <li><code>Daily Reports</code> &mdash; 3 columns (finalized PDF records from the Daily Reporter Workflow)</li>
-            <li><code>72 data points</code> per complete observation record</li>
+            <li><code>Species Observations</code> table with 62 columns per record</li>
+            <li><code>Environmental Mapping</code> table with satellite imagery links</li>
+            <li><code>Daily Reports</code> table storing finalized PDF download links</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">FAIR data</span>
@@ -232,12 +231,11 @@
           <div class="platform-id" title="14+ scientific data sources">
             <code>14+ scientific data sources</code>
           </div>
-          <p>Each detection is automatically cross-referenced against established biodiversity repositories and environmental monitoring services, situating every observation within the broader ecological and geospatial record.</p>
+          <p>Every sighting is automatically placed in its scientific context. The nine analysis agents pull from more than a dozen established databases, so each observation record arrives already annotated with conservation status, occurrence history, habitat data, and satellite imagery, without you having to query any of them manually.</p>
           <ul class="platform-specs">
             <li><code>GBIF &middot; iNaturalist &middot; IUCN &middot; NOAA &middot; Open-Meteo</code></li>
             <li>Seven additional scientific and environmental databases</li>
-            <li>Mapbox Static Images API &mdash; satellite imagery at <code>10&times;, 13&times;, 15&times;</code> zoom</li>
-            <li>Any other compatible REST API or data source can be added through the N8N workflow layer</li>
+            <li>Mapbox satellite imagery at <code>10&times;, 13&times;, 15&times;</code> zoom for every detected location</li>
           </ul>
           <div class="platform-tags">
             <span class="platform-tag">GBIF</span>
@@ -261,9 +259,9 @@
   <section class="section-sm" id="platforms">
     <div class="container">
 
-      <span class="section-label">Open research ecosystem</span>
-      <h2>Bring your own accounts and API keys</h2>
-      <p class="section-intro">Audtheia is built on a bring-your-own-account approach. Your observational data and API keys remain entirely within platforms you own and control, stored securely in each platform's own credential system and never transmitted through this website. The core platforms listed here require a one-time account setup. The data integration sources are queried automatically in the background once your system is running, with no additional configuration needed.</p>
+      <span class="section-label">What you need</span>
+      <h2>Your accounts, your data</h2>
+      <p class="section-intro">Audtheia works on a bring-your-own-account model. You create accounts on the platforms listed below, connect them together following the setup guide, and your data stays entirely within systems you own and control. Nothing passes through this website. Most platforms here have free tiers that cover everything you need to run a full monitoring deployment.</p>
 
       <div class="psc-wrapper">
         <button class="psc-arrow psc-arrow--left" id="psc-left" aria-label="Scroll left" hidden>←</button>
@@ -273,7 +271,7 @@
             <img src="https://www.google.com/s2/favicons?domain=roboflow.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">Roboflow</span>
-            <span class="psc-desc">Computer vision platform for training and deploying custom detection and classification models</span>
+            <span class="psc-desc">Trains and runs your species detection model. This is where your camera feed is processed.</span>
             <a href="https://roboflow.com" target="_blank" rel="noopener noreferrer" class="psc-link">roboflow.com →</a>
           </div>
 
@@ -281,7 +279,7 @@
             <img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--account">Account</span>
             <span class="psc-name">N8N</span>
-            <span class="psc-desc">Open-source workflow automation platform for building multi-agent AI analysis pipelines</span>
+            <span class="psc-desc">Runs the analysis workflows. Nine AI agents process each detection and produce structured research data.</span>
             <a href="https://n8n.io" target="_blank" rel="noopener noreferrer" class="psc-link">n8n.io →</a>
           </div>
 
@@ -289,7 +287,7 @@
             <img src="https://www.google.com/s2/favicons?domain=airtable.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">Airtable</span>
-            <span class="psc-desc">Cloud database for storing structured species observation and environmental mapping records</span>
+            <span class="psc-desc">Stores all your observation records. The dashboard reads directly from your own Airtable base.</span>
             <a href="https://airtable.com" target="_blank" rel="noopener noreferrer" class="psc-link">airtable.com →</a>
           </div>
 
@@ -297,7 +295,7 @@
             <img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">Anthropic</span>
-            <span class="psc-desc">Claude API for ecological reasoning and contextual analysis within Roboflow Workflows</span>
+            <span class="psc-desc">Powers the preliminary environmental analysis that runs inside the Roboflow detection workflow.</span>
             <a href="https://anthropic.com" target="_blank" rel="noopener noreferrer" class="psc-link">anthropic.com →</a>
           </div>
 
@@ -305,7 +303,7 @@
             <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">OpenAI</span>
-            <span class="psc-desc">Language model for N8N agent workflows — any compatible LLM provider can be substituted</span>
+            <span class="psc-desc">Powers the N8N analysis agents. Any compatible language model provider can be used instead.</span>
             <a href="https://platform.openai.com" target="_blank" rel="noopener noreferrer" class="psc-link">platform.openai.com →</a>
           </div>
 
@@ -313,7 +311,7 @@
             <img src="https://www.google.com/s2/favicons?domain=render.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free tier</span>
             <span class="psc-name">Render</span>
-            <span class="psc-desc">Cloud hosting for the Audtheia proxy server that routes browser detection requests to Roboflow</span>
+            <span class="psc-desc">Hosts the small proxy server that lets the demo page send images to Roboflow from a browser.</span>
             <a href="https://render.com" target="_blank" rel="noopener noreferrer" class="psc-link">render.com →</a>
           </div>
 
@@ -321,7 +319,7 @@
             <img src="https://www.google.com/s2/favicons?domain=mapbox.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">Mapbox</span>
-            <span class="psc-desc">Satellite imagery API for geospatial observation context at 10&times;, 13&times;, and 15&times; zoom</span>
+            <span class="psc-desc">Generates satellite imagery of each detection location at three zoom levels for spatial context.</span>
             <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" class="psc-link">mapbox.com →</a>
           </div>
 
@@ -329,7 +327,7 @@
             <img src="https://www.google.com/s2/favicons?domain=apitemplate.io&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">API Template</span>
-            <span class="psc-desc">Automated PDF generation service for daily intelligence reports produced by the Daily Reporter Workflow</span>
+            <span class="psc-desc">Converts the Daily Reporter's analysis into a downloadable PDF research report.</span>
             <a href="https://apitemplate.io" target="_blank" rel="noopener noreferrer" class="psc-link">apitemplate.io →</a>
           </div>
 
@@ -337,7 +335,7 @@
             <img src="https://www.google.com/s2/favicons?domain=gbif.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">GBIF</span>
-            <span class="psc-desc">Global Biodiversity Information Facility &mdash; species occurrence records and taxonomic reference data</span>
+            <span class="psc-desc">Global Biodiversity Information Facility, species occurrence records and taxonomy data. No key required.</span>
             <a href="https://www.gbif.org" target="_blank" rel="noopener noreferrer" class="psc-link">gbif.org →</a>
           </div>
 
@@ -345,7 +343,7 @@
             <img src="https://www.google.com/s2/favicons?domain=inaturalist.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">iNaturalist</span>
-            <span class="psc-desc">Community-sourced biodiversity database with species observations from researchers worldwide</span>
+            <span class="psc-desc">Community-sourced biodiversity database with species sightings contributed by researchers worldwide.</span>
             <a href="https://www.inaturalist.org" target="_blank" rel="noopener noreferrer" class="psc-link">inaturalist.org →</a>
           </div>
 
@@ -353,7 +351,7 @@
             <img src="https://www.google.com/s2/favicons?domain=iucnredlist.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--key">API key</span>
             <span class="psc-name">IUCN Red List</span>
-            <span class="psc-desc">Global conservation status and population trend data for species risk and threat assessment</span>
+            <span class="psc-desc">Global conservation status database. Used to flag threatened, endangered, or critically endangered species.</span>
             <a href="https://www.iucnredlist.org" target="_blank" rel="noopener noreferrer" class="psc-link">iucnredlist.org →</a>
           </div>
 
@@ -361,7 +359,7 @@
             <img src="https://www.google.com/s2/favicons?domain=noaa.gov&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">NOAA</span>
-            <span class="psc-desc">Oceanographic, atmospheric, and climate datasets for environmental observation context</span>
+            <span class="psc-desc">Oceanographic and climate datasets for environmental context in marine and coastal deployments.</span>
             <a href="https://www.noaa.gov" target="_blank" rel="noopener noreferrer" class="psc-link">noaa.gov →</a>
           </div>
 
@@ -369,7 +367,7 @@
             <img src="https://www.google.com/s2/favicons?domain=open-meteo.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">Open-Meteo</span>
-            <span class="psc-desc">Open-source weather and atmospheric data API &mdash; no registration or API key required</span>
+            <span class="psc-desc">Open-source weather and atmospheric data, no registration needed. Used for real-time site conditions.</span>
             <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer" class="psc-link">open-meteo.com →</a>
           </div>
 
@@ -377,7 +375,7 @@
             <img src="https://www.google.com/s2/favicons?domain=api-ninjas.com&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free tier</span>
             <span class="psc-name">API Ninjas</span>
-            <span class="psc-desc">Species and biodiversity data API with free and paid tiers for ecological cross-referencing</span>
+            <span class="psc-desc">Species and biodiversity data used for taxonomic enrichment and ecological cross-referencing.</span>
             <a href="https://api-ninjas.com" target="_blank" rel="noopener noreferrer" class="psc-link">api-ninjas.com →</a>
           </div>
 
@@ -385,7 +383,7 @@
             <img src="https://www.google.com/s2/favicons?domain=opentopodata.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">OpenTopoData</span>
-            <span class="psc-desc">Open elevation and topographic data API for geospatial habitat characterization</span>
+            <span class="psc-desc">Open elevation data used to characterize habitat and geospatial context for each observation.</span>
             <a href="https://opentopodata.org" target="_blank" rel="noopener noreferrer" class="psc-link">opentopodata.org →</a>
           </div>
 
@@ -393,7 +391,7 @@
             <img src="https://www.google.com/s2/favicons?domain=openstreetmap.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">OpenStreetMap</span>
-            <span class="psc-desc">Open geographic database for habitat context and spatial reference via the Overpass API</span>
+            <span class="psc-desc">Open geographic database used via the Overpass API for location context and habitat mapping.</span>
             <a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer" class="psc-link">openstreetmap.org →</a>
           </div>
 
@@ -401,7 +399,7 @@
             <img src="https://www.google.com/s2/favicons?domain=soilgrids.org&sz=32" alt="" width="20" height="20" loading="lazy" aria-hidden="true" />
             <span class="psc-badge psc-badge--free">Free, open</span>
             <span class="psc-name">SoilGrids</span>
-            <span class="psc-desc">Global soil information system by ISRIC &mdash; soil composition and property data for terrestrial deployments</span>
+            <span class="psc-desc">Global soil data from ISRIC, used for substrate and soil composition context in terrestrial deployments.</span>
             <a href="https://soilgrids.org" target="_blank" rel="noopener noreferrer" class="psc-link">soilgrids.org →</a>
           </div>
 
@@ -421,7 +419,7 @@
 
       <span class="section-label">Publication &amp; Repository</span>
       <h2>Open science, archived and citable</h2>
-      <p class="section-intro">Audtheia and its reference implementation datasets are archived as open, citable resources. The complete codebase is available on GitHub under the MIT license. The official Porifera classifier dataset is published on Roboflow Universe under CC BY 4.0.</p>
+      <p class="section-intro">Audtheia and its reference dataset are freely available, permanently archived, and citable. The full codebase is on GitHub under the MIT license. The official Porifera classifier dataset is published on Roboflow Universe under CC BY 4.0. Both can be used, adapted, and built upon without restriction.</p>
 
       <div class="pub-grid">
 
@@ -458,7 +456,7 @@
             </svg>
             <span>AudtheiaOfficial / audtheia-environmental-monitoring</span>
           </a>
-          <p class="pub-desc">Includes all proxy source code, N8N workflow exports, Airtable schemas, Roboflow workflow configurations, and field deployment documentation. Contributions welcome via pull request.</p>
+          <p class="pub-desc">Includes the proxy source code, N8N workflow files, Airtable schemas, Roboflow workflow configurations, and full documentation. Contributions welcome via pull request.</p>
         </div>
 
         <div class="pub-card">
@@ -475,7 +473,7 @@
             </svg>
             <span>Marine Sciences Research Station / official-porifera-classifier-ju8er</span>
           </a>
-          <p class="pub-desc">Reference implementation dataset for Porifera detection, comprising 16,915 labeled images across 126 marine sponge species. Version 12 trained using RF-DETR (Medium). The official starting point for Audtheia detection deployments. CC BY 4.0 licensed.</p>
+          <p class="pub-desc">Reference dataset for Porifera detection: 16,915 labeled images across 126 marine sponge species. Version 12 trained with RF-DETR (Medium). The starting point for Audtheia marine deployments. CC BY 4.0 licensed.</p>
           <span class="pub-doi-string mono">official-porifera-classifier-ju8er/12</span>
         </div>
 
