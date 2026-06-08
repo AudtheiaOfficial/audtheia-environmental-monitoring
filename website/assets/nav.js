@@ -275,15 +275,37 @@ document.addEventListener('DOMContentLoaded', function () {
       'xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">' +
       /* Ground line */
       '<line x1="0" y1="56" x2="1440" y2="56" stroke="currentColor" stroke-width="0.8"/>' +
-      /* Grass tuft 1 at x~195 */
+      /* Grass tuft 1 at x~195 — stems */
       '<path d="M192 56 L188 42 M196 56 L194 39 M200 56 L202 43 M204 56 L208 44 M188 56 L184 46" ' +
       'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>' +
-      /* Fern at x~710 */
+      /* Grass tuft 1 — small leaf ellipses at stem tips */
+      '<ellipse cx="188" cy="41" rx="3" ry="1.4" transform="rotate(-20 188 41)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="194" cy="38" rx="3" ry="1.4" transform="rotate(-5 194 38)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="202" cy="42" rx="3" ry="1.4" transform="rotate(15 202 42)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="208" cy="43" rx="3" ry="1.4" transform="rotate(25 208 43)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="184" cy="45" rx="2.5" ry="1.2" transform="rotate(-30 184 45)" fill="currentColor" opacity="0.45"/>' +
+      /* Fern at x~710 — trunk and branches */
       '<path d="M710 56 L710 30 M710 50 Q700 44 696 36 M710 47 Q720 41 724 34 M710 44 Q702 36 698 28 M710 41 Q718 33 722 26 M710 38 Q705 30 703 22 M710 38 Q715 30 717 22" ' +
       'fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"/>' +
-      /* Grass tuft 2 at x~1235 */
+      /* Fern — leaf ellipses at branch tips (left side) */
+      '<ellipse cx="696" cy="35" rx="4.5" ry="1.8" transform="rotate(-35 696 35)" fill="currentColor" opacity="0.5"/>' +
+      '<ellipse cx="698" cy="27" rx="4" ry="1.6" transform="rotate(-40 698 27)" fill="currentColor" opacity="0.5"/>' +
+      '<ellipse cx="703" cy="21" rx="3.5" ry="1.4" transform="rotate(-45 703 21)" fill="currentColor" opacity="0.45"/>' +
+      /* Fern — leaf ellipses at branch tips (right side) */
+      '<ellipse cx="724" cy="33" rx="4.5" ry="1.8" transform="rotate(35 724 33)" fill="currentColor" opacity="0.5"/>' +
+      '<ellipse cx="722" cy="25" rx="4" ry="1.6" transform="rotate(40 722 25)" fill="currentColor" opacity="0.5"/>' +
+      '<ellipse cx="717" cy="21" rx="3.5" ry="1.4" transform="rotate(45 717 21)" fill="currentColor" opacity="0.45"/>' +
+      /* Fern tip leaf */
+      '<ellipse cx="710" cy="29" rx="3" ry="1.5" transform="rotate(0 710 29)" fill="currentColor" opacity="0.5"/>' +
+      /* Grass tuft 2 at x~1235 — stems */
       '<path d="M1232 56 L1228 42 M1236 56 L1234 39 M1240 56 L1242 43 M1244 56 L1248 44 M1228 56 L1224 46" ' +
       'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>' +
+      /* Grass tuft 2 — small leaf ellipses at stem tips */
+      '<ellipse cx="1228" cy="41" rx="3" ry="1.4" transform="rotate(-20 1228 41)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="1234" cy="38" rx="3" ry="1.4" transform="rotate(-5 1234 38)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="1242" cy="42" rx="3" ry="1.4" transform="rotate(15 1242 42)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="1248" cy="43" rx="3" ry="1.4" transform="rotate(25 1248 43)" fill="currentColor" opacity="0.55"/>' +
+      '<ellipse cx="1224" cy="45" rx="2.5" ry="1.2" transform="rotate(-30 1224 45)" fill="currentColor" opacity="0.45"/>' +
       '</svg>';
 
     illus.innerHTML = oceanSvg + forestSvg;

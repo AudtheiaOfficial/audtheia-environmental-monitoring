@@ -7718,3 +7718,203 @@ html.theme-light .about-section:nth-child(odd) {
 html.theme-light .about-section:nth-child(even) {
   background: var(--color-surface);
 }
+/* =============================================================
+   STYLE.CSS — SESSION 9 FINAL FIX PATCH
+   Append after all previous patches.
+   Covers: IO node hover, hero column width, hero background-
+   color transition fix (simultaneous theme switch), psc-badge
+   and psc-link contrast/weight improvements.
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   G1.  Pipeline IO nodes — hover highlight
+   INPUT and OUTPUT nodes had no hover state. Adding the same
+   border-color change that platform nodes already have, but
+   using color-blue (their accent color) instead of teal.
+   ---------------------------------------------------------- */
+
+.pipeline-node--io:hover {
+  border-color: var(--color-blue) !important;
+  background:   rgba(56, 189, 248, 0.06);
+}
+
+html.theme-light .pipeline-node--io:hover {
+  background: rgba(146, 64, 14, 0.07);
+}
+
+
+/* ----------------------------------------------------------
+   G2.  Hero layout — wider text column, more room for body
+   The default 1fr 1fr grid gives equal space to text and video.
+   Shifting to a slightly wider text column (1.15fr vs 0.85fr)
+   gives the headline and body paragraph enough room to avoid
+   awkward single-word line breaks, without touching HTML.
+   ---------------------------------------------------------- */
+
+.hero-inner {
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+/* Headline — remove the hard 13ch cap from the previous patch
+   and instead let the wider column do the work naturally.
+   The headline will break at "monitoring", "intersection",
+   "vision" / "AI" naturally at this column width. */
+.hero-headline {
+  max-width: none;
+  font-size:  var(--text-5xl);
+  line-height: 1.12;
+}
+
+/* Hero body — allow more characters per line at wider column */
+.hero-body {
+  max-width: 62ch;
+}
+
+/* Restore equal columns on tablet where both are squished */
+@media (max-width: 960px) {
+  .hero-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Stack on mobile */
+@media (max-width: 768px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ----------------------------------------------------------
+   G3.  Theme transition simultaneity — definitive fix
+   Root cause: the hero uses background-image (a CSS gradient
+   using color variables). background-image cannot be
+   interpolated/transitioned — it snaps instantly when the
+   class changes. background-color CAN transition.
+
+   Fix: add an explicit background-color to .hero that matches
+   --color-bg. During theme-transitioning this color transitions
+   smoothly and visually masks the instant background-image
+   snap, since the image is semi-transparent and sits on top.
+
+   This is the only reliable CSS-only solution to background-
+   image transition mismatch without JS rewriting the gradient.
+   ---------------------------------------------------------- */
+
+.hero {
+  background-color: var(--color-bg);
+  transition: background-color 0.3s ease;
+}
+
+/* Extend the transition rule to cover all elements fully.
+   Previous patches added opacity and box-shadow — this
+   version also explicitly targets background-color on the
+   elements that were visibly lagging: cards, sections, nav. */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.3s ease,
+    background       0.3s ease,
+    color            0.3s ease,
+    border-color     0.3s ease,
+    fill             0.3s ease,
+    stroke           0.3s ease,
+    opacity          0.3s ease,
+    box-shadow       0.3s ease !important;
+}
+
+/* Hero text panel — match transition timing exactly */
+html.theme-transitioning .hero-text {
+  transition:
+    background-color 0.3s ease,
+    background       0.3s ease,
+    border-color     0.3s ease,
+    opacity          0.3s ease !important;
+}
+
+/* Force the hero background-color to transition on theme change */
+html.theme-light .hero {
+  background-color: var(--color-bg);
+}
+
+
+/* ----------------------------------------------------------
+   G4.  Platform carousel — psc-badge bolder, psc-link more
+   visible and colored.
+   The "API key", "Account", "Free tier" badge text was thin
+   mono; switching to Sans Bold makes it read as a proper tag.
+   The ".com →" link gets colored (teal/amber) and bold so
+   it matches the richness of the zenodo DOI string.
+   ---------------------------------------------------------- */
+
+.psc-badge {
+  font-family:    var(--font-sans);
+  font-size:      var(--text-xs);
+  font-weight:    700;
+  letter-spacing: 0.06em;
+  padding:        2px var(--space-2);
+  border-radius:  var(--radius-sm);
+  border:         1px solid currentColor;
+  display:        inline-block;
+  opacity:        0.85;
+}
+
+.psc-badge--key {
+  color:      var(--color-teal);
+  background: rgba(0, 201, 167, 0.08);
+}
+
+.psc-badge--account {
+  color:      var(--color-teal);
+  background: rgba(0, 201, 167, 0.08);
+}
+
+.psc-badge--free {
+  color:      var(--color-text-2);
+  background: transparent;
+  opacity:    0.7;
+}
+
+html.theme-light .psc-badge--key,
+html.theme-light .psc-badge--account {
+  color:      var(--color-teal);
+  background: rgba(22, 101, 52, 0.07);
+}
+
+/* Link — colored (teal in dark mode, amber in light) + bold */
+.psc-link {
+  font-family:    var(--font-mono);
+  font-size:      var(--text-xs);
+  font-weight:    600;
+  color:          var(--color-teal);
+  letter-spacing: 0.02em;
+  border:         1px solid var(--color-border-subtle);
+  border-radius:  var(--radius-sm);
+  padding:        var(--space-1) var(--space-2);
+  transition:     color        var(--transition-fast),
+                  border-color var(--transition-fast),
+                  background   var(--transition-fast);
+}
+
+.psc-link:hover {
+  color:        var(--color-text);
+  border-color: var(--color-teal);
+  background:   var(--color-glow-teal);
+}
+
+html.theme-light .psc-link {
+  color: var(--color-teal);
+}
+
+html.theme-light .psc-link:hover {
+  color:      var(--color-text);
+  background: rgba(22, 101, 52, 0.06);
+}
+
+/* psc-name — bolder for visual hierarchy */
+.psc-name {
+  font-weight: 700;
+  color:       var(--color-text);
+}
