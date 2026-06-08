@@ -7918,3 +7918,24 @@ html.theme-light .psc-link:hover {
   font-weight: 700;
   color:       var(--color-text);
 }
+
+/* ─── Session 10 Patch ─────────────────────────────────────────────────────
+   1. Platform carousel link color in light mode (warm amber/brown)
+   2. Nav logo image layout
+   ──────────────────────────────────────────────────────────────────────── */
+
+html.theme-light .psc-link {
+  color: #92400E;
+}
+
+.nav-logo {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-2);
+}
+
+.nav-logo-img {
+  height:  28px;
+  width:   auto;
+  display: block;
+}
