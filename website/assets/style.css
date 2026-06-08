@@ -7506,3 +7506,215 @@ html.theme-light .about-link-card:hover {
   animation:     audtheia-glowPulse 2.5s ease-in-out infinite;
   flex-shrink:   0;
 }
+/* =============================================================
+   STYLE.CSS — SESSION 9 FINAL PATCH
+   Append after Session 9 Final Polish Patch.
+   Covers: table-th word-wrap, theme transition simultaneity,
+   hero panel + headline, full gif-frame shadow,
+   classifier ID color, INPUT/OUTPUT node distinction,
+   about-page alternating section backgrounds.
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   F1.  Credential table headers — allow word wrapping
+   "CARTOGRAPHY MAPPER" was cut off because white-space: nowrap
+   was set in the base rule and our correction patch did not
+   override it. Allow wrapping with tighter padding.
+   ---------------------------------------------------------- */
+
+.cred-table th {
+  white-space: normal;
+  word-break:  break-word;
+  padding:     var(--space-2) var(--space-3);
+  line-height: 1.35;
+  vertical-align: bottom;
+}
+
+
+/* ----------------------------------------------------------
+   F2.  Theme transition — everything changes simultaneously
+   The backdrop-filter on .hero-text creates a GPU compositing
+   layer that repaints independently. Adding opacity to the
+   global theme-transitioning rule and fading .hero-text
+   slightly ensures the panel change is imperceptible.
+   box-shadow added so the video shadow transitions in sync.
+   ---------------------------------------------------------- */
+
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.3s ease,
+    color            0.3s ease,
+    border-color     0.3s ease,
+    fill             0.3s ease,
+    stroke           0.3s ease,
+    opacity          0.3s ease,
+    box-shadow       0.3s ease !important;
+}
+
+html.theme-transitioning .hero-text {
+  opacity: 0.88;
+}
+
+
+/* ----------------------------------------------------------
+   F3.  Hero headline — encourage natural four-line breaks
+   Setting max-width to ~14ch on the headline element nudges
+   the browser to break after "monitoring", "intersection",
+   "vision", and "AI" without hardcoding <br> tags.
+   Works responsively: max-width removed on narrow screens.
+   The hero-text panel gets more horizontal padding so it
+   does not look like a narrow white column.
+   ---------------------------------------------------------- */
+
+.hero-text {
+  padding: var(--space-10) var(--space-10);
+}
+
+.hero-headline {
+  max-width:    13ch;
+  word-break:   normal;
+  overflow-wrap: normal;
+  line-height:   1.12;
+}
+
+@media (max-width: 960px) {
+  .hero-headline { max-width: none; }
+  .hero-text     { padding: var(--space-8) var(--space-8); }
+}
+
+@media (max-width: 768px) {
+  .hero-text { padding: var(--space-6) var(--space-5); }
+}
+
+
+/* ----------------------------------------------------------
+   F4.  Hero media — drop shadow on the entire gif-frame
+   Previously shadow was on .gif-wrap (video only).
+   CSS filter: drop-shadow() respects the composite shape
+   of the entire .gif-frame (video + caption card together),
+   so the shadow wraps the whole unit pointing southeast.
+   .gif-wrap reverts to its original glow-only shadow.
+   ---------------------------------------------------------- */
+
+.gif-wrap {
+  box-shadow:
+    0 0 0 1px var(--color-border-subtle),
+    0 0 60px var(--color-glow-teal),
+    0 0 120px rgba(0, 201, 167, 0.04);
+}
+
+html.theme-light .gif-wrap {
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.gif-frame {
+  filter:     drop-shadow(10px 14px 40px rgba(0, 0, 0, 0.50))
+              drop-shadow(4px  6px  16px rgba(0, 0, 0, 0.28));
+  transition: filter 0.3s ease;
+}
+
+html.theme-light .gif-frame {
+  filter: drop-shadow(10px 14px 36px rgba(15, 26, 15, 0.22))
+          drop-shadow(4px  6px  14px rgba(15, 26, 15, 0.14));
+}
+
+
+/* ----------------------------------------------------------
+   F5.  Classifier ID — teal color
+   The "official-porifera-classifier-ju8er/12" mono string
+   below the video gets the teal accent so it reads as live
+   data, not decorative footer text.
+   ---------------------------------------------------------- */
+
+.gif-caption .mono {
+  color:       var(--color-teal);
+  font-family: var(--font-mono);
+  font-size:   var(--text-sm);
+  font-weight: 500;
+}
+
+
+/* ----------------------------------------------------------
+   F6.  Pipeline INPUT / OUTPUT nodes — visually distinct
+   IO nodes (INPUT / OUTPUT) now use color-blue (sky in dark,
+   amber in light) with a dashed border and muted text,
+   clearly bookending the platform nodes without blending in.
+   ---------------------------------------------------------- */
+
+.pipeline-node--io {
+  background:  transparent;
+  border:      2px dashed var(--color-blue) !important;
+  border-top:  2px dashed var(--color-blue) !important;
+  box-shadow:  none;
+}
+
+.pipeline-node--io .pipeline-node-label {
+  color: var(--color-blue);
+}
+
+.pipeline-node--io .pipeline-node-name {
+  color:      var(--color-text-2);
+  font-weight: 600;
+}
+
+.pipeline-node--io .pipeline-node-sub {
+  color: var(--color-text-muted);
+}
+
+html.theme-light .pipeline-node--io {
+  background:  rgba(146, 64, 14, 0.04);
+  border:      2px dashed var(--color-blue) !important;
+  border-top:  2px dashed var(--color-blue) !important;
+  box-shadow:  none;
+}
+
+html.theme-light .pipeline-node--io .pipeline-node-label {
+  color: var(--color-blue);
+}
+
+html.theme-light .pipeline-node--io .pipeline-node-name {
+  color: var(--color-text-2);
+}
+
+
+/* ----------------------------------------------------------
+   F7.  About page — alternating section backgrounds
+   about-section spans full viewport width naturally (no
+   max-width on it). Even sections get a surface fill,
+   odd sections get the page background with a faint gradient.
+   This creates visual rhythm like the Dashboard reference.
+   ---------------------------------------------------------- */
+
+.about-section:nth-child(odd) {
+  background: var(--color-bg);
+}
+
+.about-section:nth-child(even) {
+  background: var(--color-surface);
+}
+
+/* Teal gradient accent on even sections — very subtle */
+.about-section:nth-child(even)::after {
+  content:    '';
+  display:    block;
+  height:     1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-teal) 50%,
+    transparent 100%
+  );
+  opacity: 0.18;
+  margin-top: var(--space-20);
+}
+
+html.theme-light .about-section:nth-child(odd) {
+  background: var(--color-bg);
+}
+
+html.theme-light .about-section:nth-child(even) {
+  background: var(--color-surface);
+}
