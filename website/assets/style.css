@@ -7939,3 +7939,21 @@ html.theme-light .psc-link {
   width:   auto;
   display: block;
 }
+
+/* ─── Session 11 Patch ─────────────────────────────────────────────────────
+   Hero headline — restore mobile font-size overrides.
+   The S9e append set font-size: var(--text-5xl) unconditionally,
+   overriding the earlier responsive rules. These re-establish them.
+   ──────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: var(--text-4xl); /* 36px — tablet */
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-headline {
+    font-size: var(--text-3xl); /* 30px — mobile */
+  }
+}

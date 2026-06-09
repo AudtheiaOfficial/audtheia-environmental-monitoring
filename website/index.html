@@ -62,7 +62,7 @@
           </h1>
 
           <p class="hero-body">
-            Audtheia watches your field site so you don't have to be there. Point a camera at a habitat, and the system automatically identifies species, cross-references them against global biodiversity databases, records 72 data points per sighting, and generates a structured research report, all without manual intervention.
+            Audtheia watches your field site so you don't have to be there. Aim your camera at a designated habitat, and the system automatically identifies species, cross-references them against global biodiversity databases, records 72 data points per sighting, and generates a structured research report, all without manual intervention and fully customizable.
           </p>
 
           <div class="hero-stats" role="list">
@@ -123,7 +123,7 @@
 
       <span class="section-label">How it works</span>
       <h2>From camera feed to research record, automatically</h2>
-      <p class="section-intro">Video comes in from a camera. Audtheia detects what species are visible, runs a team of AI agents to analyze the sighting in depth, stores everything in a structured database, and produces daily PDF reports. Each step hands off cleanly to the next with no manual work required at any stage.</p>
+      <p class="section-intro">Set up a live field camera on a research site or use pre-recorded videos. Audtheia calls different cloud platform services to determine what species are visible, obtain environmental data, store everything in a structured database, and generate daily PDF reports. Each step hands off cleanly to the next with no manual work required at any stage.</p>
 
       <!-- Pipeline flow diagram -->
       <div
@@ -173,7 +173,7 @@
           <div class="platform-id" title="official-porifera-classifier-ju8er/12">
             <code>official-porifera-classifier-ju8er/12</code>
           </div>
-          <p>This is where species identification happens. Audtheia runs a custom detection model inside a Roboflow Workflow, watching your video stream in real time. When a species appears, four specialized code blocks kick in: one converts the raw detection into structured data, one draws the live overlay on your video feed, one sends the detection to AI agents for deeper analysis, and one generates a quick preliminary environmental note using an AI language model. The reference Porifera classifier covers 126 marine sponge species. You can swap in any detection model for your own target species.</p>
+          <p>This is where species identification happens. Roboflow is used to run computer vision models through Real-Time Streaming Protocol (RTSP) videos. Audtheia is designed to analyze live detections from a custom or pre-trained model inside your Roboflow Workflow. When a species appears, the workflow converts the raw detection into structured data, draws the live overlay on your video feed, sends the detection to AI agents for deeper analysis, and generates a quick preliminary environmental note using an AI language model. The reference Porifera classifier covers 126 marine sponge species. You can swap in any detection model for your own target species.</p>
           <ul class="platform-specs">
             <li>Hosted inference endpoint at <code>detect.roboflow.com</code></li>
             <li>Works with live RTSP streams, webcams, or uploaded video files</li>
@@ -194,7 +194,7 @@
           <div class="platform-id" title="RTSP Analyst Workflow · Daily Reporter Workflow">
             <code>RTSP Analyst Workflow &middot; Daily Reporter Workflow</code>
           </div>
-          <p>N8N is the analysis engine. Every time Roboflow detects a species, N8N receives the detection and runs nine specialized AI agents in sequence. Each agent handles a different research question: where exactly is this species found, what is its conservation status, what are the current environmental conditions, how does this sighting fit historical patterns? A second workflow, the Daily Reporter, runs on a schedule and compiles everything into a PDF research report.</p>
+          <p>N8N is the analysis engine. Every time Roboflow detects a species, N8N receives the detection and runs nine specialized AI agents in sequence. Each agent collects different data points per observation: where exactly is this species found, what is its taxonomic classification, is it an endangered species, what are the current environmental conditions? A second workflow, the Daily Reporter, runs on a customizable schedule and compiles everything into a PDF research report.</p>
           <ul class="platform-specs">
             <li><code>9 agents</code> in the RTSP Analyst, covering taxonomy, GIS, biodiversity, climate, and mapping</li>
             <li><code>5 agents</code> in the Daily Reporter for scheduled PDF generation</li>
@@ -215,7 +215,7 @@
           <div class="platform-id" title="api.airtable.com · REST · browser CORS">
             <code>api.airtable.com &middot; REST &middot; browser CORS</code>
           </div>
-          <p>Airtable stores everything. Each observation lands in your own Airtable base with 72 structured fields covering species identity, location, environmental conditions, conservation status, habitat quality, and more. You own this database entirely. The Audtheia dashboard reads directly from it using your own credentials, with no Audtheia intermediary involved.</p>
+          <p>Airtable is used as the main database. Each observation lands in your own Airtable base with 72 structured data points covering species identity, location, environmental conditions, conservation status, habitat quality, and more. You own this database entirely. The Audtheia website dashboard reads directly from it using your own credentials, with no intermediary involved.</p>
           <ul class="platform-specs">
             <li><code>Species Observations</code> table with 62 columns per record</li>
             <li><code>Environmental Mapping</code> table with satellite imagery links</li>
@@ -236,7 +236,7 @@
           <div class="platform-id" title="14+ scientific data sources">
             <code>14+ scientific data sources</code>
           </div>
-          <p>Every sighting is automatically placed in its scientific context. The nine analysis agents pull from more than a dozen established databases, so each observation record arrives already annotated with conservation status, occurrence history, habitat data, and satellite imagery, without you having to query any of them manually.</p>
+          <p>All nine analysis agents retrieve environmental information from various established databases (GBIF, iNaturalist, SoilGrids, etc.), so each observation record arrives already annotated with conservation status, taxonomy, habitat data, and satellite imagery, without you having to query any of them manually.</p>
           <ul class="platform-specs">
             <li><code>GBIF &middot; iNaturalist &middot; IUCN &middot; NOAA &middot; Open-Meteo</code></li>
             <li>Seven additional scientific and environmental databases</li>
