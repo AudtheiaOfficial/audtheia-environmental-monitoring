@@ -267,6 +267,12 @@ document.addEventListener('DOMContentLoaded', function () {
       /* Coral 2 at x~1200 */
       '<path d="M1200 56 L1200 36 M1200 46 L1192 28 M1200 46 L1208 30 M1192 28 L1188 18 M1192 28 L1195 20 M1208 30 L1205 20 M1208 30 L1212 20" ' +
       'fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>' +
+      /* Bubble pair rising near coral 1 (x~220) — dark mode only, purely decorative */
+      '<circle cx="248" cy="32" r="2.6" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.5"/>' +
+      '<circle cx="258" cy="20" r="1.6" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>' +
+      /* Bubble pair rising near coral 2 (x~1200) — dark mode only, purely decorative */
+      '<circle cx="1172" cy="30" r="2.2" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0.5"/>' +
+      '<circle cx="1180" cy="17" r="1.4" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>' +
       '</svg>';
 
     /* Forest SVG — visible in light mode */

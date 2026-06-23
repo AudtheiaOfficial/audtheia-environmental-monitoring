@@ -7957,3 +7957,52 @@ html.theme-light .psc-link {
     font-size: var(--text-3xl); /* 30px — mobile */
   }
 }
+/* =============================================================
+   SECTION 21 — Dashboard settings legibility + illustration
+   mobile scaling fix
+   Appended by Session 12 — do not edit earlier sections
+   ============================================================= */
+
+
+/* ----------------------------------------------------------
+   21.1  Settings panel — human-readable labels and hints
+   Previous rules set IBM Plex Mono on both the field labels and
+   the instructional hint text below each input. Mono is reserved
+   for actual data values (species names, IDs, coordinates) per
+   the site's type system; long-form instructional copy reads
+   better in IBM Plex Sans, the site's body font. Hint color is
+   also raised from --color-text-2 to --color-text for stronger
+   contrast against the surface background in both themes. Inline
+   <code> tokens inside hints keep IBM Plex Mono and the teal
+   accent color (set in Section 17B) since those are literal
+   values the user copies, not prose.
+   ---------------------------------------------------------- */
+
+.settings-label {
+  font-family: var(--font-sans);
+}
+
+.settings-hint {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+
+/* ----------------------------------------------------------
+   21.2  Page illustration — fix mobile squashing
+   viewBox is 1440x80 (an 18:1 ratio). The previous fixed 56px
+   height on screens 640px and under scaled the artwork's height
+   far more than its width, visually compressing the coral/fern
+   shapes sideways. Stepping the height down further — and adding
+   a tighter breakpoint for actual phone widths — brings the two
+   scale factors close enough together that the shapes read
+   correctly again.
+   ---------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .page-illustration { height: 42px; }
+}
+
+@media (max-width: 480px) {
+  .page-illustration { height: 28px; }
+}
