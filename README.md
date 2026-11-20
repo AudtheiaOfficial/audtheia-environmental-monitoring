@@ -7,6 +7,7 @@
 [![GitHub Issues](https://img.shields.io/badge/issues-open-brightgreen?logo=github)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/issues)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17842738-blue)](https://doi.org/10.5281/zenodo.17842738)
+[![AI Lounge](https://lounge.ai/api/badge/audtheiaofficial)](https://lounge.ai/@audtheiaofficial)
 
 **Automated Environmental Intelligence for Marine and Terrestrial Ecosystem Monitoring, Biodiversity Assessment, and Conservation Research**
 
