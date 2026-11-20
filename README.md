@@ -1,5 +1,7 @@
 # Audtheia Environmental Monitoring System
 
+<div align="center">
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/blob/main/LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![GitHub Stars](https://img.shields.io/github/stars/AudtheiaOfficial/audtheia-environmental-monitoring?style=flat&logo=github&cacheSeconds=3600)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/stargazers)
@@ -8,6 +10,8 @@
 [![Documentation](https://img.shields.io/badge/docs-latest-blue)](https://github.com/AudtheiaOfficial/audtheia-environmental-monitoring/tree/main/docs)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17842738-blue)](https://doi.org/10.5281/zenodo.17842738)
 [![AI Lounge](https://lounge.ai/api/badge/audtheiaofficial)](https://lounge.ai/@audtheiaofficial)
+
+</div>
 
 **Automated Environmental Intelligence for Marine and Terrestrial Ecosystem Monitoring, Biodiversity Assessment, and Conservation Research**
 
